@@ -17,6 +17,8 @@ export default class DatabaseConnection {
     const cluster = process.env.MONGO_CLUSTER;
     const dbName = process.env.MONGO_DB_NAME;
 
+    const that = this;
+
     // Check to make sure we have the information we need to connect
     if (!(username && password && cluster && dbName)) {
       // Couldn't find environment variables
@@ -30,18 +32,18 @@ export default class DatabaseConnection {
       // We have all the information we need to connect, so attempt to do so
       const mongoUri = `mongodb+srv://${username}:${password}@${cluster}/${dbName}`;
 
-      MongoClient.connect(uri, function(err, client) {
+      MongoClient.connect(mongoUri, function(err, client) {
         if (!err) {
           console.log('Successfully connected to MongoDB instance.');
-          this.db = client.db(dbName);
-          this.connected = true;
-          this.db.on('close', () => {
+          that.db = client.db(dbName);
+          that.connected = true;
+          that.db.on('close', () => {
             console.log('Lost connection to MongoDB instance. Attempting to reconnect...');
-            this.connected = false;
+            that.connected = false;
           });
-          this.db.on('reconnect', () => {
+          that.db.on('reconnect', () => {
             console.log('Successfully reconnected to MongoDB instance.');
-            this.connected = true;
+            that.connected = true;
           });
         } else {
           console.error(err);

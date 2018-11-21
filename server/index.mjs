@@ -20,5 +20,5 @@ dbConn.connect();
 const httpServer = new HttpServer(port);
 
 // Start the WebSockets server
-const wsServer = new WebSocketServer();
+const wsServer = new WebSocketServer(dbConn);
 wsServer.start(httpServer.getHTTPServer());

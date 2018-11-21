@@ -3,7 +3,7 @@
 import express from 'express';
 import http from 'http';
 import expose from './expose';
-import indexHTML from '../index.html.mjs';
+// import indexHTML from '../index.html.mjs';
 
 export default class HttpServer {
   constructor(port) {
@@ -41,7 +41,7 @@ export default class HttpServer {
 
     // Register the routes
     this.app.get('/', (req, res) => {
-      res.send(indexHTML);
+      res.send('Hello');
     });
     this.app.get('/bundle.js', (req, res) => {
       res.sendFile(`${rootDir}/bundle.js`);
