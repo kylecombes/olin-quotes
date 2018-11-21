@@ -5,6 +5,7 @@ export default class WebSocketServer {
     this.io = null;
     this.dbConn = dbConn;
     this.onConnect = this.onConnect.bind(this);
+    this.onAddPerson = this.onAddPerson.bind(this);
   }
 
   start(httpServer) {
@@ -16,6 +17,8 @@ export default class WebSocketServer {
 
   onConnect(socket) {
     console.log('Client connected');
+    socket.on('addPerson', this.onAddPerson);
+    const that = this;
     this.dbConn.db.collection('people').find({}).toArray((err, res) => {
       if (!err) {
         const people = {};
@@ -24,7 +27,7 @@ export default class WebSocketServer {
         });
         console.log('Sending people update...');
         socket.emit('peopleUpdate', people);
-        this.dbConn.db.collection('quotes').find({}).toArray((err, res) => {
+        that.dbConn.db.collection('quotes').find({}).toArray((err, res) => {
           if (!err) {
             const quotes = {};
             res.forEach(quote => {
@@ -32,6 +35,27 @@ export default class WebSocketServer {
             });
             console.log('Sending quotes update...');
             socket.emit('quotesUpdate', quotes);
+          }
+        });
+      }
+    });
+  }
+
+  onAddPerson(personData) {
+    console.log('Adding person...');
+    const that = this;
+    this.dbConn.db.collection('people').insertOne(personData, (err, res) => {
+      if (err) {
+        console.log(err);
+      } else {
+        that.dbConn.db.collection('people').find({}).toArray((err, res) => {
+          if (!err) {
+            const people = {};
+            res.forEach(person => {
+              people[person._id] = person;
+            });
+            console.log('Sending people update...');
+            that.io.emit('peopleUpdate', people);
           }
         });
       }

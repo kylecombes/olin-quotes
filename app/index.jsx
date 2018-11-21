@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import NavSidebar from './components/sidebars/nav-sidebar';
 import MultiQuoteView from './containers/multi-quote-view';
+import PersonAdd from './containers/person-add';
 import { Provider } from 'react-redux';
 import setupStore from './data/setup-store';
 import './public/app.css';
@@ -15,6 +16,7 @@ class App extends Component {
         <div className="app">
           <NavSidebar/>
           <MultiQuoteView/>
+          <PersonAdd/>
         </div>
       </Provider>
     );

@@ -22,14 +22,7 @@ module.exports = {
       {
         test: /\.jsx?/,
         include: APP_DIR,
-        use: [
-          {
-            loader: 'babel-loader',
-            options: {
-              presets: ['@babel/react'],
-            }
-          }
-        ]
+        use: ['babel-loader'],
       },
       {
         test: /\.svg$/,
