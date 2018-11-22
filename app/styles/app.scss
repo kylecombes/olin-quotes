@@ -57,6 +57,82 @@ body,
   }
 }
 
+.quote-add {
+
+  $quote-entry-width: 70%;
+
+  max-width: 70rem;
+  margin: 2em auto;
+
+  .quote-add-component {
+
+    position: relative;
+
+    & > input {
+      width: $quote-entry-width;
+    }
+
+    .react-autosuggest__container {
+      width: (100% - $quote-entry-width);
+      display: inline-block;
+      position: absolute;
+    }
+
+    .react-autosuggest__container--open {
+      z-index: 400;
+    }
+
+    .react-autosuggest__container .react-autosuggest__input {
+      width: 100%;
+      z-index: 200;
+    }
+
+    .react-autosuggest__suggestions-container {
+      overflow: auto;
+      background-color: black;
+      z-index: 100;
+
+      ul {
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
+
+        li {
+          padding: 1em;
+
+          &:hover,
+          &:focus,
+          &.react-autosuggest__suggestion--highlighted {
+            background-color: #444444;
+          }
+
+          .person-suggestion {
+            display: flex;
+            align-items: center;
+
+            img {
+              height: 2em;
+              border-radius: 1em;
+            }
+
+            span {
+              margin-left: 1em;
+            }
+          }
+
+        }
+      }
+    }
+
+  }
+
+  button {
+    width: 50%;
+  }
+
+
+}
+
 .quote-cards {
   display: flex;
   flex-direction: row;

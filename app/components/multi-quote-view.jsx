@@ -1,5 +1,6 @@
 import React from 'react';
 import QuoteCard from './quote-card';
+import QuoteAdd from '../containers/quote-add';
 
 export default class MultiQuoteView extends React.Component {
 
@@ -16,6 +17,7 @@ export default class MultiQuoteView extends React.Component {
     });
     return (
       <div className="primary-content multi-quote-view">
+        <QuoteAdd/>
         <div className="quote-cards">
           {cards}
         </div>

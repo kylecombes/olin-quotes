@@ -6,12 +6,14 @@ export default class QuoteAdd extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
+    this.originalState = {
       components: {
         0: {words: '', personId: null},
         1: {words: '', personId: null},
       },
-    }
+    };
+
+    this.state = Object.assign({}, this.originalState);
   }
 
   onQuoteComponentChange = (componentIdx, newPartialData) => {
@@ -25,11 +27,15 @@ export default class QuoteAdd extends React.Component {
     this.setState({components});
   };
 
+  onClearClicked = () => {
+    this.setState(this.originalState);
+  };
+
   onAddClicked = () => {
     // Only keep components that have words and an author
     // TODO: Some input validation with feedback to the user
     const components = Object.values(this.state.components).filter(comp => comp.words && comp.personId);
-    
+
     this.props.submit({components});
   };
 
@@ -47,8 +53,9 @@ export default class QuoteAdd extends React.Component {
     ));
 
     return (
-      <div className="sidebar quote-add">
+      <div className="quote-add">
         {quoteComponentEntryElems}
+        <button onClick={this.onClearClicked}>Clear</button>
         <button onClick={this.onAddClicked}>Add</button>
       </div>
     )

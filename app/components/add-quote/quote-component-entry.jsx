@@ -40,8 +40,9 @@ export default class QuoteComponentEntry extends React.Component {
   getSuggestionValue = suggestion => ({id: suggestion._id, displayName: suggestion.displayName});
 
   renderSuggestion = suggestion => (
-    <div>
-      {suggestion.displayName}
+    <div className="person-suggestion">
+      <img src={suggestion.avatarUrl} alt={suggestion.displayName} />
+      <span>{suggestion.displayName}</span>
     </div>
   );
 
