@@ -1,17 +1,15 @@
 import React from 'react';
 import Autosuggest from 'react-autosuggest';
 
-export default class QuoteAdd extends React.Component {
+export default class QuoteComponentEntry extends React.Component {
 
   constructor(props) {
     super(props);
 
     this.state = {
-      text: '',
-      authorId: null,
-      personInputValue: '',
       suggestions: [],
-    }
+      personInputValue: '',
+    };
   }
 
   onSuggestionsFetchRequested = ({ value })  => {
@@ -33,9 +31,9 @@ export default class QuoteAdd extends React.Component {
     } else {
       // Suggestion was selected and we've been passed an object containing the person's ID and displayName
       this.setState({
-        authorId: newValue.id,
         personInputValue: newValue.displayName,
       });
+      this.props.onComponentChange({personId: newValue.id});
     }
   };
 
@@ -47,25 +45,23 @@ export default class QuoteAdd extends React.Component {
     </div>
   );
 
-  textChanged = event => this.setState({text: event.target.value});
-
-  onAddClicked = () => this.props.submit({
-      components: [{
-        personId: this.state.authorId,
-        words: this.state.text,
-      }]
-    });
+  wordsChanged = event => this.props.onComponentChange({words: event.target.value});
 
   render() {
     const autosuggestInputProps = {
-      placeholder: 'Attribute',
+      placeholder: this.props.speakerPlaceholder,
       value: this.state.personInputValue,
       onChange: this.onChange,
     };
 
     return (
-      <div className="sidebar quote-add">
-        <input type="text" placeholder="Quote" onChange={this.textChanged} />
+      <div className="quote-add-component">
+        <input
+          type="text"
+          placeholder={this.props.wordsPlaceholder}
+          value={this.props.words}
+          onChange={this.wordsChanged}
+        />
         <Autosuggest
           suggestions={this.state.suggestions}
           onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
@@ -74,7 +70,6 @@ export default class QuoteAdd extends React.Component {
           renderSuggestion={this.renderSuggestion}
           inputProps={autosuggestInputProps}
         />
-        <button onClick={this.onAddClicked}>Add</button>
       </div>
     )
   }

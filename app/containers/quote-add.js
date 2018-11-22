@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import QA from '../components/quote-add';
+import QA from '../components/add-quote/quote-add';
 import {
 addQuote,
 } from '../data/actions';
