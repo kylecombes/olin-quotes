@@ -20,7 +20,20 @@ export default function () {
       debug: window.debug,
       isMobile,
     },
-    people: {},
+    people: {
+      1: {
+        firstName: 'Kyle',
+        lastName: 'Combes',
+        displayName: 'Kyle Combes',
+        _id: 1,
+      },
+      2: {
+        firstName: 'Zack',
+        lastName: 'Davenport',
+        displayName: 'Zack Davenport',
+        _id: 2,
+      },
+    },
     quotes: {},
   };
 

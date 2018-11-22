@@ -6,6 +6,7 @@ export default class WebSocketServer {
     this.dbConn = dbConn;
     this.onConnect = this.onConnect.bind(this);
     this.onAddPerson = this.onAddPerson.bind(this);
+    this.onAddQuote = this.onAddQuote.bind(this);
   }
 
   start(httpServer) {
@@ -18,6 +19,7 @@ export default class WebSocketServer {
   onConnect(socket) {
     console.log('Client connected');
     socket.on('addPerson', this.onAddPerson);
+    socket.on('addQuote', this.onAddQuote);
     const that = this;
     this.dbConn.db.collection('people').find({}).toArray((err, res) => {
       if (!err) {
@@ -41,6 +43,7 @@ export default class WebSocketServer {
     });
   }
 
+  // TODO: Add object field checking to ensure not just anything sent from the frontend can be added the db
   onAddPerson(personData) {
     console.log('Adding person...');
     const that = this;
@@ -56,6 +59,28 @@ export default class WebSocketServer {
             });
             console.log('Sending people update...');
             that.io.emit('peopleUpdate', people);
+          }
+        });
+      }
+    });
+  }
+
+  // TODO: Add object field checking to ensure not just anything sent from the frontend can be added the db
+  onAddQuote(quoteData) {
+    console.log('Adding quote...');
+    const that = this;
+    this.dbConn.db.collection('quotes').insertOne(quoteData, (err, res) => {
+      if (err) {
+        console.log(err);
+      } else {
+        that.dbConn.db.collection('quotes').find({}).toArray((err, res) => {
+          if (!err) {
+            const quotes = {};
+            res.forEach(person => {
+              quotes[person._id] = person;
+            });
+            console.log('Sending quotes update...');
+            that.io.emit('quotesUpdate', quotes);
           }
         });
       }

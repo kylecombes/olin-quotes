@@ -6,7 +6,7 @@ export default class MultiQuoteView extends React.Component {
   render() {
     const cards = Object.keys(this.props.quotes).map(quoteId => {
       const quoteData = this.props.quotes[quoteId];
-      const authorId = quoteData.quote[0].person_id;
+      const authorId = quoteData.components[0].personId;
       return (
         <QuoteCard
           quote={quoteData}
