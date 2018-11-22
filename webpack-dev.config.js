@@ -1,4 +1,3 @@
-// const webpack = require('webpack');
 const path = require('path');
 
 const BUILD_DIR = path.resolve(__dirname);
@@ -27,6 +26,11 @@ module.exports = {
       {
         test: /\.svg$/,
         use: 'raw-loader',
+      },
+      {
+        test: /\.scss$/,
+        include: APP_DIR,
+        use: ['style-loader', 'css-loader', 'sass-loader'],
       },
       {
         test: /\.css$/,

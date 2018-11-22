@@ -6,7 +6,7 @@ import PersonAdd from './containers/person-add';
 import QuoteAdd from './containers/quote-add';
 import { Provider } from 'react-redux';
 import setupStore from './data/setup-store';
-import './public/app.css';
+import './styles/app.scss';
 
 const store = setupStore();
 
