@@ -19,21 +19,13 @@ export default function () {
     general: {
       debug: window.debug,
       isMobile,
+      focusedPersonId: null,
     },
-    people: {
-      1: {
-        firstName: 'Kyle',
-        lastName: 'Combes',
-        displayName: 'Kyle Combes',
-        _id: 1,
-      },
-      2: {
-        firstName: 'Zack',
-        lastName: 'Davenport',
-        displayName: 'Zack Davenport',
-        _id: 2,
-      },
+    infoSidebar: {
+      sidebarType: null,
+      elementId: null,
     },
+    people: {},
     quotes: {},
   };
 

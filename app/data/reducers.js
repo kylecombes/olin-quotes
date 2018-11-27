@@ -20,6 +20,23 @@ export function general(state = {}, action) {
   }
 }
 
+export function infoSidebar(state = {}, action) {
+  switch (action.type) {
+    case ActionTypes.SHOW_PERSON_STATS:
+      return Object.assign({}, state, {
+        sidebarType: 'personStats',
+        elementId: action.data,
+      });
+    case ActionTypes.CLOSE_SIDEBAR:
+      return Object.assign({}, state, {
+        sidebarType: null,
+        elementId: null,
+      });
+    default:
+      return state;
+  }
+}
+
 export function people(state = {}, action) {
 
   switch (action.type) {

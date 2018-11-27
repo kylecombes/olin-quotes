@@ -1,5 +1,8 @@
 import { connect } from 'react-redux';
 import MQV from '../components/multi-quote-view';
+import {
+  showPersonStats,
+} from '../data/actions';
 
 const mapStateToProps = (state, containerProps) => {
   return {
@@ -8,9 +11,9 @@ const mapStateToProps = (state, containerProps) => {
   }
 };
 
-const mapDispatchToProps = (state, containerProps) => {
+const mapDispatchToProps = dispatch => {
   return {
-
+    showPersonStats: personId => dispatch(showPersonStats(personId)),
   }
 };
 
