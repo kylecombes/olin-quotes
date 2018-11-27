@@ -99,7 +99,7 @@ button {
       padding: 0.5em 1em;
       border-left: 0.2em solid rgba(38, 46, 70, 0);
 
-      .current {
+      &.current {
         background-color: #262e46;
         border-left: 0.2em solid #ccc;
       }
