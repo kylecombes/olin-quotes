@@ -20,6 +20,7 @@ export default class PersonAdd extends React.Component {
       displayName: `${this.state.firstName} ${this.state.lastName}`,
     });
     this.props.submit(data);
+    this.props.closeAddPersonPane();
   };
 
   render() {

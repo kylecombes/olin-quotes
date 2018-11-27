@@ -56,6 +56,7 @@ export default class QuoteAdd extends React.Component {
         wordsPlaceholder="Quote"
         speakerPlaceholder="Person"
         people={this.props.people}
+        onAddPersonClick={this.props.onAddPersonClicked}
         {...this.state.components[quoteComponentId]}
       />
     ));

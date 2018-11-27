@@ -11,12 +11,30 @@ import './styles/app.scss';
 const store = setupStore();
 
 class App extends Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      addPersonVisible: false,
+    };
+  }
+
+  onAddPersonClicked = () => this.setState({addPersonVisible: true});
+
+  closeAddPersonPane = () => this.setState({addPersonVisible: false});
+
   render() {
+    const addPerson = this.state.addPersonVisible
+      ? <PersonAdd closeAddPersonPane={this.closeAddPersonPane}/>
+      : null;
+
     return (
       <Provider store={store}>
         <div className="app">
           <NavSidebar/>
-          <MultiQuoteView/>
+          <MultiQuoteView onAddPersonClicked={this.onAddPersonClicked} />
+          {addPerson}
         </div>
       </Provider>
     );

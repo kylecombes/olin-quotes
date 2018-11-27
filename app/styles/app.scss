@@ -143,6 +143,8 @@ $color-content-text: #ccc;
 
         li {
           padding: 1em;
+          border-bottom: 1px solid $color-gray-divider;
+          cursor: pointer;
 
           &:hover,
           &:focus,
@@ -162,6 +164,10 @@ $color-content-text: #ccc;
             span {
               margin-left: 1em;
               color: $color-content-text;
+              -webkit-user-select: none;
+              -moz-user-select: none;
+              -ms-user-select: none;
+              user-select: none;
             }
           }
 

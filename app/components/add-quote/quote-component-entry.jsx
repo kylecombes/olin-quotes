@@ -17,6 +17,8 @@ export default class QuoteComponentEntry extends React.Component {
     const suggestions = query.length > 0 ? this.props.people.filter(person =>
       person.displayName.toLowerCase().includes(query)
     ) : [];
+    // Add a button to add a person
+    suggestions.push('Add person');
     this.setState({suggestions});
   };
 
@@ -37,9 +39,16 @@ export default class QuoteComponentEntry extends React.Component {
     }
   };
 
-  getSuggestionValue = suggestion => ({id: suggestion._id, displayName: suggestion.displayName});
+  getSuggestionValue = suggestion => suggestion === 'Add person'
+    ? ''
+    : ({id: suggestion._id, displayName: suggestion.displayName});
 
-  renderSuggestion = suggestion => (
+  renderSuggestion = suggestion => suggestion === 'Add person'
+  ? (
+    <div className="person-suggestion add-person" onClick={this.props.onAddPersonClick}>
+      <span>Add Person</span>
+    </div>
+  ) : (
     <div className="person-suggestion">
       <img src={suggestion.avatarUrl} alt={suggestion.displayName} />
       <span>{suggestion.displayName}</span>

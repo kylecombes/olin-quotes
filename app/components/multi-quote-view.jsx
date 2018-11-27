@@ -17,7 +17,7 @@ export default class MultiQuoteView extends React.Component {
     });
     return (
       <div className="primary-content multi-quote-view">
-        <QuoteAdd/>
+        <QuoteAdd onAddPersonClicked={this.props.onAddPersonClicked}/>
         <div className="quote-cards">
           {cards}
         </div>
