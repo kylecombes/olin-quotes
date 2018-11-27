@@ -1,5 +1,11 @@
+$transition-all: all 0.3s ease;
+
 * {
   box-sizing: border-box;
+  -webkit-transition: $transition-all;
+  -moz-transition: $transition-all;
+  -o-transition: $transition-all;
+  transition: $transition-all;
 }
 
 html,
@@ -10,6 +16,15 @@ body,
   margin: 0;
   font-family: Helvetica, sans-serif;
 }
+
+$darken-delta: 3;
+$color-gray-divider: #353f57;
+$color-content-background: #2d364d;
+$color-button-blue: #304367;
+$color-button-blue-dark: darken($color-button-blue, $darken-delta);
+$color-button-gray: $color-content-background;
+$color-button-gray-dark: darken($color-button-gray, $darken-delta);
+$color-content-text: #ccc;
 
 .app {
   display: flex;
@@ -59,6 +74,26 @@ body,
 
 .quote-add {
 
+  button {
+    color: $color-content-text;
+    background-color: $color-content-background;
+    border: none;
+    padding: 1em;
+    cursor: pointer;
+
+    &:hover {
+      background: $color-button-gray-dark;
+    }
+
+    &.add {
+      background-color: $color-button-blue;
+
+      &:hover {
+        background-color: $color-button-blue-dark;
+      }
+    }
+  }
+
   $quote-entry-width: 70%;
 
   max-width: 70rem;
@@ -68,8 +103,17 @@ body,
 
     position: relative;
 
-    & > input {
+    input[type='text'] {
       width: $quote-entry-width;
+       padding: 1em;
+       border: none;
+       border-bottom: 1px solid $color-gray-divider;
+       background-color: $color-content-background;
+       color: $color-content-text;
+     }
+
+    & > input[type='text'] {
+      border-right: 1px solid $color-gray-divider;
     }
 
     .react-autosuggest__container {
@@ -89,7 +133,7 @@ body,
 
     .react-autosuggest__suggestions-container {
       overflow: auto;
-      background-color: black;
+      background-color: $color-content-background;
       z-index: 100;
 
       ul {
@@ -103,7 +147,7 @@ body,
           &:hover,
           &:focus,
           &.react-autosuggest__suggestion--highlighted {
-            background-color: #444444;
+            background-color: darken($color-content-background, $darken-delta);
           }
 
           .person-suggestion {
@@ -117,6 +161,7 @@ body,
 
             span {
               margin-left: 1em;
+              color: $color-content-text;
             }
           }
 
@@ -124,6 +169,21 @@ body,
       }
     }
 
+  }
+
+  .context {
+    color: $color-content-text;
+    margin: 0;
+    width: 100%;
+    max-width: 100%;
+    min-width: 100%;
+    display: block;
+    background-color: $color-content-background;
+    border: none;
+    border-bottom: 1px solid $color-gray-divider;
+    min-height: 3em;
+    padding: 1em;
+    font-family: Helvetica;
   }
 
   button {
@@ -168,4 +228,8 @@ body,
       border-radius: 1em;
     }
   }
+}
+
+.person-add input {
+  display: block;
 }

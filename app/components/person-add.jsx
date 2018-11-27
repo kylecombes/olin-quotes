@@ -24,7 +24,8 @@ export default class PersonAdd extends React.Component {
 
   render() {
     return (
-      <div className="sidebar person-add">
+      <div className="person-add">
+        <h2>Add Person</h2>
         <input name="firstName" placeholder="First name" type="text" onChange={this.textFieldChanged} />
         <input name="lastName" placeholder="Last name" type="text" onChange={this.textFieldChanged} />
         <input name="title" placeholder="Title" type="text" onChange={this.textFieldChanged} />
