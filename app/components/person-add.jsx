@@ -25,14 +25,15 @@ export default class PersonAdd extends React.Component {
 
   render() {
     return (
-      <div className="person-add">
-        <h2>Add Person</h2>
+      <div className="person-add sidebar">
+        <h2 className="header">Add Person</h2>
         <input name="firstName" placeholder="First name" type="text" onChange={this.textFieldChanged} />
         <input name="lastName" placeholder="Last name" type="text" onChange={this.textFieldChanged} />
         <input name="title" placeholder="Title" type="text" onChange={this.textFieldChanged} />
         <input name="avatarUrl" placeholder="Avatar URL" type="text" onChange={this.textFieldChanged} />
         <img src={this.state.avatarUrl} />
-        <button onClick={this.submitClicked}>Add</button>
+        <button className="submit" onClick={this.submitClicked}>Add</button>
+        <button className="cancel" onClick={this.props.closeAddPersonPane}>Cancel</button>
       </div>
     )
   }

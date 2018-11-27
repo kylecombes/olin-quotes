@@ -41,6 +41,33 @@ $color-content-text: #ccc;
   background: radial-gradient(circle at 80% 0, rgba(35,42,66,1) 0%, rgba(22,27,50,1) 100%);
 }
 
+input[type='text'] {
+  padding: 1em;
+  border: 1px solid $color-gray-divider;
+  background-color: $color-content-background;
+  color: $color-content-text;
+}
+
+button {
+  color: $color-content-text;
+  background-color: $color-content-background;
+  border: none;
+  padding: 1em;
+  cursor: pointer;
+
+  &:hover {
+    background: $color-button-gray-dark;
+  }
+
+  &.submit {
+    background-color: $color-button-blue;
+
+    &:hover {
+      background-color: $color-button-blue-dark;
+    }
+  }
+}
+
 .sidebar {
   height: 100%;
   display: flex;
@@ -50,7 +77,7 @@ $color-content-text: #ccc;
   background: radial-gradient(circle at 80% 0, rgba(48,58,85,1) 0%, rgba(29,38,65,1) 100%);
 
   .header {
-    padding: 1em;
+    margin: 1em;
   }
 
   nav {
@@ -74,26 +101,6 @@ $color-content-text: #ccc;
 
 .quote-add {
 
-  button {
-    color: $color-content-text;
-    background-color: $color-content-background;
-    border: none;
-    padding: 1em;
-    cursor: pointer;
-
-    &:hover {
-      background: $color-button-gray-dark;
-    }
-
-    &.add {
-      background-color: $color-button-blue;
-
-      &:hover {
-        background-color: $color-button-blue-dark;
-      }
-    }
-  }
-
   $quote-entry-width: 70%;
 
   max-width: 70rem;
@@ -105,12 +112,10 @@ $color-content-text: #ccc;
 
     input[type='text'] {
       width: $quote-entry-width;
-       padding: 1em;
-       border: none;
-       border-bottom: 1px solid $color-gray-divider;
-       background-color: $color-content-background;
-       color: $color-content-text;
-     }
+      border-top: none;
+      border-left: none;
+      border-right: none;
+    }
 
     & > input[type='text'] {
       border-right: 1px solid $color-gray-divider;

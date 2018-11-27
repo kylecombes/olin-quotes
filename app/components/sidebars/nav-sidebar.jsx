@@ -1,5 +1,4 @@
 import React from 'react';
-import PersonAdd from '../../containers/person-add';
 
 export default class NavSidebar extends React.Component {
 
@@ -19,7 +18,6 @@ export default class NavSidebar extends React.Component {
         <nav>
           {groupListElems}
         </nav>
-        {/*<PersonAdd/>*/}
       </div>
     )
   }

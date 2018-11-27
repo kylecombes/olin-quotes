@@ -66,7 +66,7 @@ export default class QuoteAdd extends React.Component {
         {quoteComponentEntryElems}
         <textarea className="context" onChange={this.onContextChanged} placeholder="Context" value={this.state.context}/>
         <button className="clear" onClick={this.onClearClicked}>Clear</button>
-        <button className="add" onClick={this.onAddClicked}>Add</button>
+        <button className="submit" onClick={this.onAddClicked}>Add</button>
       </div>
     )
   }
