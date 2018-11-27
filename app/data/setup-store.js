@@ -20,6 +20,7 @@ export default function () {
       debug: window.debug,
       isMobile,
       focusedPersonId: null,
+      masonryLayoutTrigger: false,
     },
     infoSidebar: {
       sidebarType: null,

@@ -5,6 +5,7 @@ export const ActionTypes = {
   ADD_QUOTE: 'addQuote',
   CLOSE_SIDEBAR: 'CLOSE_SIDEBAR',
   SHOW_PERSON_STATS: 'SHOW_PERSON_STATS',
+  MASONRY_RECALCULATE_LAYOUT: 'MASONRY_RECALCULATE_LAYOUT',
 };
 
 export function addPerson(personData) {
@@ -20,9 +21,19 @@ export function addQuote(quoteData) {
 }
 
 export function showPersonStats(personId) {
-  return { type: ActionTypes.SHOW_PERSON_STATS, data: personId };
+  return dispatch => {
+    dispatch({type: ActionTypes.SHOW_PERSON_STATS, data: personId});
+    dispatch(masonryRecalculateLayout());
+  }
 }
 
 export function closeSidebar() {
-  return { type: ActionTypes.CLOSE_SIDEBAR };
+  return dispatch => {
+    dispatch({ type: ActionTypes.CLOSE_SIDEBAR });
+    dispatch(masonryRecalculateLayout());
+  }
+}
+
+export function masonryRecalculateLayout() {
+  return { type: ActionTypes.MASONRY_RECALCULATE_LAYOUT };
 }

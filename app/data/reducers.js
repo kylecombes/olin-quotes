@@ -7,6 +7,10 @@ export function general(state = {}, action) {
   const newState = Object.assign({}, state);
 
   switch (action.type) {
+    case ActionTypes.MASONRY_RECALCULATE_LAYOUT:
+      return Object.assign({}, state, {
+        masonryLayoutTrigger: !state.masonryLayoutTrigger,
+      });
     case ActionTypes.DISPLAY_MESSAGE:
       alert(action.message);
       return state;

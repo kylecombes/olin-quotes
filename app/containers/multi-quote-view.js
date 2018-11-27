@@ -8,6 +8,7 @@ const mapStateToProps = (state, containerProps) => {
   return {
     people: state.people,
     quotes: state.quotes,
+    masonryLayoutTrigger: state.general.masonryLayoutTrigger,
   }
 };
 

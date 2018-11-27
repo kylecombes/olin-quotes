@@ -1,6 +1,7 @@
 import React from 'react';
-import QuoteCard from './quote-card';
+import Masonry from 'react-masonry-component';
 import QuoteAdd from '../containers/quote-add';
+import QuoteCard from './quote-card';
 
 export default class MultiQuoteView extends React.Component {
 
@@ -17,10 +18,11 @@ export default class MultiQuoteView extends React.Component {
     });
     return (
       <div className="primary-content multi-quote-view">
+        <span style={{display: 'none'}}>{this.props.masonryLayoutTrigger}</span>
         <QuoteAdd onAddPersonClicked={this.props.onAddPersonClicked}/>
-        <div className="quote-cards">
+        <Masonry className="quote-cards">
           {cards}
-        </div>
+        </Masonry>
       </div>
     )
   }
