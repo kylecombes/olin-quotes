@@ -26,6 +26,9 @@ export default function () {
       sidebarType: null,
       elementId: null,
     },
+    navSidebar: {
+      visible: true,
+    },
     people: {},
     quotes: {},
   };

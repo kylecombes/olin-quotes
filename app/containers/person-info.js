@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import PS from '../components/person-stats';
+import PI from '../components/sidebars/person-info';
 import {
   closeSidebar,
 } from '../data/actions';
@@ -16,9 +16,9 @@ const mapDispatchToProps = dispatch => {
   }
 };
 
-const PersonStats = connect(
+const PersonInfo = connect(
   mapStateToProps,
   mapDispatchToProps,
-)(PS);
+)(PI);
 
-export default PersonStats;
+export default PersonInfo;
