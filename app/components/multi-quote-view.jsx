@@ -14,6 +14,7 @@ export default class MultiQuoteView extends React.Component {
           people={this.props.people}
           key={quoteId}
           showPersonStats={this.props.showPersonStats}
+          onClick={() => this.props.showQuoteInfo(quoteId)}
         />)
     });
     return (

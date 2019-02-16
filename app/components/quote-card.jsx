@@ -46,7 +46,7 @@ export default class QuoteCard extends React.Component {
     }
 
     return (
-      <div className="quote-card">
+      <div className="quote-card" onClick={this.props.onClick}>
         {content}
         <div className="attributes">
           {authorInfo}

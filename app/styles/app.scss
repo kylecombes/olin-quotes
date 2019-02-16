@@ -134,6 +134,50 @@ button {
   }
 }
 
+.quote-info {
+  img {
+    width: 2em;
+    min-width: 2em;
+    border-radius: 1em;
+    cursor: pointer;
+  }
+
+  .quote-component {
+    display: flex;
+    align-items: center;
+    margin: 1.5em;
+
+    .words {
+      margin-left: 1em;
+    }
+  }
+}
+
+.comment-add {
+
+}
+
+
+input[type='text'] {
+  border-top: none;
+  border-left: none;
+  border-right: none;
+}
+
+textarea {
+  color: $color-content-text;
+  margin: 0;
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-width: 100%;
+  background-color: $color-content-background;
+  border: none;
+  padding: 1em;
+  font-family: $font-family-default;
+  min-height: 3em;
+}
+
 .quote-add {
 
   $quote-entry-width: 70%;
@@ -146,9 +190,6 @@ button {
 
     input[type='text'] {
       width: $quote-entry-width;
-      border-top: none;
-      border-left: none;
-      border-right: none;
     }
 
     & > input[type='text'] {
@@ -217,18 +258,7 @@ button {
   }
 
   .context {
-    color: $color-content-text;
-    margin: 0;
-    width: 100%;
-    max-width: 100%;
-    min-width: 100%;
-    display: block;
-    background-color: $color-content-background;
-    border: none;
     border-bottom: 1px solid $color-gray-divider;
-    min-height: 3em;
-    padding: 1em;
-    font-family: $font-family-default;
   }
 
   button {

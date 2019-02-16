@@ -1,6 +1,7 @@
 import React from 'react';
 import PersonAdd from '../../containers/person-add';
 import PersonStats from '../../containers/person-info';
+import QuoteInfo from '../../containers/quote-info';
 
 export default class DetailsSidebar extends React.Component {
 
@@ -12,6 +13,9 @@ export default class DetailsSidebar extends React.Component {
         break;
       case 'personInfo':
         content = <PersonStats/>;
+        break;
+      case 'quoteInfo':
+        content = <QuoteInfo/>;
         break;
     }
 

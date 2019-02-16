@@ -31,6 +31,11 @@ export function infoSidebar(state = {}, action) {
         sidebarType: 'personInfo',
         elementId: action.data,
       });
+    case ActionTypes.SHOW_QUOTE_INFO:
+      return Object.assign({}, state, {
+        sidebarType: 'quoteInfo',
+        elementId: action.data,
+      });
     case ActionTypes.CLOSE_SIDEBAR:
       return Object.assign({}, state, {
         sidebarType: null,
