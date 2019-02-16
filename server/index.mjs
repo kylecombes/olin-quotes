@@ -13,12 +13,15 @@ if (fs.existsSync('./.env')) {
 const port = process.env.PORT || 1234;
 
 // Connect to MongoDB
-const dbConn = new DatabaseConnection();
-dbConn.connect();
+new DatabaseConnection().connect()
+  .then(dbConn => {
+    // Start the HTTP server
+    const httpServer = new HttpServer(port);
 
-// Start the HTTP server
-const httpServer = new HttpServer(port);
+    // Start the WebSockets server
+    const wsServer = new WebSocketServer(dbConn);
+    wsServer.start(httpServer.getHTTPServer());
 
-// Start the WebSockets server
-const wsServer = new WebSocketServer(dbConn);
-wsServer.start(httpServer.getHTTPServer());
+  })
+  .catch(err => console.error(err));
+

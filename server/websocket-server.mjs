@@ -3,7 +3,7 @@ import SocketIO from 'socket.io';
 export default class WebSocketServer {
   constructor(dbConn) {
     this.io = null;
-    this.dbConn = dbConn;
+    this.db = dbConn;
     this.onConnect = this.onConnect.bind(this);
     this.onAddPerson = this.onAddPerson.bind(this);
     this.onAddQuote = this.onAddQuote.bind(this);
@@ -21,7 +21,7 @@ export default class WebSocketServer {
     socket.on('addPerson', this.onAddPerson);
     socket.on('addQuote', this.onAddQuote);
     const that = this;
-    this.dbConn.db.collection('people').find({}).toArray((err, res) => {
+    this.db.collection('people').find({}).toArray((err, res) => {
       if (!err) {
         const people = {};
         res.forEach(person => {
@@ -29,7 +29,7 @@ export default class WebSocketServer {
         });
         console.log('Sending people update...');
         socket.emit('peopleUpdate', people);
-        that.dbConn.db.collection('quotes').find({}).toArray((err, res) => {
+        that.db.collection('quotes').find({}).toArray((err, res) => {
           if (!err) {
             const quotes = {};
             res.forEach(quote => {
@@ -47,11 +47,11 @@ export default class WebSocketServer {
   onAddPerson(personData) {
     console.log('Adding person...');
     const that = this;
-    this.dbConn.db.collection('people').insertOne(personData, (err, res) => {
+    this.db.collection('people').insertOne(personData, (err, res) => {
       if (err) {
         console.log(err);
       } else {
-        that.dbConn.db.collection('people').find({}).toArray((err, res) => {
+        that.db.collection('people').find({}).toArray((err, res) => {
           if (!err) {
             const people = {};
             res.forEach(person => {
@@ -69,11 +69,11 @@ export default class WebSocketServer {
   onAddQuote(quoteData) {
     console.log('Adding quote...');
     const that = this;
-    this.dbConn.db.collection('quotes').insertOne(quoteData, (err, res) => {
+    this.db.collection('quotes').insertOne(quoteData, (err, res) => {
       if (err) {
         console.log(err);
       } else {
-        that.dbConn.db.collection('quotes').find({}).toArray((err, res) => {
+        that.db.collection('quotes').find({}).toArray((err, res) => {
           if (!err) {
             const quotes = {};
             res.forEach(person => {
