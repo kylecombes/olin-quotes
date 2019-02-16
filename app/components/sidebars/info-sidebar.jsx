@@ -19,7 +19,7 @@ export default class DetailsSidebar extends React.Component {
         break;
     }
 
-    const className = 'sidebar details' + (this.props.isVisible ? '' : ' collapsed');
+    const className = 'sidebar info' + (this.props.isVisible ? '' : ' collapsed');
 
     return (
       <div className={className}>

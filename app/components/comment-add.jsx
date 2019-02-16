@@ -5,9 +5,10 @@ export default class CommentAdd extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
+    this.originalState = {
       comment: '',
     };
+    this.state = Object.assign({}, this.originalState);
   }
 
   onInputChange = event => {
@@ -18,11 +19,12 @@ export default class CommentAdd extends React.Component {
 
   onSubmit = () => {
     this.props.onSubmit(this.state.comment);
+    this.setState(this.originalState);
   };
 
   render() {
     return (
-      <div className="add-comment">
+      <div className="comment-add">
         <textarea
           name="comment"
           value={this.state.comment}

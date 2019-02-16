@@ -76,6 +76,10 @@ button {
   position: relative;
   background: radial-gradient(circle at 80% 0, rgba(48,58,85,1) 0%, rgba(29,38,65,1) 100%);
 
+  &.collapsed {
+    display: none;
+  }
+
   .close-button {
     position: absolute;
     right: 1rem;
@@ -105,6 +109,10 @@ button {
         cursor: pointer;
       }
     }
+  }
+
+  &.info {
+    width: 20%;
   }
 }
 
@@ -151,6 +159,12 @@ button {
       margin-left: 1em;
     }
   }
+}
+
+.centered {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .comment-add {
@@ -339,6 +353,40 @@ textarea {
 
       .words {
         margin-left: 1em;
+      }
+    }
+  }
+}
+
+.quote-info {
+
+  h2 {
+    font-size: 1.2em;
+    margin: 0.5rem;
+  }
+
+  .comment,
+  .no-comments {
+    margin: 1rem;
+  }
+
+  .no-comments {
+    font-style: italic;
+  }
+
+  .comment-add {
+
+    textarea {
+      border-top: 1px solid $color-gray-divider;
+    }
+
+    .buttons button {
+      width: 50%;
+      border-top: 1px solid $color-gray-divider;
+      border-bottom: 1px solid $color-gray-divider;
+
+      &:last-of-type {
+        border-left: 1px solid $color-gray-divider;
       }
     }
   }

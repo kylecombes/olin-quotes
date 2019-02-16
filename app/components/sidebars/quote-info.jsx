@@ -3,6 +3,10 @@ import CommentAdd from '../comment-add';
 
 export default class PersonInfo extends React.Component {
 
+  addComment = commentText => {
+    this.props.addComment(this.props.quote._id, commentText);
+  };
+
   render() {
     const quoteElement = this.props.quote.components.map(comp => {
       const speaker = this.props.people[comp.personId];
@@ -16,19 +20,28 @@ export default class PersonInfo extends React.Component {
       );
     });
 
-    const comments = [];
+    const comments = this.props.quote.comments ? this.props.quote.comments.map(comment => {
+      const author = this.props.people[comment.authorId];
+      return (
+        <div className="comment">
+          <p>{comment.text}</p>
+          <p>- {author.displayName}</p>
+        </div>
+      );
+    }) : <p className="no-comments">No comments</p>;
 
     return (
       <div className="quote-info">
+        <h1 className="centered">Quote Details</h1>
         <div className="quote">
           {quoteElement}
         </div>
         <div className="quote-stats">
-          (Number of likes/hearts goes here)
         </div>
         <div className="comments">
+          <h2>Comments</h2>
           {comments}
-          <CommentAdd/>
+          <CommentAdd onSubmit={this.addComment}/>
         </div>
       </div>
     )

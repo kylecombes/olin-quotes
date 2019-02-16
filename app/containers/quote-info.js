@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import QI from '../components/sidebars/quote-info';
 import {
   closeSidebar,
+  addQuoteComment,
 } from '../data/actions';
 
 const mapStateToProps = (state, containerProps) => {
@@ -14,6 +15,7 @@ const mapStateToProps = (state, containerProps) => {
 const mapDispatchToProps = dispatch => {
   return {
     closeSidebar: () => dispatch(closeSidebar()),
+    addComment: (quoteId, comment) => dispatch(addQuoteComment(quoteId, comment)),
   }
 };
 

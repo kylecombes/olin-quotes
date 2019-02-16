@@ -3,6 +3,7 @@
 export const ActionTypes = {
   ADD_PERSON: 'addPerson',
   ADD_QUOTE: 'addQuote',
+  ADD_QUOTE_COMMENT: 'addQuoteComment',
   CLOSE_SIDEBAR: 'CLOSE_SIDEBAR',
   SHOW_PERSON_STATS: 'SHOW_PERSON_STATS',
   SHOW_QUOTE_INFO: 'SHOW_QUOTE_INFO',
@@ -18,6 +19,15 @@ export function addPerson(personData) {
 export function addQuote(quoteData) {
   return (dispatch, getStore, { emit }) => {
     emit(ActionTypes.ADD_QUOTE, quoteData);
+  }
+}
+
+export function addQuoteComment(quoteId, text) {
+  return (dispatch, getStore, { emit }) => {
+    emit(ActionTypes.ADD_QUOTE_COMMENT, {
+      quoteId,
+      text,
+    });
   }
 }
 

@@ -64,11 +64,15 @@ export function people(state = {}, action) {
 }
 
 export function quotes(state = {}, action) {
-  const newState = Object.assign({}, state);
 
   switch (action.type) {
     case WS_EVENT_TYPES.QUOTES_UPDATE:
       return action.data;
+    case WS_EVENT_TYPES.SINGLE_QUOTE_UPDATE:
+      const quoteData = action.data;
+      return Object.assign({}, state, {
+        [quoteData._id]: quoteData,
+      });
     default:
       return state;
   }

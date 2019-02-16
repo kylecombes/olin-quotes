@@ -1,4 +1,6 @@
 import SocketIO from 'socket.io';
+import mongodb from 'mongodb';
+const { ObjectId } = mongodb; // Single-line import not working
 
 export default class WebSocketServer {
   constructor(dbConn) {
@@ -7,6 +9,7 @@ export default class WebSocketServer {
     this.onConnect = this.onConnect.bind(this);
     this.onAddPerson = this.onAddPerson.bind(this);
     this.onAddQuote = this.onAddQuote.bind(this);
+    this.onAddQuoteComment = this.onAddQuoteComment.bind(this);
   }
 
   start(httpServer) {
@@ -20,6 +23,7 @@ export default class WebSocketServer {
     console.log('Client connected');
     socket.on('addPerson', this.onAddPerson);
     socket.on('addQuote', this.onAddQuote);
+    socket.on('addQuoteComment', this.onAddQuoteComment);
     const that = this;
     this.db.collection('people').find({}).toArray((err, res) => {
       if (!err) {
@@ -85,6 +89,39 @@ export default class WebSocketServer {
         });
       }
     });
+  }
+
+  onAddQuoteComment(request) {
+    const {
+      quoteId,
+      text,
+    } = request;
+
+    const filter = { _id: ObjectId(quoteId) };
+
+    const comment = {
+      // authorId: ObjectId(authorId), TODO: Implement this with authentication/accounts
+      text,
+    };
+
+    this.db.collection('quotes').update(filter, {$push: {comments: comment}}, (err, res) => {
+      if (err) {
+        console.error(err);
+      } else {
+        this.db.collection('quotes').findOne(filter, (err, res) => {
+          if (err) {
+            console.error(err);
+          } else {
+            this.pushSingleQuoteUpdate(res);
+          }
+        });
+      }
+    });
+
+  }
+
+  pushSingleQuoteUpdate(quoteData) {
+    this.io.emit('singleQuoteUpdate', quoteData);
   }
 
   // eslint-disable-next-line no-unused-vars

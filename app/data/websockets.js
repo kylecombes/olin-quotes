@@ -7,6 +7,7 @@ const socket = io.connect(window.SERVER_URI);
 
 export const WS_EVENT_TYPES = {
   PEOPLE_UPDATE: 'peopleUpdate',
+  SINGLE_QUOTE_UPDATE: 'singleQuoteUpdate',
   QUOTES_UPDATE: 'quotesUpdate',
   QUOTE_ADDED: 'quoteAdded',
   QUOTE_DELETED: 'quoteDeleted',
