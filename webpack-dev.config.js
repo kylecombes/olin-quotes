@@ -7,6 +7,9 @@ const APP_DIR = path.resolve(__dirname, 'app');
 module.exports = {
   devtool: 'source-map',
   devServer: {
+    allowedHosts: [
+      'lvh.me',
+    ],
     historyApiFallback: true,
     https: {
       key: fs.readFileSync('server.key'),
