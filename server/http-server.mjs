@@ -1,51 +1,39 @@
 // This file handles all HTTP requests
 
 import express from 'express';
-import http from 'http';
-import expose from './expose';
-// import indexHTML from '../index.html.mjs';
+import fs from 'fs';
+import https from 'https';
+import passport from 'passport';
+import session from 'express-session';
+
+import passportInit from './passport-init.mjs';
+import router from './http-router';
 
 export default class HttpServer {
-  constructor(port) {
-    // Current hack with Node and experimental modules
-    // eslint-disable-next-line no-underscore-dangle
-    const fullPath = expose.__dirname.split('/');
-    fullPath.pop();
-    const rootDir = fullPath.join('/');
-
+  constructor(port, sessionSecret) {
     // Start the HTTP server
     this.app = express();
-    this.server = http.Server(this.app);
+    const certOptions = {
+      key: fs.readFileSync('server.key'),
+      cert: fs.readFileSync('server.cert'),
+    };
+    this.server = https.createServer(certOptions, this.app);
 
-    // Add headers
-    this.app.use((req, res, next) => {
-      // Website you wish to allow to connect
-      res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+    this.app.use(passport.initialize());
+    passportInit();
 
-      // Request methods you wish to allow
-      res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    this.app.use(session({
+      secret: sessionSecret,
+      resave: true,
+      saveUninitialized: true,
+    }));
 
-      // Request headers you wish to allow
-      res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-
-      // Set to true if you need the website to include cookies in the requests sent
-      // to the API (e.g. in case you use sessions)
-      res.setHeader('Access-Control-Allow-Credentials', true);
-
-      // Pass to next layer of middleware
-      next();
-    });
+    this.app.use('/', router);
 
     // this.app.use(express.json);
-    this.server.listen(port, () => console.log(`HTTP server listening on port ${port}`));
+    this.server.listen(port, () => console.log(`HTTPS server listening on port ${port}`));
 
-    // Register the routes
-    this.app.get('/', (req, res) => {
-      res.send('Hello');
-    });
-    this.app.get('/bundle.js', (req, res) => {
-      res.sendFile(`${rootDir}/bundle.js`);
-    });
+
   }
 
   getHTTPServer() {

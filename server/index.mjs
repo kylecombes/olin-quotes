@@ -16,11 +16,11 @@ const port = process.env.PORT || 1234;
 new DatabaseConnection().connect()
   .then(dbConn => {
     // Start the HTTP server
-    const httpServer = new HttpServer(port);
+    const httpServer = new HttpServer(port, process.env.SESSION_SECRET);
 
     // Start the WebSockets server
     const wsServer = new WebSocketServer(dbConn);
-    wsServer.start(httpServer.getHTTPServer());
+    wsServer.start(httpServer.getHTTPServer(), httpServer.getExpressApp());
 
   })
   .catch(err => console.error(err));

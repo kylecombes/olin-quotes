@@ -1,4 +1,5 @@
 const path = require('path');
+const fs = require('fs');
 
 const BUILD_DIR = path.resolve(__dirname);
 const APP_DIR = path.resolve(__dirname, 'app');
@@ -7,6 +8,10 @@ module.exports = {
   devtool: 'source-map',
   devServer: {
     historyApiFallback: true,
+    https: {
+      key: fs.readFileSync('server.key'),
+      cert: fs.readFileSync('server.cert'),
+    },
     contentBase: path.join(APP_DIR, 'public'),
   },
   entry: `${APP_DIR}/index.jsx`,

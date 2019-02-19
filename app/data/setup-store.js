@@ -7,6 +7,7 @@ import {
 } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import {
+  socket,
   emit,
   init as websocketInit,
 } from './websockets';
@@ -21,6 +22,8 @@ export default function () {
       isMobile,
       focusedPersonId: null,
       masonryLayoutTrigger: false,
+      socket,
+      server: window.SERVER_URI,
     },
     infoSidebar: {
       sidebarType: null,

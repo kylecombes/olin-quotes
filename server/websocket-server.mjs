@@ -12,9 +12,10 @@ export default class WebSocketServer {
     this.onAddQuoteComment = this.onAddQuoteComment.bind(this);
   }
 
-  start(httpServer) {
+  start(httpServer, app) {
     this.io = new SocketIO(httpServer);
     this.io.on('connection', this.onConnect);
+    app.set('io', this.io);
 
     console.log('WebSocket server started successfully.');
   }
@@ -73,7 +74,7 @@ export default class WebSocketServer {
   onAddQuote(quoteData) {
     console.log('Adding quote...');
     const that = this;
-    this.db.collection('quotes').insertOne(quoteData, (err, res) => {
+    this.db.collection('quotes').insertOne(quoteData, err => {
       if (err) {
         console.log(err);
       } else {

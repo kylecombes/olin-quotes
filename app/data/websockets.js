@@ -3,7 +3,7 @@
 
 import io from 'socket.io-client';
 
-const socket = io.connect(window.SERVER_URI);
+export const socket = io.connect(window.SERVER_URI);
 
 export const WS_EVENT_TYPES = {
   PEOPLE_UPDATE: 'peopleUpdate',
