@@ -33,7 +33,14 @@ export default function () {
       visible: true,
     },
     people: {},
+    popup: {
+      type: null,
+
+    },
     quotes: {},
+    user: {
+
+    },
   };
 
   const middleware = [

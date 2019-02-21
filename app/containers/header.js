@@ -1,7 +1,8 @@
 import { connect } from 'react-redux';
-import App from '../components/app';
+import Header from '../components/header/header';
 import {
   addQuote,
+  openLogin,
 } from '../data/actions';
 
 const mapStateToProps = (state, containerProps) => {
@@ -12,6 +13,7 @@ const mapStateToProps = (state, containerProps) => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    openLogin: () => dispatch(openLogin()),
     submit: data => dispatch(addQuote(data)),
   }
 };
@@ -19,4 +21,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(App);
+)(Header);

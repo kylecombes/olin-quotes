@@ -26,19 +26,83 @@ $color-button-gray-dark: darken($color-button-gray, $darken-delta);
 $color-content-text: #ccc;
 
 .app {
+  position: relative;
+}
+
+.popup-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 10000;
+}
+
+.primary-container {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.header {
+  flex-grow: 0;
+  background-color: $color-content-background;
+  color: $color-content-text;
+  padding: 1em;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  .logo {
+    font-size: xx-large;
+  }
+
+  .user-info {
+    button.login {
+      border: 3px solid $color-button-blue;
+      -webkit-border-radius: 1em;
+      -moz-border-radius: 1em;
+      border-radius: 0.3em;
+    };
+  }
+}
+
+.popup-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+
+  & > div {
+    display: inline-block;
+    padding: 2em;
+    color: $color-content-text;
+    background-color: $color-content-background;
+  }
+}
+
+.content {
+  flex-grow: 1;
+  position: relative;
   display: flex;
   flex-direction: row;
   color: #ccc;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .primary-content {
   padding: 1em;
-  height: 100%;
   flex: 1 1 auto;
   background: rgb(48,58,85);
   position: relative;
   background: radial-gradient(circle at 80% 0, rgba(35,42,66,1) 0%, rgba(22,27,50,1) 100%);
-  overflow: auto;
 }
 
 input[type='text'] {

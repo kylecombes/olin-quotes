@@ -4,7 +4,9 @@ export const ActionTypes = {
   ADD_PERSON: 'addPerson',
   ADD_QUOTE: 'addQuote',
   ADD_QUOTE_COMMENT: 'addQuoteComment',
+  CLOSE_POPUP: 'CLOSE_POPUP',
   CLOSE_SIDEBAR: 'CLOSE_SIDEBAR',
+  OPEN_POPUP: 'OPEN_POPUP',
   SHOW_PERSON_STATS: 'SHOW_PERSON_STATS',
   SHOW_QUOTE_INFO: 'SHOW_QUOTE_INFO',
   MASONRY_RECALCULATE_LAYOUT: 'MASONRY_RECALCULATE_LAYOUT',
@@ -43,6 +45,14 @@ export function showPersonStats(personId) {
     dispatch({type: ActionTypes.SHOW_PERSON_STATS, data: personId});
     dispatch(masonryRecalculateLayout());
   }
+}
+
+export function openLogin() {
+  return { type: ActionTypes.OPEN_POPUP, data: 'login' };
+}
+
+export function closePopup() {
+  return { type: ActionTypes.CLOSE_POPUP };
 }
 
 export function closeSidebar() {

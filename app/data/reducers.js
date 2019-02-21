@@ -63,6 +63,21 @@ export function people(state = {}, action) {
   }
 }
 
+export function popup(state = {}, action) {
+  switch (action.type) {
+    case ActionTypes.OPEN_POPUP:
+      return Object.assign({}, state, {
+        type: action.data,
+      });
+    case ActionTypes.CLOSE_POPUP:
+      return Object.assign({}, state, {
+        type: null,
+      });
+    default:
+      return state;
+  }
+}
+
 export function quotes(state = {}, action) {
 
   switch (action.type) {
@@ -73,6 +88,13 @@ export function quotes(state = {}, action) {
       return Object.assign({}, state, {
         [quoteData._id]: quoteData,
       });
+    default:
+      return state;
+  }
+}
+
+export function user(state = {}, action) {
+  switch (action.type) {
     default:
       return state;
   }

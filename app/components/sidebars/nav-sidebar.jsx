@@ -1,5 +1,4 @@
 import React from 'react';
-import OAuth from '../oauth';
 
 export default class NavSidebar extends React.Component {
 
@@ -19,8 +18,6 @@ export default class NavSidebar extends React.Component {
         <nav>
           {groupListElems}
         </nav>
-        <OAuth provider="google" socket={this.props.socket} server={this.props.server}/>
-        <OAuth provider="facebook" socket={this.props.socket} server={this.props.server}/>
       </div>
     )
   }

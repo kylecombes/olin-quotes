@@ -1,22 +1,25 @@
 import { connect } from 'react-redux';
-import App from '../components/app';
+import Popup from '../components/popup';
 import {
-  addQuote,
-} from '../data/actions';
+  closePopup,
+} from "../data/actions";
 
 const mapStateToProps = (state, containerProps) => {
   return {
-    popupVisible: !!state.popup.type,
+    type: state.popup.type,
+    socket: state.general.socket,
+    server: state.general.server,
   }
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    submit: data => dispatch(addQuote(data)),
+    close: () => dispatch(closePopup()),
+
   }
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(App);
+)(Popup);

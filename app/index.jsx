@@ -1,26 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import InfoSidebar from './containers/info-sidebar';
-import MultiQuoteView from './containers/multi-quote-view';
-import NavSidebar from './containers/nav-sidebar';
 import { Provider } from 'react-redux';
+import App from './containers/app';
 import setupStore from './data/setup-store';
 import './styles/app.scss';
 
 const store = setupStore();
-
-class App extends React.Component {
-
-  render() {
-    return (
-      <div className="app">
-        <NavSidebar/>
-        <MultiQuoteView/>
-        <InfoSidebar/>
-      </div>
-    );
-  }
-}
 
 ReactDOM.render(<Provider store={store}><App /></Provider>, document.getElementById('root'));
 
