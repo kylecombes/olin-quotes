@@ -1,5 +1,6 @@
 import React from 'react';
 import LoginSignup from './login-signup';
+import CreateAccount from './create-account';
 
 export default class Popup extends React.Component {
 
@@ -8,6 +9,10 @@ export default class Popup extends React.Component {
     switch (this.props.type) {
       case 'login':
         content = <LoginSignup {...this.props}/>;
+        break;
+      case 'createAccount':
+        content = <CreateAccount {...this.props} />;
+        break;
     }
 
     return (

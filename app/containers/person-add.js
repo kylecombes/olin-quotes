@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import PA from '../components/person-add';
+import PA from '../components/create-account';
 import {
   addPerson,
 } from '../data/actions';

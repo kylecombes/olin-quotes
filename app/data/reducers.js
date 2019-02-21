@@ -73,6 +73,11 @@ export function popup(state = {}, action) {
       return Object.assign({}, state, {
         type: null,
       });
+    case WS_EVENT_TYPES.PROMPT_ACCOUNT_CREATION:
+      return Object.assign({}, state, {
+        type: 'createAccount',
+        userData: action.data,
+      });
     default:
       return state;
   }

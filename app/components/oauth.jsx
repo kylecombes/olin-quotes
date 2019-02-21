@@ -10,7 +10,7 @@ export default class OAuth extends React.Component {
   componentDidMount() {
     const { socket, provider } = this.props;
 
-    socket.on(provider, user => {
+    socket.on('promptAccountCreation', user => {
       this.popup.close();
       this.setState({user});
     })
@@ -63,7 +63,10 @@ export default class OAuth extends React.Component {
 
   render() {
     const { name, photo} = this.state.user;
-    const { provider } = this.props;
+    const {
+      provider,
+      label,
+    } = this.props;
     const { disabled } = this.state;
     return (
       <div className="login-signup">
@@ -77,7 +80,7 @@ export default class OAuth extends React.Component {
             onClick={this.startAuth.bind(this)}
             className={`${provider} ${disabled} button`}
           >
-            {provider}
+            {label || provider}
           </button>
         </div>
         }

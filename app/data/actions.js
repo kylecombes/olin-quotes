@@ -1,7 +1,8 @@
 /* This file contains all of the Redux actions. */
 
+import { WS_EVENT_TYPES } from './websockets';
+
 export const ActionTypes = {
-  ADD_PERSON: 'addPerson',
   ADD_QUOTE: 'addQuote',
   ADD_QUOTE_COMMENT: 'addQuoteComment',
   CLOSE_POPUP: 'CLOSE_POPUP',
@@ -12,9 +13,9 @@ export const ActionTypes = {
   MASONRY_RECALCULATE_LAYOUT: 'MASONRY_RECALCULATE_LAYOUT',
 };
 
-export function addPerson(personData) {
+export function createUserAccount(userData) {
   return (dispatch, getStore, { emit }) => {
-    emit(ActionTypes.ADD_PERSON, personData);
+    emit(WS_EVENT_TYPES.CREATE_ACCOUNT, userData);
   }
 }
 

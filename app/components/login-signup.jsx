@@ -6,8 +6,16 @@ export default class LoginSignup extends React.Component {
   render() {
     return (
       <div className="login-signup">
-        <OAuth provider="google" socket={this.props.socket} server={this.props.server}/>
-        <OAuth provider="facebook" socket={this.props.socket} server={this.props.server}/>
+        <OAuth
+          provider="google"
+          label="Log in with Google"
+          {...this.props}
+        />
+        <OAuth
+          provider="facebook"
+          label="Log in with Facebook"
+          {...this.props}
+        />
       </div>
     )
   }
