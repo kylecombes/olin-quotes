@@ -13,7 +13,7 @@ const _associatedClientData = {};
 export function startWebSocketServer(httpServer, app, sessionStore) {
   _db = getDb();
   _io = new SocketIO(httpServer);
-  // _io.set('origins', '*:*');
+  _io.set('origins', '*:*');
   _io.on('connection', onConnect);
   _io.use(passportSocketIo.authorize({
     key: 'connect.sid',

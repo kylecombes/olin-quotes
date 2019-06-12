@@ -4,7 +4,6 @@
 import io from 'socket.io-client';
 
 export const socket = io.connect(window.SERVER_URI, {
-  // rejectUnauthorized: false,
   secure: true,
 });
 
@@ -18,6 +17,8 @@ export const WS_EVENT_TYPES = {
   QUOTE_ADDED: 'quoteAdded',
   QUOTE_DELETED: 'quoteDeleted',
 };
+
+socket.on('connected', () => console.log('Client connected'));
 
 export const init = (store) => {
   Object.keys(WS_EVENT_TYPES).forEach(eventType => socket.on(WS_EVENT_TYPES[eventType],

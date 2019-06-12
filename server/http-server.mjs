@@ -32,7 +32,7 @@ export default class HttpServer {
       saveUninitialized: true,
     }));
 
-    this.app.use(cors());
+    // this.app.use(cors());
 
     this.app.use(passport.initialize());
     passportInit();
