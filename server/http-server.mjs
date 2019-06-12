@@ -16,8 +16,8 @@ export default class HttpServer {
     // Start the HTTP server
     this.app = express();
     const certOptions = {
-      key: fs.readFileSync('secure-dev.kylecombes.com.key'),
-      cert: fs.readFileSync('secure-dev.kylecombes.com.cert'),
+      key: fs.readFileSync('file.pem'),
+      cert: fs.readFileSync('file.crt'),
     };
     this.server = https.createServer(certOptions, this.app);
 
