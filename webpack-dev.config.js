@@ -9,11 +9,12 @@ module.exports = {
   devServer: {
     allowedHosts: [
       'lvh.me',
+      'secure-dev.kylecombes.com',
     ],
     historyApiFallback: true,
     https: {
-      key: fs.readFileSync('server.key'),
-      cert: fs.readFileSync('server.cert'),
+      key: fs.readFileSync('secure-dev.kylecombes.com.key'),
+      cert: fs.readFileSync('secure-dev.kylecombes.com.cert'),
     },
     contentBase: path.join(APP_DIR, 'public'),
   },

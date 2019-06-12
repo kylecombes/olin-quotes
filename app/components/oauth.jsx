@@ -8,12 +8,10 @@ export default class OAuth extends React.Component {
   };
 
   componentDidMount() {
-    const { socket, provider } = this.props;
+    const { socket } = this.props;
 
-    socket.on('promptAccountCreation', user => {
-      this.popup.close();
-      this.setState({user});
-    })
+    socket.on('promptAccountCreation', () => this.popup.close());
+    socket.on('loggedIn', () => this.popup.close());
   }
 
   // Routinely checks the popup to re-enable the login button

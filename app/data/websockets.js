@@ -3,10 +3,14 @@
 
 import io from 'socket.io-client';
 
-export const socket = io.connect(window.SERVER_URI);
+export const socket = io.connect(window.SERVER_URI, {
+  // rejectUnauthorized: false,
+  secure: true,
+});
 
 export const WS_EVENT_TYPES = {
   CREATE_ACCOUNT: 'createUserAccount',
+  LOGGED_IN: 'loggedIn',
   PEOPLE_UPDATE: 'peopleUpdate',
   SINGLE_QUOTE_UPDATE: 'singleQuoteUpdate',
   PROMPT_ACCOUNT_CREATION: 'promptAccountCreation',

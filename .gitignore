@@ -2,6 +2,11 @@
 # Created by https://www.gitignore.io/api/node,webstorm
 # Edit at https://www.gitignore.io/?templates=node,webstorm
 
+# Security certificates
+*.key
+*.cert
+*.pem
+
 ### Node ###
 # Logs
 logs

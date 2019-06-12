@@ -14,7 +14,7 @@ const google = (req, res) => {
       const socket = req.app.get('io').in(socketId);
 
       if (userData) { // Found user in db
-        attemptLogin(userData, socket);
+        completeLogin(userData, socket);
       } else { // No user in db, prompt account creation
         saveData(socketId, 'attachedAccountData', {
           google: {
@@ -47,11 +47,10 @@ const facebook = (req, res) => {
     },
   });
 
-  attemptLogin(user,  'facebook', socket);
+  completeLogin(user,  'facebook', socket);
 };
 
-const attemptLogin = (userData, socket) => {
-  // TODO: Log in
+const completeLogin = (userData, socket) => {
   socket.emit('loggedIn', userData);
 };
 

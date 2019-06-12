@@ -1,5 +1,8 @@
 import SocketIO from 'socket.io';
+import cookieParser from 'cookie-parser';
 import mongodb from 'mongodb';
+import passport from 'passport';
+import passportSocketIo from 'passport.socketio';
 import { getDb } from './database.mjs';
 const { ObjectId } = mongodb; // Single-line import not working
 
@@ -7,17 +10,29 @@ let _io;
 let _db;
 const _associatedClientData = {};
 
-export function startWebSocketServer(httpServer, app) {
+export function startWebSocketServer(httpServer, app, sessionStore) {
   _db = getDb();
   _io = new SocketIO(httpServer);
+  // _io.set('origins', '*:*');
   _io.on('connection', onConnect);
+  _io.use(passportSocketIo.authorize({
+    key: 'connect.sid',
+    secret: process.env.SECRET_KEY_BASE,
+    store: sessionStore,
+    passport,
+    cookieParser,
+  }));
   app.set('io', _io);
 
   console.log('WebSocket server started successfully.');
 }
 
 function onConnect(socket) {
-  console.log('Client connected');
+  if (socket.request.user && socket.request.user.logged_in) {
+    console.log('Authenticated client connected');
+  } else {
+    console.log('Unauthenticated client connected');
+  }
   socket.on('createUserAccount', userData => onCreateUserAccount(userData, socket));
   socket.on('addQuote', onAddQuote);
   socket.on('addQuoteComment', onAddQuoteComment);

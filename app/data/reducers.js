@@ -78,6 +78,11 @@ export function popup(state = {}, action) {
         type: 'createAccount',
         userData: action.data,
       });
+    case WS_EVENT_TYPES.LOGGED_IN:
+      return Object.assign({}, state, {
+        type: null,
+        userData: undefined,
+      });
     default:
       return state;
   }
@@ -100,6 +105,8 @@ export function quotes(state = {}, action) {
 
 export function user(state = {}, action) {
   switch (action.type) {
+    case WS_EVENT_TYPES.LOGGED_IN:
+      return Object.assign({}, state, action.data);
     default:
       return state;
   }
