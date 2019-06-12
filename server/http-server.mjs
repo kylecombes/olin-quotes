@@ -16,26 +16,26 @@ export default class HttpServer {
     // Start the HTTP server
     this.app = express();
     const certOptions = {
-      key: fs.readFileSync('file.pem'),
-      cert: fs.readFileSync('file.crt'),
+      key: fs.readFileSync('./file.pem'),
+      cert: fs.readFileSync('./file.crt'),
     };
     this.server = https.createServer(certOptions, this.app);
 
-    this.app.use(session({
-      cookie: {
-        secure: process.env.ENVIRONMENT !== 'development' && process.env.ENVIRONMENT !== 'test',
-        maxAge: 2419200000,
-      },
-      store: sessionStore,
-      secret: sessionSecret,
-      resave: true,
-      saveUninitialized: true,
-    }));
+    // this.app.use(session({
+    //   cookie: {
+    //     secure: process.env.ENVIRONMENT !== 'development' && process.env.ENVIRONMENT !== 'test',
+    //     maxAge: 2419200000,
+    //   },
+    //   store: sessionStore,
+    //   secret: sessionSecret,
+    //   resave: true,
+    //   saveUninitialized: true,
+    // }));
 
     // this.app.use(cors());
 
-    this.app.use(passport.initialize());
-    passportInit();
+    // this.app.use(passport.initialize());
+    // passportInit();
 
     this.app.use('/', router);
 

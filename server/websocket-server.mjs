@@ -13,16 +13,16 @@ const _associatedClientData = {};
 export function startWebSocketServer(httpServer, app, sessionStore) {
   _db = getDb();
   _io = new SocketIO(httpServer);
-  _io.set('origins', '*:*');
+  // _io.set('origins', '*:*');
   _io.on('connection', onConnect);
-  _io.use(passportSocketIo.authorize({
-    key: 'connect.sid',
-    secret: process.env.SECRET_KEY_BASE,
-    store: sessionStore,
-    passport,
-    cookieParser,
-  }));
-  app.set('io', _io);
+  // _io.use(passportSocketIo.authorize({
+  //   key: 'connect.sid',
+  //   secret: process.env.SECRET_KEY_BASE,
+  //   store: sessionStore,
+  //   passport,
+  //   cookieParser,
+  // }));
+  // app.set('io', _io);
 
   console.log('WebSocket server started successfully.');
 }
