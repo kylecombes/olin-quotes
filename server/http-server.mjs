@@ -3,7 +3,6 @@
 import express from 'express';
 import fs from 'fs';
 import https from 'https';
-import passport from 'passport';
 import session from 'express-session';
 
 import passportInit from './passport-init.mjs';
@@ -32,8 +31,7 @@ export default class HttpServer {
       saveUninitialized: true,
     }));
 
-    this.app.use(passport.initialize());
-    passportInit();
+    passportInit(this.app);
 
     this.app.use('/', router);
 

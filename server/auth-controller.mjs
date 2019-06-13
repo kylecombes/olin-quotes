@@ -33,7 +33,6 @@ const google = (req, res) => {
 };
 
 const facebook = (req, res) => {
-  const id = findUserByFacebookId(req.user.id);
   const { givenName, familyName } = req.user.name;
   const user = {
     name: `${givenName} ${familyName}`,
@@ -47,7 +46,9 @@ const facebook = (req, res) => {
     },
   });
 
-  completeLogin(user,  'facebook', socket);
+  req.session.user = user;
+
+  completeLogin(user, socket);
 };
 
 const completeLogin = (userData, socket) => {

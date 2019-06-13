@@ -27,6 +27,10 @@ router.get('/bundle.js', (req, res) => {
   res.sendFile(`${rootDir}/bundle.js`);
 });
 
+router.get('/hello', (req, res) => {
+  res.send('hi!');
+});
+
 // Routes that are triggered by the React client
 router.get('/google', addSocketIdtoSession, googleAuth);
 router.get('/facebook', addSocketIdtoSession, facebookAuth);

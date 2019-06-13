@@ -27,7 +27,7 @@ const sessionStore = new RedisStore({
 new connectDb()
   .then(() => {
     // Start the HTTP server
-    const httpServer = new HttpServer(port, process.env.SESSION_SECRET);
+    const httpServer = new HttpServer(port, process.env.SESSION_SECRET, sessionStore);
 
     // Start the WebSockets server
     startWebSocketServer(httpServer.getHTTPServer(), httpServer.getExpressApp(), sessionStore);
