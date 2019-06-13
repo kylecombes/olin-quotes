@@ -13,8 +13,8 @@ module.exports = {
     ],
     historyApiFallback: true,
     https: {
-      key: fs.readFileSync('secure-dev.kylecombes.com.key'),
-      cert: fs.readFileSync('secure-dev.kylecombes.com.cert'),
+      key: fs.readFileSync('server/secure-dev.kylecombes.com.key'),
+      cert: fs.readFileSync('server/secure-dev.kylecombes.com.cert'),
     },
     contentBase: path.join(APP_DIR, 'public'),
   },

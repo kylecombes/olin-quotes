@@ -13,18 +13,51 @@ const _associatedClientData = {};
 export function startWebSocketServer(httpServer, app, sessionStore) {
   _db = getDb();
   _io = new SocketIO(httpServer);
-  // _io.set('origins', '*:*');
   _io.on('connection', onConnect);
-  // _io.use(passportSocketIo.authorize({
-  //   key: 'connect.sid',
-  //   secret: process.env.SECRET_KEY_BASE,
-  //   store: sessionStore,
-  //   passport,
-  //   cookieParser,
-  // }));
-  // app.set('io', _io);
+  _io.use(passportSocketIo.authorize({
+    key: 'connect.sid',
+    secret: process.env.SESSION_SECRET,
+    store: sessionStore,
+    passport,
+    cookieParser,
+    success: onAuthorizeSuccess,
+    fail: onAuthorizeFail,
+  }));
+  app.set('io', _io);
 
   console.log('WebSocket server started successfully.');
+}
+
+
+function onAuthorizeSuccess(data, accept){
+  console.log('successful connection to socket.io');
+
+  // The accept-callback still allows us to decide whether to
+  // accept the connection or not.
+  accept(null, true);
+
+  // OR
+
+  // If you use socket.io@1.X the callback looks different
+  accept();
+}
+
+function onAuthorizeFail(data, message, error, accept){
+  if(error)
+    throw new Error(message);
+  console.log('failed connection to socket.io:', message);
+
+  // We use this callback to log all of our failed connections.
+  accept(null, false);
+
+  // OR
+
+  // If you use socket.io@1.X the callback looks different
+  // If you don't want to accept the connection
+  // if(error)
+  //   accept(new Error(message));
+  // this error will be sent to the user as a special error-package
+  // see: http://socket.io/docs/client-api/#socket > error-object
 }
 
 function onConnect(socket) {
