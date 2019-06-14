@@ -8,7 +8,7 @@ import {
   GOOGLE_CONFIG, FACEBOOK_CONFIG
 } from './oauth-config';
 
-export default app=> {
+export default app => {
 
   app.use(passport.initialize());
   app.use(passport.session());

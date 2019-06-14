@@ -22,13 +22,13 @@ export default class HttpServer {
     this.app.use(session({
       key: 'connect.sid',
       cookie: {
-        secure: process.env.ENVIRONMENT !== 'development' && process.env.ENVIRONMENT !== 'test',
+        secure: !process.env.DEBUG,
         maxAge: 2419200000,
       },
       store: sessionStore,
       secret: sessionSecret,
       resave: true,
-      saveUninitialized: true,
+      saveUninitialized: false,
     }));
 
     passportInit(this.app);

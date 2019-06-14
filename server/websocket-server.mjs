@@ -63,6 +63,7 @@ function onAuthorizeFail(data, message, error, accept){
 function onConnect(socket) {
   if (socket.request.user && socket.request.user.logged_in) {
     console.log('Authenticated client connected');
+    socket.emit('loggedIn', socket.request.user);
   } else {
     console.log('Unauthenticated client connected');
   }
