@@ -27,6 +27,11 @@ module.exports = {
         use: 'raw-loader',
       },
       {
+        test: /\.scss$/,
+        include: APP_DIR,
+        use: ['style-loader', 'css-loader', 'sass-loader'],
+      },
+      {
         test: /\.css$/,
         include: APP_DIR,
         use: ['style-loader', 'css-loader'],
