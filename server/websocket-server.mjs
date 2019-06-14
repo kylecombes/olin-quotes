@@ -20,6 +20,13 @@ export function startWebSocketServer(httpServer, app, sessionStore) {
     store: sessionStore,
     passport,
     cookieParser,
+    fail: (data, message, error, accept) => {
+      if (error) {
+        throw new Error(message);
+      } else {
+        accept(null, false);
+      }
+    },
   }));
   app.set('io', _io);
 
