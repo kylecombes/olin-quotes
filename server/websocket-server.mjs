@@ -3,6 +3,8 @@ import cookieParser from 'cookie-parser';
 import mongodb from 'mongodb';
 import passport from 'passport';
 import passportSocketIo from 'passport.socketio';
+import User from './models/user';
+import Quote from './models/quote';
 import { getDb } from './database.mjs';
 const { ObjectId } = mongodb; // Single-line import not working
 
@@ -43,7 +45,7 @@ function onConnect(socket) {
   socket.on('createUserAccount', userData => onCreateUserAccount(userData, socket));
   socket.on('addQuote', onAddQuote);
   socket.on('addQuoteComment', onAddQuoteComment);
-  _db.collection('people').find({}).toArray((err, res) => {
+  User.find().lean().exec((err, res) => {
     if (!err) {
       const people = {};
       res.forEach(person => {
@@ -51,7 +53,7 @@ function onConnect(socket) {
       });
       console.log('Sending people update...');
       socket.emit('peopleUpdate', people);
-      _db.collection('quotes').find({}).toArray((err, res) => {
+      Quote.find().lean().exec((err, res) => {
         if (!err) {
           const quotes = {};
           res.forEach(quote => {

@@ -3,7 +3,7 @@ import googleOAuth2 from 'passport-google-oauth2';
 import passportFacebook from 'passport-facebook';
 const GoogleStrategy = googleOAuth2.Strategy;
 const FacebookStrategy = passportFacebook.Strategy;
-import { findUserByGoogleId } from './user.mjs';
+import User from './models/user';
 import {
   GOOGLE_CONFIG, FACEBOOK_CONFIG
 } from './oauth-config';
@@ -15,12 +15,14 @@ export default app => {
 
   // Allowing passport to serialize and deserialize users into sessions
   passport.serializeUser((user, done) => {
+    User.findById();
     done(null, user.id)
   });
   passport.deserializeUser((id, done) => {
-    findUserByGoogleId(id)
-      .then(user => done(null, user))
-      .catch(err => done(err));
+    done(id);
+  //   findUserByGoogleId(id)
+  //     .then(user => done(null, user))
+  //     .catch(err => done(err));
   });
 
   // The function that is called when an OAuth provider sends back user

@@ -1,6 +1,6 @@
 // This file is responsible for connecting to and interacting with the MongoDB database.
 
-import MongoClient from 'mongodb';
+import mongoose from 'mongoose';
 
 let _db;
 let _connected = false;
@@ -27,24 +27,14 @@ export function connectDb() {
       // We have all the information we need to connect, so attempt to do so
       const mongoUri = `mongodb+srv://${username}:${password}@${cluster}/${dbName}`;
 
-      MongoClient.connect(mongoUri, { useNewUrlParser: true }, function (err, client) {
-        if (err) {
-          reject(`Error connecting to MongoDB instance:\n${err}`);
-        } else {
-          console.log('Successfully connected to MongoDB instance.');
-          _db = client.db(dbName);
+      return mongoose.connect(mongoUri, { useNewUrlParser: true })
+        .then(db => {
+          _db = db;
           _connected = true;
-          _db.on('close', () => {
-            console.log('Lost connection to MongoDB instance. Attempting to reconnect...');
-            _connected = false;
-          });
-          _db.on('reconnect', () => {
-            console.log('Successfully reconnected to MongoDB instance.');
-            _connected = true;
-          });
+          console.log('Connected to MongoDB database');
           resolve(_db);
-        }
-      });
+        })
+        .catch(error => reject(error));
     }
   });
 }

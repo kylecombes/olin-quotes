@@ -1,8 +1,4 @@
 import {
-  findUserByFacebookId,
-  findUserByGoogleId,
-} from './user';
-import {
   promptAccountCreation,
   saveData,
 } from './websocket-server';
@@ -33,22 +29,29 @@ const google = (req, res) => {
 };
 
 const facebook = (req, res) => {
-  const { givenName, familyName } = req.user.name;
-  const user = {
-    name: `${givenName} ${familyName}`,
-    photo: req.user.photos[0].value
-  };
-  const socketId = req.session.socketId;
-  const socket = req.app.get('io').in(socketId);
-  saveData(socketId, 'attachedAccountData', {
-    facebook: {
-      id: req.user.id,
-    },
-  });
+  findUserByFacebookId(req.user.id)
+    .then(userData => {
+      const socketId = req.session.socketId;
+      const socket = req.app.get('io').in(socketId);
 
-  req.session.user = user;
-
-  completeLogin(user, socket);
+      if (userData) {
+        completeLogin(userData, socket);
+      } else {
+        saveData(socketId, 'attachedAccountData', {
+          facebook: {
+            id: req.user.id,
+          },
+        });
+        const {givenName, familyName} = req.user.name;
+        userData = {
+          displayName: `${givenName} ${familyName}`,
+          firstName: givenName,
+          lastName: familyName,
+          avatarUrl: req.user.photos[0].value
+        };
+        promptAccountCreation(userData, socket);
+      }
+    });
 };
 
 const completeLogin = (userData, socket) => {
