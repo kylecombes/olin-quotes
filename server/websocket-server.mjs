@@ -10,7 +10,6 @@ const { ObjectId } = mongodb; // Single-line import not working
 
 let _io;
 let _db;
-const _associatedClientData = {};
 
 export function startWebSocketServer(httpServer, app, sessionStore) {
   _db = getDb();
@@ -24,7 +23,7 @@ export function startWebSocketServer(httpServer, app, sessionStore) {
     cookieParser,
     fail: (data, message, error, accept) => {
       if (error) {
-        throw new Error(message);
+        console.error(message);
       } else {
         accept(null, false);
       }
@@ -69,10 +68,8 @@ function onConnect(socket) {
 
 // TODO: Add object field checking to ensure not just anything sent from the frontend can be added the db
 function onCreateUserAccount(userData, socket) {
-  const connectedAccounts = getData(socket.id, 'attachedAccountData');
   console.log('Adding person...');
   console.log(connectedAccounts);
-  userData.connectedAccounts = connectedAccounts;
   _db.collection('people').insertOne(userData, (err, res) => {
     if (err) {
       console.log(err);
@@ -148,27 +145,4 @@ function pushSingleQuoteUpdate(quoteData) {
 // eslint-disable-next-line no-unused-vars
 function onDisconnect(socket) {
   console.log('Client disconnected');
-}
-
-export function promptAccountCreation(userData, socket) {
-  socket.emit('promptAccountCreation', userData);
-}
-
-export function getData(socketId, key) {
-  const clientData = _associatedClientData[socketId];
-  if (clientData) {
-    return clientData[key];
-  }
-  return null;
-}
-
-export function saveData(socketId, key, value) {
-  const clientData = _associatedClientData[socketId];
-  if (clientData) {
-    clientData[key] = value;
-  } else {
-    _associatedClientData[socketId] = {
-      [key]: value,
-    };
-  }
 }

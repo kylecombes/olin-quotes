@@ -107,6 +107,8 @@ export function user(state = {}, action) {
   switch (action.type) {
     case WS_EVENT_TYPES.LOGGED_IN:
       return Object.assign({}, state, action.data);
+    case WS_EVENT_TYPES.PROMPT_ACCOUNT_CREATION:
+      // TODO: Add an account setup wizard
     default:
       return state;
   }

@@ -5,6 +5,7 @@ const {
 } = mongoose.Schema.Types;
 
 const UserSchema = new mongoose.Schema({
+  accountSetupComplete: Boolean,
   firstName: String,
   lastName: String,
   displayName: String,
@@ -20,7 +21,7 @@ const UserSchema = new mongoose.Schema({
   },
 });
 
-UserSchema.statics.findByFacebookId = (id => {
+UserSchema.statics.findByFacebookId = function (id) {
   return this.find({
     connectedAccounts: {
       facebook: {
@@ -28,9 +29,9 @@ UserSchema.statics.findByFacebookId = (id => {
       },
     },
   });
-});
+};
 
-UserSchema.statics.findByGoogleId = (id => {
+UserSchema.statics.findByGoogleId = function (id) {
   return this.find({
     connectedAccounts: {
       google: {
@@ -38,6 +39,6 @@ UserSchema.statics.findByGoogleId = (id => {
       },
     },
   });
-});
+};
 
 export default mongoose.model('User', UserSchema);

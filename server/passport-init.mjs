@@ -15,22 +15,83 @@ export default app => {
 
   // Allowing passport to serialize and deserialize users into sessions
   passport.serializeUser((user, done) => {
-    User.findById();
-    done(null, user.id)
+    done(null, user._id)
   });
   passport.deserializeUser((id, done) => {
-    done(id);
-  //   findUserByGoogleId(id)
-  //     .then(user => done(null, user))
-  //     .catch(err => done(err));
+    User.findById(id).lean().exec((err, res) => {
+      if (err) {
+        done(err);
+      } else {
+        done(null, res);
+      }
+    });
   });
 
-  // The function that is called when an OAuth provider sends back user
-  // information.  Normally, you would save the user to the database here
-  // in a callback that was customized for each provider.
-  const callback = (accessToken, refreshToken, profile, done) => done(null, profile);
-
   // Adding each OAuth provider's strategy to passport
-  passport.use(new GoogleStrategy(GOOGLE_CONFIG, callback));
-  passport.use(new FacebookStrategy(FACEBOOK_CONFIG, callback));
+  passport.use(new GoogleStrategy(GOOGLE_CONFIG, (accessToken, refreshToken, profile, done) => {
+    const { id } = profile;
+    User.findByGoogleId(id).lean().exec((err, res) => {
+      if (err) {
+        return done(err);
+      }
+      if (res.length > 0) { // Returning user
+        const userData = res[0];
+        done(null, userData);
+      } else { // New user
+        const newUser = new User({
+          accountSetupComplete: false,
+          avatarUrl: profile.photos[0].value.replace(/sz=50/gi, 'sz=250'),
+          connectedAccounts: {
+            google: {
+              id,
+            },
+          },
+          displayName: profile.displayName,
+          firstName: profile.name.givenName,
+          lastName: profile.name.familyName,
+        });
+
+        newUser.save();
+        console.info(`New user ${profile.displayName} created based on Google account.`);
+
+        done(null, newUser);
+      }
+    });
+  }));
+  passport.use(new FacebookStrategy(FACEBOOK_CONFIG, (accessToken, refreshToken, profile, done) => {
+    const { id } = profile;
+    User.findByFacebookId(id).lean().exec((err, res) => {
+      if (err) {
+        return done(err);
+      }
+      if (res.length > 0) { // Returning user
+        const userData = res[0];
+        done(null, userData);
+      } else { // New user
+        const {
+          givenName,
+          familyName,
+        } = profile.name;
+        const displayName = `${givenName} ${familyName}`;
+
+        const newUser = new User({
+          accountSetupComplete: false,
+          displayName: displayName,
+          firstName: givenName,
+          lastName: familyName,
+          avatarUrl: profile.photos[0].value,
+          connectedAccounts: {
+            facebook: {
+              id,
+            },
+          },
+        });
+
+        newUser.save();
+        console.log(`New user ${displayName} created based on Facebook account.`);
+
+        done(null, newUser);
+      }
+    })
+  }));
 }
