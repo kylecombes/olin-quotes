@@ -3,9 +3,7 @@
 
 import io from 'socket.io-client';
 
-export const socket = io.connect(window.SERVER_URI, {
-  secure: true,
-});
+let _store;
 
 export const WS_EVENT_TYPES = {
   CURRENT_USER_INFO: 'currentUserInfo',
@@ -17,11 +15,17 @@ export const WS_EVENT_TYPES = {
   QUOTE_DELETED: 'quoteDeleted',
 };
 
-socket.on('connected', () => console.log('Client connected'));
+export const registerStore = store => {
+  _store = store;
+};
 
-export const init = (store) => {
+export const connect = () => {
+  const socket = io.connect(window.SERVER_URI, {
+    secure: true,
+  });
+  socket.on('connected', () => console.log('Connected to WebSockets server.'));
   Object.keys(WS_EVENT_TYPES).forEach(eventType => socket.on(WS_EVENT_TYPES[eventType],
-    payload => store.dispatch({ type: WS_EVENT_TYPES[eventType], data: payload })));
+    payload => _store.dispatch({ type: WS_EVENT_TYPES[eventType], data: payload })));
 };
 
 export const emit = (type, payload) => socket.emit(type, payload);

@@ -50,6 +50,12 @@ router.get('/bundle.js.map', (req, res) => {
   res.sendFile(`${rootDir}/bundle.js.map`);
 });
 
+router.get('/loginStatus', (req, res) => {
+  res.send({
+    loggedIn: !!req.session.user,
+  });
+});
+
 router.get('/logout', (req, res) => {
   req.session.destroy();
   res.redirect('/');

@@ -7,6 +7,12 @@ import Popup from '../containers/popup'
 
 export default class App extends React.Component {
 
+  constructor(props) {
+    super(props);
+
+    this.props.checkLoginStatus();
+  }
+
   render() {
     return (
       <div className="app">

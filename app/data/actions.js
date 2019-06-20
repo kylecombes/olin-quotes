@@ -1,6 +1,11 @@
 /* This file contains all of the Redux actions. */
 
-import { WS_EVENT_TYPES } from './websockets';
+import axios from 'axios';
+
+import {
+  connect as websocketConnect,
+  WS_EVENT_TYPES,
+} from './websockets';
 
 export const ActionTypes = {
   ADD_QUOTE: 'addQuote',
@@ -26,6 +31,18 @@ export function addQuoteComment(quoteId, text) {
       text,
     });
   }
+}
+
+export function checkLoginStatus() {
+  return () => {
+    return axios.get('/loginStatus')
+      .then(res => res.data)
+      .then(res => {
+        if (res.loggedIn) {
+          websocketConnect();
+        }
+      });
+  };
 }
 
 export function showQuoteInfo(quoteId) {

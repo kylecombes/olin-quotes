@@ -15,8 +15,8 @@ export default class OAuth extends React.Component {
   // to the popup. It also disables the login button so the user can not
   // attempt to login to the provider twice.
   startAuth(e) {
-    const { provider, socket } = this.props;
-    window.location = `${this.props.server}/${provider}?socketId=${socket.io.engine.id}`;
+    const { provider } = this.props;
+    window.location = `${this.props.server}/${provider}`;
   }
 
   render() {

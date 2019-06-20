@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import App from '../components/app';
 import {
-  addQuote,
+  checkLoginStatus,
 } from '../data/actions';
 
 const mapStateToProps = (state, containerProps) => {
@@ -12,7 +12,7 @@ const mapStateToProps = (state, containerProps) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    submit: data => dispatch(addQuote(data)),
+    checkLoginStatus: () => dispatch(checkLoginStatus()),
   }
 };
 

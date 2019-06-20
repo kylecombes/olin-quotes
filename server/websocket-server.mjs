@@ -35,36 +35,37 @@ export function startWebSocketServer(httpServer, app, sessionStore) {
 }
 
 function onConnect(socket) {
-  if (socket.request.user && socket.request.user.logged_in) {
-    console.log('Authenticated client connected');
+  if (socket.request.user && socket.request.user.logged_in) { // Authenticated user
+    console.log('Client connected');
     socket.emit('currentUserInfo', socket.request.user);
-  } else {
-    console.log('Unauthenticated client connected');
+    socket.on('createUserAccount', userData => onCreateUserAccount(userData, socket));
+    socket.on('addQuote', onAddQuote);
+    socket.on('addQuoteComment', onAddQuoteComment);
+    socket.on('saveUserInfo', userData => saveUserInfo(userData, socket));
+    User.find().lean().exec((err, res) => {
+      if (!err) {
+        const people = {};
+        res.forEach(person => {
+          people[person._id] = person;
+        });
+        console.log('Sending people update...');
+        socket.emit('peopleUpdate', people);
+        Quote.find().lean().exec((err, res) => {
+          if (!err) {
+            const quotes = {};
+            res.forEach(quote => {
+              quotes[quote._id] = quote;
+            });
+            console.log('Sending quotes update...');
+            socket.emit('quotesUpdate', quotes);
+          }
+        });
+      }
+    });
+  } else { // Unauthenticated client attempting to connect
+    socket.disconnect();
+    console.log('Unauthenticated client attempted to connect. Rejected connection.');
   }
-  socket.on('createUserAccount', userData => onCreateUserAccount(userData, socket));
-  socket.on('addQuote', onAddQuote);
-  socket.on('addQuoteComment', onAddQuoteComment);
-  socket.on('saveUserInfo', userData => saveUserInfo(userData, socket));
-  User.find().lean().exec((err, res) => {
-    if (!err) {
-      const people = {};
-      res.forEach(person => {
-        people[person._id] = person;
-      });
-      console.log('Sending people update...');
-      socket.emit('peopleUpdate', people);
-      Quote.find().lean().exec((err, res) => {
-        if (!err) {
-          const quotes = {};
-          res.forEach(quote => {
-            quotes[quote._id] = quote;
-          });
-          console.log('Sending quotes update...');
-          socket.emit('quotesUpdate', quotes);
-        }
-      });
-    }
-  });
 }
 
 // TODO: Add object field checking to ensure not just anything sent from the frontend can be added the db
