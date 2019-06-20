@@ -4,16 +4,16 @@ import fs from 'fs';
 import redisUrl from "redis-url";
 import session from 'express-session';
 
+// Try loading environment variables from a .env file
+if (fs.existsSync('./.env')) {
+  dotenv.config();
+}
+
 import { connectDb } from './database.mjs';
 import HttpServer from './http-server.mjs';
 import { startWebSocketServer } from './websocket-server.mjs';
 
 const RedisStore = connectRedis(session);
-
-// Try loading environment variables from a .env file
-if (fs.existsSync('./.env')) {
-  dotenv.config();
-}
 
 // Figure out which port we're going to be listening for connections on
 const port = process.env.PORT || 1234;
@@ -24,7 +24,7 @@ const sessionStore = new RedisStore({
 
 
 // Connect to MongoDB
-new connectDb()
+connectDb()
   .then(() => {
     // Start the HTTP server
     const httpServer = new HttpServer(port, process.env.SESSION_SECRET, sessionStore);

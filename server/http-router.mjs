@@ -1,6 +1,7 @@
 import express from 'express';
 import passport from 'passport';
-import expose from "./expose";
+import expose from './expose';
+import indexHTML from './index.html';
 
 const router = express.Router();
 
@@ -40,7 +41,7 @@ const isLoggedIn = (req, res, next) => {
   }
 };
 
-router.get('/', (req, res) => res.sendFile(`${rootDir}/server/index.html`));
+router.get('/', (req, res) => res.send(indexHTML));
 
 router.get('/bundle.js', (req, res) => {
   res.sendFile(`${rootDir}/bundle.js`);
@@ -59,6 +60,11 @@ router.get('/loginStatus', (req, res) => {
 router.get('/logout', (req, res) => {
   req.session.destroy();
   res.redirect('/');
+});
+
+// Allow Google Search Console to verify this domain (necessary for OAuth login)
+router.get(`/${process.env.GOOGLE_DOMAIN_VERIFICATION_URL}`, (req, res) => {
+  res.send(`google-site-verification: ${process.env.GOOGLE_DOMAIN_VERIFICATION_URL}`);
 });
 
 // Routes that are triggered by the React client
