@@ -1,22 +1,18 @@
 import { connect } from 'react-redux';
-import App from '../components/app';
-import {
-  checkLoginStatus,
-} from '../data/actions';
+import NavSidebar from '../components/sidebars/nav-sidebar';
 
 const mapStateToProps = (state, containerProps) => {
   return {
-    popupVisible: !!state.popup.type,
   }
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    checkLoginStatus: () => dispatch(checkLoginStatus()),
+
   }
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(App);
+)(NavSidebar);

@@ -1,22 +1,25 @@
 import { connect } from 'react-redux';
-import App from '../components/app';
+import Header from '../components/header/header';
 import {
-  checkLoginStatus,
+  addQuote,
+  openLogin,
 } from '../data/actions';
 
 const mapStateToProps = (state, containerProps) => {
   return {
     popupVisible: !!state.popup.type,
+    user: state.user,
   }
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    checkLoginStatus: () => dispatch(checkLoginStatus()),
+    openLogin: () => dispatch(openLogin()),
+    submit: data => dispatch(addQuote(data)),
   }
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(App);
+)(Header);

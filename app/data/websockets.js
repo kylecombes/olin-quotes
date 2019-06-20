@@ -3,19 +3,29 @@
 
 import io from 'socket.io-client';
 
-const socket = io.connect(window.SERVER_URI);
+let _store;
 
 export const WS_EVENT_TYPES = {
+  CURRENT_USER_INFO: 'currentUserInfo',
   PEOPLE_UPDATE: 'peopleUpdate',
   SINGLE_QUOTE_UPDATE: 'singleQuoteUpdate',
+  SAVE_USER_INFO: 'saveUserInfo',
   QUOTES_UPDATE: 'quotesUpdate',
   QUOTE_ADDED: 'quoteAdded',
   QUOTE_DELETED: 'quoteDeleted',
 };
 
-export const init = (store) => {
+export const registerStore = store => {
+  _store = store;
+};
+
+export const connect = () => {
+  const socket = io.connect(window.SERVER_URI, {
+    secure: true,
+  });
+  socket.on('connected', () => console.log('Connected to WebSockets server.'));
   Object.keys(WS_EVENT_TYPES).forEach(eventType => socket.on(WS_EVENT_TYPES[eventType],
-    payload => store.dispatch({ type: WS_EVENT_TYPES[eventType], data: payload })));
+    payload => _store.dispatch({ type: WS_EVENT_TYPES[eventType], data: payload })));
 };
 
 export const emit = (type, payload) => socket.emit(type, payload);

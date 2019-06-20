@@ -1,20 +1,22 @@
 /* This file contains all of the Redux actions. */
 
+import axios from 'axios';
+
+import {
+  connect as websocketConnect,
+  WS_EVENT_TYPES,
+} from './websockets';
+
 export const ActionTypes = {
-  ADD_PERSON: 'addPerson',
   ADD_QUOTE: 'addQuote',
   ADD_QUOTE_COMMENT: 'addQuoteComment',
+  CLOSE_POPUP: 'CLOSE_POPUP',
   CLOSE_SIDEBAR: 'CLOSE_SIDEBAR',
+  OPEN_POPUP: 'OPEN_POPUP',
   SHOW_PERSON_STATS: 'SHOW_PERSON_STATS',
   SHOW_QUOTE_INFO: 'SHOW_QUOTE_INFO',
   MASONRY_RECALCULATE_LAYOUT: 'MASONRY_RECALCULATE_LAYOUT',
 };
-
-export function addPerson(personData) {
-  return (dispatch, getStore, { emit }) => {
-    emit(ActionTypes.ADD_PERSON, personData);
-  }
-}
 
 export function addQuote(quoteData) {
   return (dispatch, getStore, { emit }) => {
@@ -31,6 +33,18 @@ export function addQuoteComment(quoteId, text) {
   }
 }
 
+export function checkLoginStatus() {
+  return () => {
+    return axios.get('/loginStatus')
+      .then(res => res.data)
+      .then(res => {
+        if (res.loggedIn) {
+          websocketConnect();
+        }
+      });
+  };
+}
+
 export function showQuoteInfo(quoteId) {
   return dispatch => {
     dispatch({type: ActionTypes.SHOW_QUOTE_INFO, data: quoteId});
@@ -45,6 +59,14 @@ export function showPersonStats(personId) {
   }
 }
 
+export function openLogin() {
+  return { type: ActionTypes.OPEN_POPUP, data: 'login' };
+}
+
+export function closePopup() {
+  return { type: ActionTypes.CLOSE_POPUP };
+}
+
 export function closeSidebar() {
   return dispatch => {
     dispatch({ type: ActionTypes.CLOSE_SIDEBAR });
@@ -54,4 +76,10 @@ export function closeSidebar() {
 
 export function masonryRecalculateLayout() {
   return { type: ActionTypes.MASONRY_RECALCULATE_LAYOUT };
+}
+
+export function saveUserInfo(userData) {
+  return (dispatch, getStore, { emit }) => {
+    emit(WS_EVENT_TYPES.SAVE_USER_INFO, userData);
+  }
 }

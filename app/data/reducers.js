@@ -63,6 +63,32 @@ export function people(state = {}, action) {
   }
 }
 
+export function popup(state = {}, action) {
+  switch (action.type) {
+    case ActionTypes.OPEN_POPUP:
+      return Object.assign({}, state, {
+        type: action.data,
+      });
+    case ActionTypes.CLOSE_POPUP:
+      return Object.assign({}, state, {
+        type: null,
+      });
+    case WS_EVENT_TYPES.CURRENT_USER_INFO:
+      if (action.data.accountSetupComplete) {
+        return Object.assign({}, state, {
+          type: null,
+        });
+      } else {
+        return Object.assign({}, state, {
+          type: 'finishAccountCreation',
+          isClosable: false,
+        })
+      }
+    default:
+      return state;
+  }
+}
+
 export function quotes(state = {}, action) {
 
   switch (action.type) {
@@ -73,6 +99,17 @@ export function quotes(state = {}, action) {
       return Object.assign({}, state, {
         [quoteData._id]: quoteData,
       });
+    default:
+      return state;
+  }
+}
+
+export function user(state = {}, action) {
+  switch (action.type) {
+    case WS_EVENT_TYPES.CURRENT_USER_INFO:
+      return Object.assign({}, state, action.data);
+    case WS_EVENT_TYPES.PROMPT_ACCOUNT_CREATION:
+      // TODO: Add an account setup wizard
     default:
       return state;
   }

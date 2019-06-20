@@ -1,51 +1,42 @@
 // This file handles all HTTP requests
 
 import express from 'express';
-import http from 'http';
-import expose from './expose';
-// import indexHTML from '../index.html.mjs';
+import fs from 'fs';
+import https from 'https';
+import session from 'express-session';
+
+import passportInit from './passport-init.mjs';
+import router from './http-router'
+
 
 export default class HttpServer {
-  constructor(port) {
-    // Current hack with Node and experimental modules
-    // eslint-disable-next-line no-underscore-dangle
-    const fullPath = expose.__dirname.split('/');
-    fullPath.pop();
-    const rootDir = fullPath.join('/');
-
+  constructor(port, sessionSecret, sessionStore) {
     // Start the HTTP server
     this.app = express();
-    this.server = http.Server(this.app);
+    const certOptions = {
+      key: fs.readFileSync('secure-dev.kylecombes.com.key'),
+      cert: fs.readFileSync('secure-dev.kylecombes.com.cert'),
+    };
+    this.server = https.createServer(certOptions, this.app);
 
-    // Add headers
-    this.app.use((req, res, next) => {
-      // Website you wish to allow to connect
-      res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+    this.app.use(session({
+      key: 'connect.sid',
+      cookie: {
+        secure: !process.env.DEBUG,
+        maxAge: 2419200000,
+      },
+      store: sessionStore,
+      secret: sessionSecret,
+      resave: true,
+      saveUninitialized: false,
+    }));
 
-      // Request methods you wish to allow
-      res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    passportInit(this.app);
 
-      // Request headers you wish to allow
-      res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    this.app.use('/', router);
 
-      // Set to true if you need the website to include cookies in the requests sent
-      // to the API (e.g. in case you use sessions)
-      res.setHeader('Access-Control-Allow-Credentials', true);
+    this.server.listen(port, () => console.log(`HTTPS server listening on port ${port}`));
 
-      // Pass to next layer of middleware
-      next();
-    });
-
-    // this.app.use(express.json);
-    this.server.listen(port, () => console.log(`HTTP server listening on port ${port}`));
-
-    // Register the routes
-    this.app.get('/', (req, res) => {
-      res.send('Hello');
-    });
-    this.app.get('/bundle.js', (req, res) => {
-      res.sendFile(`${rootDir}/bundle.js`);
-    });
   }
 
   getHTTPServer() {

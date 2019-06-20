@@ -8,7 +8,7 @@ import {
 import thunkMiddleware from 'redux-thunk';
 import {
   emit,
-  init as websocketInit,
+  registerStore as websocketRegisterStore,
 } from './websockets';
 import * as reducers from './reducers';
 
@@ -21,6 +21,7 @@ export default function () {
       isMobile,
       focusedPersonId: null,
       masonryLayoutTrigger: false,
+      server: window.SERVER_URI,
     },
     infoSidebar: {
       sidebarType: null,
@@ -30,7 +31,14 @@ export default function () {
       visible: true,
     },
     people: {},
+    popup: {
+      type: null,
+      isClosable: true,
+    },
     quotes: {},
+    user: {
+
+    },
   };
 
   const middleware = [
@@ -49,7 +57,7 @@ export default function () {
   );
 
   // Give socket.io access to the data store
-  websocketInit(store);
+  websocketRegisterStore(store);
 
   return store;
 }
