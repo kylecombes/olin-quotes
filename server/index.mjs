@@ -24,7 +24,7 @@ const sessionStore = new RedisStore({
 
 
 // Connect to MongoDB
-new connectDb()
+connectDb()
   .then(() => {
     // Start the HTTP server
     const httpServer = new HttpServer(port, process.env.SESSION_SECRET, sessionStore);
