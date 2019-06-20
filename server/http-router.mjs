@@ -1,6 +1,7 @@
 import express from 'express';
 import passport from 'passport';
-import expose from "./expose";
+import expose from './expose';
+import indexHTML from './index.html';
 
 const router = express.Router();
 
@@ -40,7 +41,7 @@ const isLoggedIn = (req, res, next) => {
   }
 };
 
-router.get('/', (req, res) => res.sendFile(`${rootDir}/server/index.html`));
+router.get('/', (req, res) => res.send(indexHTML));
 
 router.get('/bundle.js', (req, res) => {
   res.sendFile(`${rootDir}/bundle.js`);
