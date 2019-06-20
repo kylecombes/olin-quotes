@@ -5,6 +5,11 @@ import App from './containers/app';
 import setupStore from './data/setup-store';
 import './styles/app.scss';
 
+// Remove the #_=_ hash appended by Facebook OAuth
+if (window.location.hash === '#_=_') {
+  window.location.hash = '';
+}
+
 const store = setupStore();
 
 ReactDOM.render(<Provider store={store}><App /></Provider>, document.getElementById('root'));
