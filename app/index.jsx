@@ -7,7 +7,8 @@ import './styles/app.scss';
 
 // Remove the #_=_ hash appended by Facebook OAuth
 if (window.location.hash === '#_=_') {
-  window.location.hash = '';
+  const newLoc = Object.assign({}, window.location, { hash: '' });
+  history.pushState('', document.title, newLoc.pathname);
 }
 
 const store = setupStore();
