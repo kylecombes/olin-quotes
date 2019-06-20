@@ -32,6 +32,7 @@ export default class HttpServer {
         secure: !process.env.DEBUG,
         maxAge: 2419200000,
       },
+      proxy: !!process.env.USING_PROXY,
       store: sessionStore,
       secret: sessionSecret,
       resave: true,

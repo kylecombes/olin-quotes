@@ -30,8 +30,6 @@ const logInUser = (req, res) => {
   const socket = req.app.get('io').in(socketId);
   socket.emit('currentUserInfo', user);
 
-  console.log(`User ${user.displayName} logged in.`);
-
   return res.redirect('/');
 };
 
