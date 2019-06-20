@@ -62,6 +62,7 @@ router.get('/logout', (req, res) => {
   res.redirect('/');
 });
 
+// Allow Google Search Console to verify this domain (necessary for OAuth login)
 router.get(`/${process.env.GOOGLE_DOMAIN_VERIFICATION_URL}`, (req, res) => {
   res.send(`google-site-verification: ${process.env.GOOGLE_DOMAIN_VERIFICATION_URL}`);
 });
