@@ -8,10 +8,7 @@ if (fs.existsSync('./.env')) {
 
 const providers = ['google', 'facebook'];
 
-const domain = process.env.DOMAIN;
-const port = process.env.PORT;
-
-const callbacks = providers.map(provider => `https://${domain}:${port}/${provider}/callback`);
+const callbacks = providers.map(provider => `${process.env.SERVER_URI}/${provider}/callback`);
 
 const [googleURL, facebookURL] = callbacks;
 
