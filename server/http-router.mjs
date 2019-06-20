@@ -28,8 +28,8 @@ const logInUser = (req, res) => {
   const socketId = req.session.socketId;
   const socket = req.app.get('io').in(socketId);
   socket.emit('currentUserInfo', user);
-  // Try to close the popup
-  res.send('<html><body>Login successful<script type="text/javascript">window.close()</script></body></html>');
+
+  return res.redirect('/');
 };
 
 const isLoggedIn = (req, res, next) => {
