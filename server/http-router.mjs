@@ -62,6 +62,10 @@ router.get('/logout', (req, res) => {
   res.redirect('/');
 });
 
+router.get(process.env.GOOGLE_DOMAIN_VERIFICATION_URL, (req, res) => {
+  res.send(`google-site-verification: ${process.env.GOOGLE_DOMAIN_VERIFICATION_URL}`);
+});
+
 // Routes that are triggered by the React client
 router.get('/google', addSocketIdtoSession, googleAuth);
 router.get('/facebook', addSocketIdtoSession, facebookAuth);
