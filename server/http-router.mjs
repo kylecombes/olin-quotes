@@ -62,7 +62,7 @@ router.get('/logout', (req, res) => {
   res.redirect('/');
 });
 
-router.get(process.env.GOOGLE_DOMAIN_VERIFICATION_URL, (req, res) => {
+router.get(`/${process.env.GOOGLE_DOMAIN_VERIFICATION_URL}`, (req, res) => {
   res.send(`google-site-verification: ${process.env.GOOGLE_DOMAIN_VERIFICATION_URL}`);
 });
 
