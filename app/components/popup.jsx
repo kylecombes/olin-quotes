@@ -1,6 +1,6 @@
 import React from 'react';
 import LoginSignup from './login-signup';
-import CreateAccount from './create-account';
+import FinishAccountCreation from './finish-account-creation';
 
 export default class Popup extends React.Component {
 
@@ -10,13 +10,15 @@ export default class Popup extends React.Component {
       case 'login':
         content = <LoginSignup {...this.props}/>;
         break;
-      case 'createAccount':
-        content = <CreateAccount {...this.props} />;
+      case 'finishAccountCreation':
+        content = <FinishAccountCreation {...this.props} />;
         break;
     }
 
+    const containerOnClick = this.props.isClosable ? this.props.close : null;
+
     return (
-      <div className="popup-container" onClick={this.props.close}>
+      <div className="popup-container" onClick={containerOnClick}>
         <div onClick={e => e.stopPropagation()}>
           {content}
         </div>

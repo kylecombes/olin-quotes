@@ -13,12 +13,6 @@ export const ActionTypes = {
   MASONRY_RECALCULATE_LAYOUT: 'MASONRY_RECALCULATE_LAYOUT',
 };
 
-export function createUserAccount(userData) {
-  return (dispatch, getStore, { emit }) => {
-    emit(WS_EVENT_TYPES.CREATE_ACCOUNT, userData);
-  }
-}
-
 export function addQuote(quoteData) {
   return (dispatch, getStore, { emit }) => {
     emit(ActionTypes.ADD_QUOTE, quoteData);
@@ -65,4 +59,10 @@ export function closeSidebar() {
 
 export function masonryRecalculateLayout() {
   return { type: ActionTypes.MASONRY_RECALCULATE_LAYOUT };
+}
+
+export function saveUserInfo(userData) {
+  return (dispatch, getStore, { emit }) => {
+    emit(WS_EVENT_TYPES.SAVE_USER_INFO, userData);
+  }
 }

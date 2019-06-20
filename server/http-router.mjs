@@ -1,7 +1,6 @@
 import express from 'express';
 import passport from 'passport';
 import expose from "./expose";
-// import indexHTML from '../index.html.mjs';
 
 const router = express.Router();
 
@@ -28,16 +27,9 @@ const logInUser = (req, res) => {
   req.session.user = user;
   const socketId = req.session.socketId;
   const socket = req.app.get('io').in(socketId);
-
-  if (user.accountSetupComplete) { // Found user in db
-    socket.emit('loggedIn', user);
-  } else { // No user in db, prompt account creation
-    socket.emit('loggedIn', user);
-    // TODO: Prompt account setup wizard on client
-  }
-  // Close the popup
-  // res.send('Login successful');
-  res.send('<html><body><script type="text/javascript">window.close()</script></body></html>');
+  socket.emit('currentUserInfo', user);
+  // Try to close the popup
+  res.send('<html><body>Login successful<script type="text/javascript">window.close()</script></body></html>');
 };
 
 const isLoggedIn = (req, res, next) => {

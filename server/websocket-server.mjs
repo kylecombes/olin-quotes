@@ -37,13 +37,14 @@ export function startWebSocketServer(httpServer, app, sessionStore) {
 function onConnect(socket) {
   if (socket.request.user && socket.request.user.logged_in) {
     console.log('Authenticated client connected');
-    socket.emit('loggedIn', socket.request.user);
+    socket.emit('currentUserInfo', socket.request.user);
   } else {
     console.log('Unauthenticated client connected');
   }
   socket.on('createUserAccount', userData => onCreateUserAccount(userData, socket));
   socket.on('addQuote', onAddQuote);
   socket.on('addQuoteComment', onAddQuoteComment);
+  socket.on('saveUserInfo', userData => saveUserInfo(userData, socket));
   User.find().lean().exec((err, res) => {
     if (!err) {
       const people = {};
@@ -85,6 +86,16 @@ function onCreateUserAccount(userData, socket) {
         }
       });
     }
+  });
+}
+
+function saveUserInfo(userData, socket) {
+  // Get the user ID from the session so the client can't spoof it
+  const id  = socket.client.request.user._id;
+  // TODO: Make sure all the data is here
+  userData.accountSetupComplete = true;
+  User.findByIdAndUpdate(id, userData, { new: true, useFindAndModify: false }, (err, updateUser) => {
+    socket.emit('currentUserInfo', updateUser);
   });
 }
 

@@ -8,11 +8,10 @@ export const socket = io.connect(window.SERVER_URI, {
 });
 
 export const WS_EVENT_TYPES = {
-  CREATE_ACCOUNT: 'createUserAccount',
-  LOGGED_IN: 'loggedIn',
+  CURRENT_USER_INFO: 'currentUserInfo',
   PEOPLE_UPDATE: 'peopleUpdate',
   SINGLE_QUOTE_UPDATE: 'singleQuoteUpdate',
-  PROMPT_ACCOUNT_CREATION: 'promptAccountCreation',
+  SAVE_USER_INFO: 'saveUserInfo',
   QUOTES_UPDATE: 'quotesUpdate',
   QUOTE_ADDED: 'quoteAdded',
   QUOTE_DELETED: 'quoteDeleted',

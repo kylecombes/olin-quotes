@@ -35,7 +35,7 @@ export default function () {
     people: {},
     popup: {
       type: null,
-
+      isClosable: true,
     },
     quotes: {},
     user: {

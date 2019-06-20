@@ -1,33 +1,28 @@
 import React from 'react';
 
-export default class CreateAccount extends React.Component {
+export default class FinishAccountCreation extends React.Component {
 
   constructor(props) {
     super(props);
 
-    const { userData } = this.props;
+    const {userData} = this.props;
 
-    this.state = {
-      firstName: userData.firstName,
-      lastName: userData.lastName,
-      displayName: userData.displayName,
-      classYear: '',
-      avatarUrl: userData.avatarUrl,
-    };
+    this.state = Object.assign({}, userData);
   }
 
   textFieldChanged = (event) => this.setState({[event.target.name]: event.target.value});
 
   submitClicked = () => {
     this.props.createAccount(this.state);
-    this.props.clone();
   };
 
   render() {
     return (
       <div className="person-add sidebar">
-        <h2 className="header">Create Account</h2>
-        <img src={this.state.avatarUrl} />
+        <h2 className="header">Let's verify a few details...</h2>
+        <div className="img-container">
+          <img src={this.state.avatarUrl} />
+        </div>
         <input name="firstName" placeholder="First name" type="text" value={this.state.firstName} onChange={this.textFieldChanged} />
         <input name="lastName" placeholder="Last name" type="text" value={this.state.lastName} onChange={this.textFieldChanged} />
         <input name="displayName" placeholder="Display name" type="text" value={this.state.displayName} onChange={this.textFieldChanged} />

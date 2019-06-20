@@ -73,16 +73,17 @@ export function popup(state = {}, action) {
       return Object.assign({}, state, {
         type: null,
       });
-    case WS_EVENT_TYPES.PROMPT_ACCOUNT_CREATION:
-      return Object.assign({}, state, {
-        type: 'createAccount',
-        userData: action.data,
-      });
-    case WS_EVENT_TYPES.LOGGED_IN:
-      return Object.assign({}, state, {
-        type: null,
-        userData: undefined,
-      });
+    case WS_EVENT_TYPES.CURRENT_USER_INFO:
+      if (action.data.accountSetupComplete) {
+        return Object.assign({}, state, {
+          type: null,
+        });
+      } else {
+        return Object.assign({}, state, {
+          type: 'finishAccountCreation',
+          isClosable: false,
+        })
+      }
     default:
       return state;
   }
@@ -105,7 +106,7 @@ export function quotes(state = {}, action) {
 
 export function user(state = {}, action) {
   switch (action.type) {
-    case WS_EVENT_TYPES.LOGGED_IN:
+    case WS_EVENT_TYPES.CURRENT_USER_INFO:
       return Object.assign({}, state, action.data);
     case WS_EVENT_TYPES.PROMPT_ACCOUNT_CREATION:
       // TODO: Add an account setup wizard

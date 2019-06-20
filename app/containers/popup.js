@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import Popup from '../components/popup';
 import {
   closePopup,
-  createUserAccount,
+  saveUserInfo,
 } from "../data/actions";
 
 const mapStateToProps = (state, containerProps) => {
@@ -10,14 +10,13 @@ const mapStateToProps = (state, containerProps) => {
     type: state.popup.type,
     socket: state.general.socket,
     server: state.general.server,
-    userData: state.popup.userData,
+    userData: state.user,
   }
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    close: () => dispatch(closePopup()),
-    createAccount: userData => dispatch(createUserAccount(userData)),
+    createAccount: userData => dispatch(saveUserInfo(userData)),
   }
 };
 
