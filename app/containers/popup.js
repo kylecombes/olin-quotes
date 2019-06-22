@@ -1,14 +1,16 @@
 import { connect } from 'react-redux';
 import Popup from '../components/popup';
 import {
-  closePopup,
   saveUserInfo,
 } from "../data/actions";
+import {
+  getSocket,
+} from '../data/websockets';
 
 const mapStateToProps = (state, containerProps) => {
   return {
     type: state.popup.type,
-    socket: state.general.socket,
+    socket: getSocket(),
     server: state.general.server,
     userData: state.user,
   }

@@ -4,6 +4,7 @@
 import io from 'socket.io-client';
 
 let _store;
+let _socket;
 
 export const WS_EVENT_TYPES = {
   CURRENT_USER_INFO: 'currentUserInfo',
@@ -20,12 +21,14 @@ export const registerStore = store => {
 };
 
 export const connect = () => {
-  const socket = io.connect(window.SERVER_URI, {
+  _socket = io.connect(window.SERVER_URI, {
     secure: true,
   });
-  socket.on('connected', () => console.log('Connected to WebSockets server.'));
-  Object.keys(WS_EVENT_TYPES).forEach(eventType => socket.on(WS_EVENT_TYPES[eventType],
+  _socket.on('connected', () => console.log('Connected to WebSockets server.'));
+  Object.keys(WS_EVENT_TYPES).forEach(eventType => _socket.on(WS_EVENT_TYPES[eventType],
     payload => _store.dispatch({ type: WS_EVENT_TYPES[eventType], data: payload })));
 };
 
-export const emit = (type, payload) => socket.emit(type, payload);
+export const getSocket = () => _socket;
+
+export const emit = (type, payload) => _socket.emit(type, payload);
