@@ -30,7 +30,7 @@ const logInUser = (req, res) => {
   const socket = req.app.get('io').in(socketId);
   socket.emit('currentUserInfo', user);
 
-  return res.redirect('/');
+  return res.redirect(process.env.FRONTEND_URL);
 };
 
 const isLoggedIn = (req, res, next) => {
