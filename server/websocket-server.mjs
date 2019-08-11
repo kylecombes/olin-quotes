@@ -3,9 +3,9 @@ import cookieParser from 'cookie-parser';
 import mongodb from 'mongodb';
 import passport from 'passport';
 import passportSocketIo from 'passport.socketio';
-import Board from './models/board';
-import User from './models/user';
-import Quote from './models/quote';
+import Board from './models/board.mjs';
+import User from './models/user.mjs';
+import Quote from './models/quote.mjs';
 import { getDb } from './database.mjs';
 const { ObjectId } = mongodb; // Single-line import not working
 
@@ -60,6 +60,13 @@ function onConnect(socket) {
             });
             console.log('Sending quotes update...');
             socket.emit('quotesUpdate', quotes);
+            Board.find().lean().exec()
+              .then(boardList => {
+                const boards = {};
+                boardList.forEach(b => boards[b._id] = b);
+                console.log('Sending boards updates...');
+                socket.emit('boardList', boards);
+              });
           }
         });
       }

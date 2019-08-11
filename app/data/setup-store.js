@@ -16,10 +16,12 @@ export default function () {
   // Configure Redux
   const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent);
   const initialState = {
-    boards: {},
+    boards: {
+      all: {},
+      current: null,
+    },
     general: {
       debug: window.debug,
-      currentBoard: null,
       isMobile,
       focusedPersonId: null,
       masonryLayoutTrigger: false,

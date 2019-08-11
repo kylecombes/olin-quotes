@@ -3,11 +3,17 @@ import React from 'react';
 export default class NavSidebar extends React.Component {
 
   render() {
-    const currentGroup = 'Home';
-    const groupListElems = ["Home", "PoE", "Tea in the High Castle"].map(name => {
-      return (name === currentGroup)
-        ? <span key={name} className="current">{name}</span>
-        : <span key={name}>{name}</span>;
+    const boardListElems = this.props.boards.map(board => {
+      let className = this.props.currentBoard._id === board._id ? 'current' : null;
+      return (
+        <span
+          key={board._id}
+          className={className}
+          onClick={() => this.props.switchToBoard(board)}
+          title={board.description}>
+          {board.name}
+        </span>
+      );
     });
 
     return (
@@ -16,7 +22,7 @@ export default class NavSidebar extends React.Component {
           <h1>Olin Quotes</h1>
         </div>
         <nav>
-          {groupListElems}
+          {boardListElems}
         </nav>
         <a onClick={this.props.promptCreateBoard}>Create Board</a>
       </div>

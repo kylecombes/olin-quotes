@@ -1,7 +1,7 @@
 import express from 'express';
 import passport from 'passport';
-import expose from './expose';
-import indexHTML from './index.html';
+import expose from './expose.js';
+import indexHTML from './index.html.mjs';
 
 const router = express.Router();
 

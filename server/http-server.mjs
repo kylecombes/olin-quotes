@@ -8,7 +8,7 @@ import https from 'https';
 import session from 'express-session';
 
 import passportInit from './passport-init.mjs';
-import router from './http-router'
+import router from './http-router.mjs'
 
 
 export default class HttpServer {
