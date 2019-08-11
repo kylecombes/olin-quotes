@@ -7,6 +7,7 @@ const {
 const QuoteSchema = new mongoose.Schema({
   addDate: Date,
   addedBy: ObjectId,
+  board: ObjectId,
   components: [
     {
       personId: ObjectId,
