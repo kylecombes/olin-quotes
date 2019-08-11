@@ -44,37 +44,41 @@ function onConnect(socket) {
     socket.on('addQuote', onAddQuote);
     socket.on('addQuoteComment', onAddQuoteComment);
     socket.on('saveUserInfo', userData => saveUserInfo(userData, socket));
-    User.find().lean().exec((err, res) => {
-      if (!err) {
-        const people = {};
-        res.forEach(person => {
-          people[person._id] = person;
-        });
-        console.log('Sending people update...');
-        socket.emit('peopleUpdate', people);
-        Quote.find().lean().exec((err, res) => {
-          if (!err) {
-            const quotes = {};
-            res.forEach(quote => {
-              quotes[quote._id] = quote;
-            });
-            console.log('Sending quotes update...');
-            socket.emit('quotesUpdate', quotes);
-            Board.find().lean().exec()
-              .then(boardList => {
-                const boards = {};
-                boardList.forEach(b => boards[b._id] = b);
-                console.log('Sending boards updates...');
-                socket.emit('boardList', boards);
-              });
-          }
-        });
-      }
-    });
+    sendInitDataToClient(socket);
   } else { // Unauthenticated client attempting to connect
     socket.disconnect();
     console.log('Unauthenticated client attempted to connect. Rejected connection.');
   }
+}
+
+function sendInitDataToClient(socket) {
+  Promise.all([
+    // Send the user info (name, profile pic, etc)
+    User.find().lean().exec()
+      .then(res => {
+        const people = {};
+        res.forEach(p => people[p._id] = p);
+        console.log('Sending people update...');
+        socket.emit('peopleUpdate', people);
+      }),
+    // Send all the quotes for the user TODO Filter!!
+    Quote.find().lean().exec()
+      .then(res => {
+        const quotes = {};
+        res.forEach(q => quotes[q._id] = q);
+        console.log('Sending quotes update...');
+        socket.emit('quotesUpdate', quotes);
+      }),
+    // Send all the boards the user has access to TODO Filter!!
+    Board.find().lean().exec()
+      .then(boardList => {
+        const boards = {};
+        boardList.forEach(b => boards[b._id] = b);
+        console.log('Sending boards updates...');
+        socket.emit('boardList', boards);
+      }),
+  ])
+    .catch(console.error);
 }
 
 function addBoard(data, socket) {
