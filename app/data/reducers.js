@@ -3,13 +3,24 @@
 import { ActionTypes } from './actions';
 import { WS_EVENT_TYPES } from './websockets';
 
-export function general(state = {}, action) {
-  const newState = Object.assign({}, state);
+export function boards(state = {}, action) {
+  switch (action.type) {
+    case WS_EVENT_TYPES.BOARD_LIST_RECEIVED:
+      return action.data;
+    default:
+      return state;
+  }
+}
 
+export function general(state = {}, action) {
   switch (action.type) {
     case ActionTypes.MASONRY_RECALCULATE_LAYOUT:
       return Object.assign({}, state, {
         masonryLayoutTrigger: !state.masonryLayoutTrigger,
+      });
+    case WS_EVENT_TYPES.SWITCH_TO_BOARD:
+      return Object.assign({}, state, {
+        currentBoard: action.data,
       });
     case ActionTypes.DISPLAY_MESSAGE:
       alert(action.message);

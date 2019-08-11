@@ -8,9 +8,11 @@ let _socket;
 
 export const WS_EVENT_TYPES = {
   CURRENT_USER_INFO: 'currentUserInfo',
+  BOARD_LIST_RECEIVED: 'boardList',
   PEOPLE_UPDATE: 'peopleUpdate',
   SINGLE_QUOTE_UPDATE: 'singleQuoteUpdate',
   SAVE_USER_INFO: 'saveUserInfo',
+  SWITCH_TO_BOARD: 'switchToBoard',
   QUOTES_UPDATE: 'quotesUpdate',
   QUOTE_ADDED: 'quoteAdded',
   QUOTE_DELETED: 'quoteDeleted',

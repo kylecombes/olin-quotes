@@ -18,6 +18,7 @@ export default class NavSidebar extends React.Component {
         <nav>
           {groupListElems}
         </nav>
+        <a onClick={this.props.promptCreateBoard}>Create Board</a>
       </div>
     )
   }

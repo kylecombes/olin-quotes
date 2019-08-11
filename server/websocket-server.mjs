@@ -3,6 +3,7 @@ import cookieParser from 'cookie-parser';
 import mongodb from 'mongodb';
 import passport from 'passport';
 import passportSocketIo from 'passport.socketio';
+import Board from './models/board';
 import User from './models/user';
 import Quote from './models/quote';
 import { getDb } from './database.mjs';
@@ -39,6 +40,7 @@ function onConnect(socket) {
     console.log('Client connected');
     socket.emit('currentUserInfo', socket.request.user);
     socket.on('createUserAccount', userData => onCreateUserAccount(userData, socket));
+    socket.on('addBoard', boardData => addBoard(boardData, socket));
     socket.on('addQuote', onAddQuote);
     socket.on('addQuoteComment', onAddQuoteComment);
     socket.on('saveUserInfo', userData => saveUserInfo(userData, socket));
@@ -68,10 +70,37 @@ function onConnect(socket) {
   }
 }
 
+function addBoard(data, socket) {
+  new Board(Object.assign({}, data, {
+    createdBy: socket.client.request.user._id,
+    createdOn: Date.now(),
+  }))
+  .save((err, newBoard) => {
+    if (err) {
+      console.error(err);
+    } else {
+      pushBoardListUpdate(socket)
+        .then(() => socket.emit('switchToBoard', newBoard._id));
+    }
+  });
+}
+
+function pushBoardListUpdate(socket) {
+  return new Promise((resolve, reject) => {
+    Board.getBoards().lean().exec((err, boards) => {
+      if (err) {
+        reject(err);
+      } else {
+        socket.emit('boardList', boards);
+        resolve(boards);
+      }
+    });
+  });
+}
+
 // TODO: Add object field checking to ensure not just anything sent from the frontend can be added the db
 function onCreateUserAccount(userData, socket) {
   console.log('Adding person...');
-  console.log(connectedAccounts);
   _db.collection('people').insertOne(userData, (err, res) => {
     if (err) {
       console.log(err);

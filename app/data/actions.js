@@ -9,6 +9,7 @@ import {
 
 export const ActionTypes = {
   ADD_QUOTE: 'addQuote',
+  ADD_BOARD: 'addBoard',
   ADD_QUOTE_COMMENT: 'addQuoteComment',
   CLOSE_POPUP: 'CLOSE_POPUP',
   CLOSE_SIDEBAR: 'CLOSE_SIDEBAR',
@@ -17,6 +18,32 @@ export const ActionTypes = {
   SHOW_QUOTE_INFO: 'SHOW_QUOTE_INFO',
   MASONRY_RECALCULATE_LAYOUT: 'MASONRY_RECALCULATE_LAYOUT',
 };
+
+let _axioInstance = axios.create({
+  baseURL: window.SERVER_URI,
+  withCredentials: true,
+});
+
+function makeApiRequest(endpoint, data) {
+  try {
+    if (data) {
+      return _axioInstance.post(data)
+        .then(res => res.data);
+    } else {
+      return _axioInstance.get(endpoint)
+        .then(res => res.data);
+    }
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+export function addBoard(boardInfo) {
+  return (dispatch, getStore, { emit }) => {
+    emit(ActionTypes.ADD_BOARD, boardInfo);
+    dispatch(closePopup());
+  }
+}
 
 export function addQuote(quoteData) {
   return (dispatch, getStore, { emit }) => {
@@ -35,8 +62,7 @@ export function addQuoteComment(quoteId, text) {
 
 export function checkLoginStatus() {
   return () => {
-    return axios.get('/loginStatus')
-      .then(res => res.data)
+    return makeApiRequest('/loginStatus')
       .then(res => {
         if (res.loggedIn) {
           websocketConnect();
@@ -61,6 +87,10 @@ export function showPersonStats(personId) {
 
 export function openLogin() {
   return { type: ActionTypes.OPEN_POPUP, data: 'login' };
+}
+
+export function promptCreateBoard() {
+  return { type: ActionTypes.OPEN_POPUP, data: 'createBoard' };
 }
 
 export function closePopup() {
