@@ -41,7 +41,7 @@ function onConnect(socket) {
     socket.emit('currentUserInfo', socket.request.user);
     socket.on('createUserAccount', userData => onCreateUserAccount(userData, socket));
     socket.on('addBoard', boardData => addBoard(boardData, socket));
-    socket.on('addQuote', onAddQuote);
+    socket.on('addQuote', quoteData => onAddQuote(quoteData, socket));
     socket.on('addQuoteComment', onAddQuoteComment);
     socket.on('saveUserInfo', userData => saveUserInfo(userData, socket));
     sendInitDataToClient(socket);
@@ -61,14 +61,7 @@ function sendInitDataToClient(socket) {
         console.log('Sending people update...');
         socket.emit('peopleUpdate', people);
       }),
-    // Send all the quotes for the user TODO Filter!!
-    Quote.find().lean().exec()
-      .then(res => {
-        const quotes = {};
-        res.forEach(q => quotes[q._id] = q);
-        console.log('Sending quotes update...');
-        socket.emit('quotesUpdate', quotes);
-      }),
+    sendAllQuotesToClient(socket),
     // Send all the boards the user has access to TODO Filter!!
     Board.find().lean().exec()
       .then(boardList => {
@@ -79,6 +72,17 @@ function sendInitDataToClient(socket) {
       }),
   ])
     .catch(console.error);
+}
+
+function sendAllQuotesToClient(socket) {
+  // Send all the quotes for the user TODO Filter!!
+  return Quote.find().lean().exec()
+    .then(res => {
+      const quotes = {};
+      res.forEach(q => quotes[q._id] = q);
+      console.log('Sending quotes update...');
+      socket.emit('quotesUpdate', quotes);
+    });
 }
 
 function addBoard(data, socket) {
@@ -141,24 +145,11 @@ function saveUserInfo(userData, socket) {
 }
 
 // TODO: Add object field checking to ensure not just anything sent from the frontend can be added the db
-function onAddQuote(quoteData) {
+function onAddQuote(quoteData, socket) {
   console.log('Adding quote...');
-  _db.collection('quotes').insertOne(quoteData, err => {
-    if (err) {
-      console.log(err);
-    } else {
-      _db.collection('quotes').find({}).toArray((err, res) => {
-        if (!err) {
-          const quotes = {};
-          res.forEach(person => {
-            quotes[person._id] = person;
-          });
-          console.log('Sending quotes update...');
-          _io.emit('quotesUpdate', quotes);
-        }
-      });
-    }
-  });
+  new Quote(quoteData).save()
+    // TODO: Send just the new quote to all interested clients
+    .then(() => sendAllQuotesToClient(socket));
 }
 
 function onAddQuoteComment(request) {
