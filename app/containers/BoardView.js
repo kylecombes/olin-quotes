@@ -7,10 +7,13 @@ import {
 } from '../data/actions';
 
 const mapStateToProps = (state, containerProps) => {
+  const board = state.boards.current;
+  const quotes = state.quotes && board ? Object.values(state.quotes).filter(q => q.boardId === board._id) : null;
+
   return {
-    board: state.boards.current,
+    board,
     people: state.people,
-    quotes: state.quotes,
+    quotes,
     masonryLayoutTrigger: state.general.masonryLayoutTrigger,
   }
 };

@@ -50,7 +50,7 @@ export function addBoard(boardInfo) {
 export function addQuote(quoteData) {
   return (dispatch, getStore, { emit }) => {
     const state = getStore();
-    quoteData.board = state.boards.current._id;
+    quoteData.boardId = state.boards.current._id;
     emit(ActionTypes.ADD_QUOTE, quoteData);
   }
 }
