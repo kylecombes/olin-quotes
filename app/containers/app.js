@@ -7,6 +7,7 @@ import {
 const mapStateToProps = (state, containerProps) => {
   return {
     popupVisible: !!state.popup.type,
+    loggedIn: !!state.user,
   }
 };
 

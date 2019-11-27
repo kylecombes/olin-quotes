@@ -6,7 +6,7 @@ import {
 
 const mapStateToProps = (state, containerProps) => {
   return {
-    person: state.people[state.infoSidebar.elementId],
+    person: state.infoSidebar.elementId ? state.people[state.infoSidebar.elementId] : null,
     isVisible: !!state.infoSidebar.sidebarType,
     sidebarType: state.infoSidebar.sidebarType,
   }

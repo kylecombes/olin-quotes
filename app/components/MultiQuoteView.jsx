@@ -6,6 +6,8 @@ import QuoteCard from './QuoteCard';
 export default class MultiQuoteView extends React.Component {
 
   render() {
+    if (!this.props.people || !this.props.quotes) return null;
+
     const cards = Object.keys(this.props.quotes).map(quoteId => {
       const quoteData = this.props.quotes[quoteId];
       return (

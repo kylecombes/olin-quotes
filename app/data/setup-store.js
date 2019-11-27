@@ -34,15 +34,13 @@ export default function () {
     navSidebar: {
       visible: true,
     },
-    people: {},
+    people: null,
     popup: {
       type: null,
       isClosable: true,
     },
-    quotes: {},
-    user: {
-
-    },
+    quotes: null,
+    user: null,
   };
 
   const middleware = [
