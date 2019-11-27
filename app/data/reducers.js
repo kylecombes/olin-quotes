@@ -3,9 +3,28 @@
 import { ActionTypes } from './actions';
 import { WS_EVENT_TYPES } from './websockets';
 
-export function general(state = {}, action) {
-  const newState = Object.assign({}, state);
+export function boards(state = {}, action) {
+  switch (action.type) {
+    case WS_EVENT_TYPES.BOARD_LIST_RECEIVED:
+      const boards = action.data;
+      let newData = Object.assign({}, state, {
+        all: boards,
+      });
+      if (!state.currentBoard || !boards[state.currentBoard._id]) {
+        newData.current = Object.values(boards)[0];
+      }
+      return newData;
+    case ActionTypes.SWITCH_TO_BOARD:
+    case WS_EVENT_TYPES.SWITCH_TO_BOARD:
+      return Object.assign({}, state, {
+        current: action.data,
+      });
+    default:
+      return state;
+  }
+}
 
+export function general(state = {}, action) {
   switch (action.type) {
     case ActionTypes.MASONRY_RECALCULATE_LAYOUT:
       return Object.assign({}, state, {

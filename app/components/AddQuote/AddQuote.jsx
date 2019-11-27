@@ -1,7 +1,7 @@
 import React from 'react';
-import QuoteComponentEntry from './quote-component-entry';
+import AddQuoteComponent from './AddQuoteComponent';
 
-export default class QuoteAdd extends React.Component {
+export default class AddQuote extends React.Component {
 
   constructor(props) {
     super(props);
@@ -30,10 +30,6 @@ export default class QuoteAdd extends React.Component {
 
   onContextChanged = event => this.setState({context: event.target.value});
 
-  onClearClicked = () => {
-    this.setState(this.originalState);
-  };
-
   onAddClicked = () => {
     // Only keep components that have words and an author
     // TODO: Some input validation with feedback to the user
@@ -50,7 +46,7 @@ export default class QuoteAdd extends React.Component {
   render() {
 
     const quoteComponentEntryElems = Object.keys(this.state.components).map((quoteComponentId, idx) => (
-      <QuoteComponentEntry
+      <AddQuoteComponent
         key={idx}
         onComponentChange={newPartialData => this.onQuoteComponentChange(idx, newPartialData)}
         wordsPlaceholder="Quote"
@@ -62,10 +58,13 @@ export default class QuoteAdd extends React.Component {
     ));
 
     return (
-      <div className="quote-add">
+      <div className="AddQuote">
+        <div className="header">
+          <span>Add Quote</span>
+        </div>
         {quoteComponentEntryElems}
         <textarea className="context" onChange={this.onContextChanged} placeholder="Context" value={this.state.context}/>
-        <button className="clear" onClick={this.onClearClicked}>Clear</button>
+        <button className="clear" onClick={this.props.cancel}>Discard</button>
         <button className="submit" onClick={this.onAddClicked}>Add</button>
       </div>
     )

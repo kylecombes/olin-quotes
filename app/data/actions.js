@@ -9,17 +9,48 @@ import {
 
 export const ActionTypes = {
   ADD_QUOTE: 'addQuote',
+  ADD_BOARD: 'addBoard',
   ADD_QUOTE_COMMENT: 'addQuoteComment',
   CLOSE_POPUP: 'CLOSE_POPUP',
   CLOSE_SIDEBAR: 'CLOSE_SIDEBAR',
   OPEN_POPUP: 'OPEN_POPUP',
+  SWITCH_TO_BOARD: 'SWITCH_TO_BOARD',
+  SHOW_ADD_QUOTE_MODAL: 'SHOW_ADD_QUOTE_MODAL',
   SHOW_PERSON_STATS: 'SHOW_PERSON_STATS',
   SHOW_QUOTE_INFO: 'SHOW_QUOTE_INFO',
   MASONRY_RECALCULATE_LAYOUT: 'MASONRY_RECALCULATE_LAYOUT',
 };
 
+let _axioInstance = axios.create({
+  baseURL: window.SERVER_URI,
+  withCredentials: true,
+});
+
+function makeApiRequest(endpoint, data) {
+  try {
+    if (data) {
+      return _axioInstance.post(data)
+        .then(res => res.data);
+    } else {
+      return _axioInstance.get(endpoint)
+        .then(res => res.data);
+    }
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+export function addBoard(boardInfo) {
+  return (dispatch, getStore, { emit }) => {
+    emit(ActionTypes.ADD_BOARD, boardInfo);
+    dispatch(closePopup());
+  }
+}
+
 export function addQuote(quoteData) {
   return (dispatch, getStore, { emit }) => {
+    const state = getStore();
+    quoteData.boardId = state.boards.current._id;
     emit(ActionTypes.ADD_QUOTE, quoteData);
   }
 }
@@ -35,14 +66,21 @@ export function addQuoteComment(quoteId, text) {
 
 export function checkLoginStatus() {
   return () => {
-    return axios.get('/loginStatus')
-      .then(res => res.data)
+    return makeApiRequest('/loginStatus')
       .then(res => {
         if (res.loggedIn) {
           websocketConnect();
         }
       });
   };
+}
+
+export function switchToBoard(board) {
+  return { type: ActionTypes.SWITCH_TO_BOARD, data: board };
+}
+
+export function showAddQuoteModal() {
+  return { type: ActionTypes.OPEN_POPUP, data: 'addQuote' };
 }
 
 export function showQuoteInfo(quoteId) {
@@ -61,6 +99,10 @@ export function showPersonStats(personId) {
 
 export function openLogin() {
   return { type: ActionTypes.OPEN_POPUP, data: 'login' };
+}
+
+export function promptCreateBoard() {
+  return { type: ActionTypes.OPEN_POPUP, data: 'createBoard' };
 }
 
 export function closePopup() {

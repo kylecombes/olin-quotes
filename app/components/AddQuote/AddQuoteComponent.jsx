@@ -1,7 +1,7 @@
 import React from 'react';
 import Autosuggest from 'react-autosuggest';
 
-export default class QuoteComponentEntry extends React.Component {
+export default class AddQuoteComponent extends React.Component {
 
   constructor(props) {
     super(props);

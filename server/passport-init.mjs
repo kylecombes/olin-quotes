@@ -3,10 +3,10 @@ import googleOAuth2 from 'passport-google-oauth2';
 import passportFacebook from 'passport-facebook';
 const GoogleStrategy = googleOAuth2.Strategy;
 const FacebookStrategy = passportFacebook.Strategy;
-import User from './models/user';
+import User from './models/user.mjs';
 import {
   GOOGLE_CONFIG, FACEBOOK_CONFIG
-} from './oauth-config';
+} from './oauth-config.mjs';
 
 export default app => {
 

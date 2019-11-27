@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import PI from '../components/sidebars/person-info';
+import PI from '../components/sidebars/PersonInfo';
 import {
   closeSidebar,
 } from '../data/actions';

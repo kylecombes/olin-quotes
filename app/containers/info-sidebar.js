@@ -1,12 +1,12 @@
 import { connect } from 'react-redux';
-import IS from '../components/sidebars/info-sidebar';
+import IS from '../components/sidebars/InfoSidebar';
 import {
   closeSidebar,
 } from '../data/actions';
 
 const mapStateToProps = (state, containerProps) => {
   return {
-    person: state.people[state.infoSidebar.elementId],
+    person: state.infoSidebar.elementId ? state.people[state.infoSidebar.elementId] : null,
     isVisible: !!state.infoSidebar.sidebarType,
     sidebarType: state.infoSidebar.sidebarType,
   }

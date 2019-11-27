@@ -1,7 +1,7 @@
 import express from 'express';
 import passport from 'passport';
-import expose from './expose';
-import indexHTML from './index.html';
+import expose from './expose.js';
+import indexHTML from './index.html.mjs';
 
 const router = express.Router();
 
@@ -30,7 +30,7 @@ const logInUser = (req, res) => {
   const socket = req.app.get('io').in(socketId);
   socket.emit('currentUserInfo', user);
 
-  return res.redirect('/');
+  return res.redirect(process.env.FRONTEND_URL);
 };
 
 const isLoggedIn = (req, res, next) => {

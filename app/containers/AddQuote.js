@@ -1,20 +1,19 @@
 import { connect } from 'react-redux';
-import Header from '../components/header/header';
+import AddQuote from '../components/AddQuote/AddQuote';
 import {
   addQuote,
-  openLogin,
+  closePopup,
 } from '../data/actions';
 
 const mapStateToProps = (state, containerProps) => {
   return {
-    popupVisible: !!state.popup.type,
-    user: state.user,
+    people: Object.values(state.people),
   }
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    openLogin: () => dispatch(openLogin()),
+    cancel: () => dispatch(closePopup()),
     submit: data => dispatch(addQuote(data)),
   }
 };
@@ -22,4 +21,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(Header);
+)(AddQuote);

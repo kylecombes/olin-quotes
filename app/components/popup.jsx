@@ -1,6 +1,8 @@
 import React from 'react';
-import LoginSignup from './login-signup';
-import FinishAccountCreation from './finish-account-creation';
+import AddQuote from '../containers/AddQuote';
+import Login from './Login';
+import FinishAccountCreation from './FinishAccountCreation';
+import CreateBoard from './CreateBoard';
 
 export default class Popup extends React.Component {
 
@@ -8,10 +10,16 @@ export default class Popup extends React.Component {
     let content = null;
     switch (this.props.type) {
       case 'login':
-        content = <LoginSignup {...this.props}/>;
+        content = <Login {...this.props}/>;
         break;
       case 'finishAccountCreation':
         content = <FinishAccountCreation {...this.props} />;
+        break;
+      case 'createBoard':
+        content = <CreateBoard {...this.props} />;
+        break;
+      case 'addQuote':
+        content = <AddQuote />;
         break;
     }
 

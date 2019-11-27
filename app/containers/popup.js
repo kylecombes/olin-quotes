@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import Popup from '../components/popup';
 import {
+  addBoard,
   saveUserInfo,
 } from "../data/actions";
 import {
@@ -19,6 +20,7 @@ const mapStateToProps = (state, containerProps) => {
 const mapDispatchToProps = dispatch => {
   return {
     createAccount: userData => dispatch(saveUserInfo(userData)),
+    addBoard: data => dispatch(addBoard(data)),
   }
 };
 

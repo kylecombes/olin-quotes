@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import App from './containers/app';
 import setupStore from './data/setup-store';
-import './styles/app.scss';
+import './styles/App.scss';
 
 // Remove the #_=_ hash appended by Facebook OAuth
 if (window.location.hash === '#_=_') {

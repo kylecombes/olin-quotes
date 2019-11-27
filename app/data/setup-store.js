@@ -16,6 +16,10 @@ export default function () {
   // Configure Redux
   const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent);
   const initialState = {
+    boards: {
+      all: {},
+      current: null,
+    },
     general: {
       debug: window.debug,
       isMobile,
@@ -30,15 +34,13 @@ export default function () {
     navSidebar: {
       visible: true,
     },
-    people: {},
+    people: null,
     popup: {
       type: null,
       isClosable: true,
     },
-    quotes: {},
-    user: {
-
-    },
+    quotes: null,
+    user: null,
   };
 
   const middleware = [

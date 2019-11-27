@@ -1,0 +1,17 @@
+@import 'colors';
+
+.BoardView {
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    background-color: $color-content-background;
+    border-bottom: 1px solid $color-gray-divider;
+
+    .board-name {
+      font-size: 1.3em;
+      font-weight: bold;
+    }
+  }
+
+}
