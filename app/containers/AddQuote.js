@@ -1,7 +1,8 @@
 import { connect } from 'react-redux';
-import QA from '../components/AddQuote/AddQuote';
+import AddQuote from '../components/AddQuote/AddQuote';
 import {
-addQuote,
+  addQuote,
+  closePopup,
 } from '../data/actions';
 
 const mapStateToProps = (state, containerProps) => {
@@ -12,13 +13,12 @@ const mapStateToProps = (state, containerProps) => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    cancel: () => dispatch(closePopup()),
     submit: data => dispatch(addQuote(data)),
   }
 };
 
-const QuoteAdd = connect(
+export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(QA);
-
-export default QuoteAdd;
+)(AddQuote);

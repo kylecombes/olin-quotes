@@ -15,6 +15,7 @@ export const ActionTypes = {
   CLOSE_SIDEBAR: 'CLOSE_SIDEBAR',
   OPEN_POPUP: 'OPEN_POPUP',
   SWITCH_TO_BOARD: 'SWITCH_TO_BOARD',
+  SHOW_ADD_QUOTE_MODAL: 'SHOW_ADD_QUOTE_MODAL',
   SHOW_PERSON_STATS: 'SHOW_PERSON_STATS',
   SHOW_QUOTE_INFO: 'SHOW_QUOTE_INFO',
   MASONRY_RECALCULATE_LAYOUT: 'MASONRY_RECALCULATE_LAYOUT',
@@ -76,6 +77,10 @@ export function checkLoginStatus() {
 
 export function switchToBoard(board) {
   return { type: ActionTypes.SWITCH_TO_BOARD, data: board };
+}
+
+export function showAddQuoteModal() {
+  return { type: ActionTypes.OPEN_POPUP, data: 'addQuote' };
 }
 
 export function showQuoteInfo(quoteId) {

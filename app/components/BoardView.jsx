@@ -1,12 +1,11 @@
 import React from 'react';
 import Masonry from 'react-masonry-component';
-import QuoteAdd from '../containers/quote-add';
 import QuoteCard from './QuoteCard';
 
-export default class MultiQuoteView extends React.Component {
+export default class BoardView extends React.Component {
 
   render() {
-    if (!this.props.people || !this.props.quotes) return null;
+    if (!this.props.people || !this.props.quotes || !this.props.board) return null;
 
     const cards = Object.keys(this.props.quotes).map(quoteId => {
       const quoteData = this.props.quotes[quoteId];
@@ -20,9 +19,19 @@ export default class MultiQuoteView extends React.Component {
         />)
     });
     return (
-      <div className="primary-content multi-quote-view">
+      <div className="primary-content BoardView">
+        <div className="header">
+          <div />
+          <span className="board-name">{this.props.board.name}</span>
+          <div className="button-container">
+            <button
+              onClick={this.props.showAddQuoteModal}
+            >
+              Add Quote
+            </button>
+          </div>
+        </div>
         <span style={{display: 'none'}}>{this.props.masonryLayoutTrigger}</span>
-        <QuoteAdd onAddPersonClicked={this.props.onAddPersonClicked}/>
         <Masonry className="quote-cards">
           {cards}
         </Masonry>

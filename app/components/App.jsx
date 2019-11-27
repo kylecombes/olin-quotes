@@ -1,7 +1,7 @@
 import React from "react";
 import InfoSidebar from '../containers/info-sidebar';
 import Login from './Login';
-import MultiQuoteView from '../containers/multi-quote-view';
+import BoardView from '../containers/BoardView';
 import NavSidebar from '../containers/nav-sidebar';
 import Popup from '../containers/popup'
 
@@ -24,7 +24,7 @@ const LoggedInView = (props) => (
     <div className="primary-container">
       <div className="content">
         <NavSidebar/>
-        <MultiQuoteView/>
+        <BoardView/>
         <InfoSidebar/>
       </div>
     </div>

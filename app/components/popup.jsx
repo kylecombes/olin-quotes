@@ -1,4 +1,5 @@
 import React from 'react';
+import AddQuote from '../containers/AddQuote';
 import Login from './Login';
 import FinishAccountCreation from './FinishAccountCreation';
 import CreateBoard from './CreateBoard';
@@ -16,6 +17,9 @@ export default class Popup extends React.Component {
         break;
       case 'createBoard':
         content = <CreateBoard {...this.props} />;
+        break;
+      case 'addQuote':
+        content = <AddQuote />;
         break;
     }
 
