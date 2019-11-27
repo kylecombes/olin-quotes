@@ -1,6 +1,6 @@
 import React from 'react';
 
-import UserInfo from './user-info';
+import UserInfo from './UserInfo';
 
 export default class Header extends React.Component {
 

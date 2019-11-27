@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import NavSidebar from '../components/sidebars/nav-sidebar';
+import NavSidebar from '../components/sidebars/NavSidebar';
 import {
   promptCreateBoard,
   switchToBoard,

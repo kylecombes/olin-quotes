@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import IS from '../components/sidebars/info-sidebar';
+import IS from '../components/sidebars/InfoSidebar';
 import {
   closeSidebar,
 } from '../data/actions';

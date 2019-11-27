@@ -1,7 +1,7 @@
 import React from 'react';
 import Masonry from 'react-masonry-component';
 import QuoteAdd from '../containers/quote-add';
-import QuoteCard from './quote-card';
+import QuoteCard from './QuoteCard';
 
 export default class MultiQuoteView extends React.Component {
 

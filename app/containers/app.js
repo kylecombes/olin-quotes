@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import App from '../components/app';
+import App from '../components/App';
 import {
   checkLoginStatus,
 } from '../data/actions';

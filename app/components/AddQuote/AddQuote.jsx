@@ -1,7 +1,7 @@
 import React from 'react';
-import QuoteComponentEntry from './quote-component-entry';
+import AddQuoteComponent from './AddQuoteComponent';
 
-export default class QuoteAdd extends React.Component {
+export default class AddQuote extends React.Component {
 
   constructor(props) {
     super(props);
@@ -50,7 +50,7 @@ export default class QuoteAdd extends React.Component {
   render() {
 
     const quoteComponentEntryElems = Object.keys(this.state.components).map((quoteComponentId, idx) => (
-      <QuoteComponentEntry
+      <AddQuoteComponent
         key={idx}
         onComponentChange={newPartialData => this.onQuoteComponentChange(idx, newPartialData)}
         wordsPlaceholder="Quote"

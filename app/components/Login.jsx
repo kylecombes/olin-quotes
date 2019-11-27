@@ -1,7 +1,7 @@
 import React from 'react';
 import OAuth from './oauth';
 
-export default class LoginSignup extends React.Component {
+export default class Login extends React.Component {
 
   render() {
     return (

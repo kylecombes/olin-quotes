@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import MQV from '../components/multi-quote-view';
+import MQV from '../components/MultiQuoteView';
 import {
   showPersonStats,
   showQuoteInfo,

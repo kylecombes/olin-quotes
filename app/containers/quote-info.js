@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import QI from '../components/sidebars/quote-info';
+import QI from '../components/sidebars/QuoteInfo';
 import {
   closeSidebar,
   addQuoteComment,

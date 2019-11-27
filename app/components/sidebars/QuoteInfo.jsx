@@ -1,5 +1,5 @@
 import React from 'react';
-import CommentAdd from '../comment-add';
+import AddComment from '../AddComment';
 
 export default class PersonInfo extends React.Component {
 
@@ -41,7 +41,7 @@ export default class PersonInfo extends React.Component {
         <div className="comments">
           <h2>Comments</h2>
           {comments}
-          <CommentAdd onSubmit={this.addComment}/>
+          <AddComment onSubmit={this.addComment}/>
         </div>
       </div>
     )
