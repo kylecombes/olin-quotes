@@ -17,8 +17,8 @@ export default function () {
   const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent);
   const initialState = {
     boards: {
-      all: {},
-      current: null,
+      allBoards: {},
+      currentBoardId: null,
     },
     general: {
       debug: window.debug,

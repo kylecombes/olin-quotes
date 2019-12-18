@@ -4,7 +4,7 @@ export default class NavSidebar extends React.Component {
 
   render() {
     const boardListElems = this.props.boards.map(board => {
-      let className = this.props.currentBoard._id === board._id ? 'current' : null;
+      let className = this.props.currentBoardId === board._id ? 'current' : null;
       return (
         <span
           key={board._id}

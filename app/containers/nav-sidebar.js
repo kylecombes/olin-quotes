@@ -6,9 +6,12 @@ import {
 } from '../data/actions';
 
 const mapStateToProps = (state, containerProps) => {
+  if (!state.boards) {
+    return {};
+  }
   return {
-    currentBoard: state.boards.current,
-    boards: Object.values(state.boards.all),
+    currentBoardId: state.boards.currentBoardId,
+    boards: Object.values(state.boards.allBoards),
   }
 };
 

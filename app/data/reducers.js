@@ -8,16 +8,16 @@ export function boards(state = {}, action) {
     case WS_EVENT_TYPES.BOARD_LIST_RECEIVED:
       const boards = action.data;
       let newData = Object.assign({}, state, {
-        all: boards,
+        allBoards: boards,
       });
-      if (!state.currentBoard || !boards[state.currentBoard._id]) {
-        newData.current = Object.values(boards)[0];
+      if (!state.currentBoardId || !boards[state.currentBoardId]) {
+        newData.currentBoardId = Object.values(boards)[0]._id;
       }
       return newData;
     case ActionTypes.SWITCH_TO_BOARD:
     case WS_EVENT_TYPES.SWITCH_TO_BOARD:
       return Object.assign({}, state, {
-        current: action.data,
+        currentBoardId: action.data._id,
       });
     default:
       return state;
