@@ -4,7 +4,6 @@ import BoardView from '../containers/BoardView';
 import InfoSidebar from '../containers/info-sidebar';
 // @ts-ignore
 import Login from './Login';
-// @ts-ignore
 import NavSidebar from '../containers/NavSidebar';
 // @ts-ignore
 import Popup from '../containers/popup'
