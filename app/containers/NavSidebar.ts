@@ -1,11 +1,19 @@
 import { connect } from 'react-redux';
+
 import NavSidebar from '../components/sidebars/NavSidebar';
 import {
   promptCreateBoard,
   switchToBoard,
 } from '../data/actions';
+import {
+  IBoard,
+  IRootState,
+} from '../data/types';
+import {
+  Dispatch,
+} from 'redux';
 
-const mapStateToProps = (state, containerProps) => {
+const mapStateToProps = (state: IRootState) => {
   if (!state.boards) {
     return {};
   }
@@ -15,10 +23,10 @@ const mapStateToProps = (state, containerProps) => {
   }
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
     promptCreateBoard: () => dispatch(promptCreateBoard()),
-    switchToBoard: board => dispatch(switchToBoard(board)),
+    switchToBoard: (board: IBoard) => dispatch(switchToBoard(board)),
   }
 };
 
