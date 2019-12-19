@@ -1,5 +1,5 @@
 
-export interface IBoard extends INewBoard{
+export interface IBoard extends INewBoard {
   _id: string
 }
 
