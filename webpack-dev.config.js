@@ -18,7 +18,7 @@ module.exports = {
     },
     contentBase: path.join(APP_DIR, 'public'),
   },
-  entry: `${APP_DIR}/index.jsx`,
+  entry: `${APP_DIR}/index.tsx`,
   output: {
     path: BUILD_DIR,
     publicPath: '/',

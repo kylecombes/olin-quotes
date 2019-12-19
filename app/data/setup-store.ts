@@ -18,11 +18,13 @@ export default function () {
     // routeMiddleware,
   ];
 
+  // @ts-ignore
   const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
   const store = createStore(
     combineReducers({ ...reducers }),
     {},
     // Only include the Redux devtools if they're installed and we're debugging
+    // @ts-ignore
     (window.DEBUG && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__)
       ? composeEnhancers(applyMiddleware(...middleware))
       : applyMiddleware(...middleware),
