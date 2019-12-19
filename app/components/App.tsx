@@ -1,10 +1,8 @@
 import * as React from "react";
 import BoardView from '../containers/BoardView';
 import InfoSidebar from '../containers/InfoSidebar';
-// @ts-ignore
 import Login from './Login';
 import NavSidebar from '../containers/NavSidebar';
-// @ts-ignore
 import Popup from '../containers/Popup'
 
 interface IProps {
