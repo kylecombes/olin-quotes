@@ -13,7 +13,6 @@ import {
 import {
   connect as websocketConnect,
   WS_EVENT_TYPES,
-  // @ts-ignore
 } from './websockets';
 
 export const ActionTypes = {
