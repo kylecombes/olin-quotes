@@ -13,7 +13,7 @@ import {
   IPerson,
   IRootState,
 } from '../data/types';
-import {ThunkDispatch} from 'redux-thunk';
+import { ThunkDispatch } from 'redux-thunk';
 
 const mapStateToProps = (state: IRootState) => {
   return {
