@@ -1,7 +1,6 @@
 import * as React from "react";
 import BoardView from '../containers/BoardView';
-// @ts-ignore
-import InfoSidebar from '../containers/info-sidebar';
+import InfoSidebar from '../containers/InfoSidebar';
 // @ts-ignore
 import Login from './Login';
 import NavSidebar from '../containers/NavSidebar';

@@ -1,6 +1,3 @@
-import { ActionType } from 'typesafe-actions';
-
-import * as allActions from './actions';
 
 export interface IBoard {
   _id: string
@@ -18,7 +15,13 @@ export interface IQuote {
   addDate: Date
   addedBy: string
   boardId: string
+  comments: IQuoteComment[]
   components: IQuoteComponent[]
+}
+
+export interface IQuoteComment {
+  authorId: string
+  text: string
 }
 
 export interface IQuoteComponent {
@@ -53,12 +56,27 @@ export interface IGeneralState {
   server: string
 }
 
+export interface IInfoSidebarState {
+  elementId: string
+  sidebarType: string
+}
+
+export interface INavSidebarState {
+  visible: boolean
+}
+
 export interface IRootState {
   boards: IBoardsState
   general: IGeneralState
-  people: IUser[]
+  infoSidebar: IInfoSidebarState
+  navSidebar: INavSidebarState
+  people: {
+    [personId: string]: IUser
+  }
   popup: IPopupState
-  quotes: IQuote[]
+  quotes: {
+    [quoteId: string]: IQuote
+  }
   user: IUser
 }
 

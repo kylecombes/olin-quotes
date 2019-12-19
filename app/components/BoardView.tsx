@@ -12,7 +12,9 @@ import QuoteCard from './QuoteCard';
 
 type Props = {
   board: IBoard | undefined;
-  people: IUser[] | undefined;
+  people: {
+    [personId: string]: IUser
+  } | undefined;
   masonryLayoutTrigger: boolean;
   quotes: IQuote[] | undefined;
   showAddQuoteModal: () => AnyAction;

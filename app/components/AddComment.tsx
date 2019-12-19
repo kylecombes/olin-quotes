@@ -1,19 +1,28 @@
-import React from 'react';
+import * as React from 'react';
 
-export default class AddComment extends React.Component {
+type Props = {
+  onCancel?: () => any
+  onSubmit: (commentText: string) => any
+};
 
-  constructor(props) {
+type State = {
+  comment: string
+};
+
+export default class AddComment extends React.Component<Props, State> {
+
+  constructor(props: Props) {
     super(props);
-
-    this.originalState = {
-      comment: '',
-    };
     this.state = Object.assign({}, this.originalState);
   }
 
-  onInputChange = event => {
+  originalState = {
+    comment: '',
+  };
+
+  onInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     this.setState({
-      [event.target.name]: event.target.value,
+      comment: event.target.value,
     });
   };
 
