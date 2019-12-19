@@ -1,18 +1,21 @@
-import React from 'react';
+import * as React from 'react';
+import {
+  INewBoard,
+} from '../data/types';
 
+type Props = {
+  addBoard: (boardData: INewBoard) => any
+};
 
-export default class CreateBoard extends React.Component {
+export default class CreateBoard extends React.Component<Props, INewBoard> {
 
-  constructor(props) {
-    super(props);
+  state = {
+    name: '',
+    description: '',
+  };
 
-    this.state = {
-      name: '',
-      description: '',
-    };
-  }
-
-  textFieldChanged = event => this.setState({[event.target.name]: event.target.value});
+  // @ts-ignore
+  textFieldChanged = (event: React.ChangeEvent<HTMLInputElement>) => this.setState({[event.target.name]: event.target.value});
 
   submit = () => this.props.addBoard(this.state);
 

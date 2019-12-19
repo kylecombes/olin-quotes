@@ -5,7 +5,7 @@ const BUILD_DIR = path.resolve(__dirname);
 const APP_DIR = path.resolve(__dirname, 'app');
 
 module.exports = {
-  entry: `${APP_DIR}/index.jsx`,
+  entry: `${APP_DIR}/index.tsx`,
   output: {
     path: BUILD_DIR,
     publicPath: '/',
@@ -14,6 +14,11 @@ module.exports = {
   mode: 'production',
   module: {
     rules: [
+      {
+        test: /\.ts(x?)$/,
+        exclude: /node_modules/,
+        use: ["ts-loader"],
+      },
       {
         test: /\.jsx?/,
         include: APP_DIR,
@@ -40,6 +45,6 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: ['.js', '.jsx'],
+    extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },
 };

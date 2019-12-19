@@ -18,7 +18,7 @@ module.exports = {
     },
     contentBase: path.join(APP_DIR, 'public'),
   },
-  entry: `${APP_DIR}/index.jsx`,
+  entry: `${APP_DIR}/index.tsx`,
   output: {
     path: BUILD_DIR,
     publicPath: '/',
@@ -27,6 +27,11 @@ module.exports = {
   mode: 'development',
   module: {
     rules: [
+      {
+        test: /\.ts(x?)$/,
+        exclude: /node_modules/,
+        use: ["ts-loader"],
+      },
       {
         test: /\.jsx?/,
         include: APP_DIR,
@@ -49,6 +54,6 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: ['.js', '.jsx'],
+    extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },
 };

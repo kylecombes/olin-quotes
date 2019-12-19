@@ -1,21 +1,40 @@
-import React from 'react';
+import * as React from 'react';
 import Masonry from 'react-masonry-component';
+import { AnyAction } from 'redux';
+
+import {
+  IBoard,
+  IQuote,
+  IPerson,
+} from '../data/types';
+// @ts-ignore
 import QuoteCard from './QuoteCard';
 
-export default class BoardView extends React.Component {
+type Props = {
+  board: IBoard | undefined;
+  people: {
+    [personId: string]: IPerson
+  } | undefined;
+  masonryLayoutTrigger: boolean;
+  quotes: IQuote[] | undefined;
+  showAddQuoteModal: () => AnyAction;
+  showPersonStats: (personId: string) => AnyAction;
+  showQuoteInfo: (quoteId: string) => AnyAction;
+};
+
+export default class BoardView extends React.Component<Props> {
 
   render() {
     if (!this.props.people || !this.props.quotes || !this.props.board) return null;
 
-    const cards = Object.keys(this.props.quotes).map(quoteId => {
-      const quoteData = this.props.quotes[quoteId];
+    const cards = this.props.quotes.map(quote => {
       return (
         <QuoteCard
-          quote={quoteData}
+          quote={quote}
           people={this.props.people}
-          key={quoteId}
+          key={quote._id}
           showPersonStats={this.props.showPersonStats}
-          onClick={() => this.props.showQuoteInfo(quoteId)}
+          onClick={() => this.props.showQuoteInfo(quote._id)}
         />)
     });
     return (

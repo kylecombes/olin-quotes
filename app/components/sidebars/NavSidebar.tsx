@@ -1,10 +1,20 @@
-import React from 'react';
+import * as React from 'react';
+import {
+  IBoard,
+} from '../../data/types';
 
-export default class NavSidebar extends React.Component {
+type Props = {
+  boards: IBoard[]
+  currentBoardId: string
+  promptCreateBoard: () => any
+  switchToBoard: (board: IBoard) => any
+};
+
+export default class NavSidebar extends React.Component<Props> {
 
   render() {
     const boardListElems = this.props.boards.map(board => {
-      let className = this.props.currentBoard._id === board._id ? 'current' : null;
+      let className = this.props.currentBoardId === board._id ? 'current' : null;
       return (
         <span
           key={board._id}

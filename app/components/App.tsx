@@ -1,16 +1,22 @@
-import React from "react";
-import InfoSidebar from '../containers/info-sidebar';
-import Login from './Login';
+import * as React from "react";
 import BoardView from '../containers/BoardView';
-import NavSidebar from '../containers/nav-sidebar';
-import Popup from '../containers/popup'
+import InfoSidebar from '../containers/InfoSidebar';
+import Login from './Login';
+import NavSidebar from '../containers/NavSidebar';
+import Popup from '../containers/Popup'
 
-export default class App extends React.Component {
+interface IProps {
+  checkLoginStatus: () => null
+  loggedIn: boolean
+  popupVisible: boolean
+}
 
-  constructor(props) {
+export default class App extends React.Component<IProps> {
+
+  constructor(props: IProps) {
     super(props);
 
-    this.props.checkLoginStatus();
+    props.checkLoginStatus();
   }
 
   render() {
@@ -18,7 +24,7 @@ export default class App extends React.Component {
   }
 }
 
-const LoggedInView = (props) => (
+const LoggedInView = (props: IProps) => (
   <div className="app">
     {props.popupVisible && <Popup/>}
     <div className="primary-container">
@@ -31,7 +37,7 @@ const LoggedInView = (props) => (
   </div>
 );
 
-const LoggedOutView = (props) => (
+const LoggedOutView = (props: IProps) => (
   <div className="app logged-out">
     <div className="centered-box-container">
       <Login {...props} />

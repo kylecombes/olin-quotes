@@ -1,10 +1,16 @@
 import { connect } from 'react-redux';
-import IS from '../components/sidebars/InfoSidebar';
+import { AnyAction } from 'redux';
+
+import InfoSidebar from '../components/sidebars/InfoSidebar';
 import {
   closeSidebar,
 } from '../data/actions';
+import {
+  IRootState,
+} from '../data/types';
+import {ThunkDispatch} from 'redux-thunk';
 
-const mapStateToProps = (state, containerProps) => {
+const mapStateToProps = (state: IRootState) => {
   return {
     person: state.infoSidebar.elementId ? state.people[state.infoSidebar.elementId] : null,
     isVisible: !!state.infoSidebar.sidebarType,
@@ -12,15 +18,13 @@ const mapStateToProps = (state, containerProps) => {
   }
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, AnyAction>) => {
   return {
     closeSidebar: () => dispatch(closeSidebar()),
   }
 };
 
-const InfoSidebar = connect(
+export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(IS);
-
-export default InfoSidebar;
+)(InfoSidebar);

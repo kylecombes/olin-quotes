@@ -1,6 +1,13 @@
-import React from 'react';
+import * as React from 'react';
+import {
+  IPerson,
+} from '../../data/types';
 
-export default class PersonInfo extends React.Component {
+type Props = {
+  person: IPerson
+};
+
+export default class PersonInfo extends React.Component<Props> {
 
   render() {
     return (
@@ -8,7 +15,6 @@ export default class PersonInfo extends React.Component {
         <div className="header">
           <img className="avatar" src={this.props.person.avatarUrl} />
           <span className="name">{this.props.person.displayName}</span>
-          <span className="title">{this.props.person.title}</span>
         </div>
       </div>
     )

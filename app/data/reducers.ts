@@ -1,49 +1,71 @@
 // This file contains a bunch of Redux reducers
 
+import { AnyAction } from 'redux';
+
 import { ActionTypes } from './actions';
 import { WS_EVENT_TYPES } from './websockets';
+import {
+  IBoard,
+  IBoardsState,
+  IGeneralState,
+  IInfoSidebarState,
+  IPopupState,
+} from './types';
 
-export function boards(state = {}, action) {
+const defaultBoardsState: IBoardsState = {
+  allBoards: {},
+  currentBoardId: null,
+};
+
+export function boards(state: IBoardsState = defaultBoardsState, action: AnyAction) {
   switch (action.type) {
     case WS_EVENT_TYPES.BOARD_LIST_RECEIVED:
-      const boards = action.data;
+      const boards: {[id: string]: IBoard} = action.data;
       let newData = Object.assign({}, state, {
-        all: boards,
+        allBoards: boards,
       });
-      if (!state.currentBoard || !boards[state.currentBoard._id]) {
-        newData.current = Object.values(boards)[0];
+      if (!state.currentBoardId || !boards[state.currentBoardId]) {
+        newData.currentBoardId = Object.values(boards)[0]._id;
       }
       return newData;
     case ActionTypes.SWITCH_TO_BOARD:
     case WS_EVENT_TYPES.SWITCH_TO_BOARD:
       return Object.assign({}, state, {
-        current: action.data,
+        currentBoardId: action.data._id,
       });
     default:
       return state;
   }
 }
 
-export function general(state = {}, action) {
+const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent);
+const defaultGeneralState: IGeneralState = {
+  // @ts-ignore
+  debug: window.debug,
+  isMobile,
+  focusedPersonId: null,
+  masonryLayoutTrigger: false,
+  // @ts-ignore
+  server: window.SERVER_URI,
+};
+
+export function general(state: IGeneralState = defaultGeneralState, action: AnyAction) {
   switch (action.type) {
     case ActionTypes.MASONRY_RECALCULATE_LAYOUT:
       return Object.assign({}, state, {
         masonryLayoutTrigger: !state.masonryLayoutTrigger,
       });
-    case ActionTypes.DISPLAY_MESSAGE:
-      alert(action.message);
-      return state;
-    case ActionTypes.DISPLAY_ERROR:
-      alert((action.message) ? action.message : action.error);
-      console.error(action.error);
-      // TODO: Report error to some server
-      return state;
     default:
       return state;
   }
 }
 
-export function infoSidebar(state = {}, action) {
+const defaultInfoSidebarState: IInfoSidebarState = {
+  sidebarType: null,
+  elementId: null,
+};
+
+export function infoSidebar(state: IInfoSidebarState = defaultInfoSidebarState, action: AnyAction) {
   switch (action.type) {
     case ActionTypes.SHOW_PERSON_STATS:
       return Object.assign({}, state, {
@@ -65,14 +87,7 @@ export function infoSidebar(state = {}, action) {
   }
 }
 
-export function navSidebar(state = {}, action) {
-  switch (action.type) {
-    default:
-      return state;
-  }
-}
-
-export function people(state = {}, action) {
+export function people(state = {}, action: AnyAction) {
 
   switch (action.type) {
     case WS_EVENT_TYPES.PEOPLE_UPDATE:
@@ -82,7 +97,12 @@ export function people(state = {}, action) {
   }
 }
 
-export function popup(state = {}, action) {
+const defaultPopupState: IPopupState = {
+  type: null,
+  isClosable: true,
+};
+
+export function popup(state: IPopupState = defaultPopupState, action: AnyAction) {
   switch (action.type) {
     case ActionTypes.OPEN_POPUP:
       return Object.assign({}, state, {
@@ -108,7 +128,7 @@ export function popup(state = {}, action) {
   }
 }
 
-export function quotes(state = {}, action) {
+export function quotes(state = {}, action: AnyAction) {
 
   switch (action.type) {
     case WS_EVENT_TYPES.QUOTES_UPDATE:
@@ -123,7 +143,7 @@ export function quotes(state = {}, action) {
   }
 }
 
-export function user(state = {}, action) {
+export function user(state = {}, action: AnyAction) {
   switch (action.type) {
     case WS_EVENT_TYPES.CURRENT_USER_INFO:
       return Object.assign({}, state, action.data);

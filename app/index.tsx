@@ -1,7 +1,7 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import App from './containers/app';
+import App from './containers/App';
 import setupStore from './data/setup-store';
 import './styles/App.scss';
 

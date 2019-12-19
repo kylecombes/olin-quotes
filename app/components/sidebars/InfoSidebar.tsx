@@ -1,8 +1,20 @@
-import React from 'react';
-import PersonStats from '../../containers/person-info';
-import QuoteInfo from '../../containers/quote-info';
+import * as React from 'react';
 
-export default class DetailsSidebar extends React.Component {
+import PersonStats from '../../containers/PersonInfo';
+import QuoteInfo from '../../containers/QuoteInfo';
+
+import {
+  IPerson,
+} from '../../data/types';
+
+type Props = {
+  closeSidebar: () => any
+  isVisible: boolean
+  person: IPerson
+  sidebarType: string
+};
+
+export default class DetailsSidebar extends React.Component<Props> {
 
   render() {
     let content = null;
@@ -11,7 +23,7 @@ export default class DetailsSidebar extends React.Component {
         content = <PersonStats/>;
         break;
       case 'quoteInfo':
-        content = <QuoteInfo/>;
+        content = <QuoteInfo showPersonStats={null}/>;
         break;
     }
 

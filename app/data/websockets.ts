@@ -1,12 +1,21 @@
 // This file helps integrate the WebSockets connection to the server with the Redux data store.
 // It is based off https://medium.com/@ianovenden/redux-websocket-integration-c1a0d22d3189
 
-import io from 'socket.io-client';
+import { Store } from 'redux';
+import * as io from 'socket.io-client';
 
-let _store;
-let _socket;
+import {
+  IWebSocketMessagePayload,
+} from './types';
 
-export const WS_EVENT_TYPES = {
+let _store: Store;
+let _socket: SocketIOClient.Socket;
+
+type WS_EVENT_TYPE_LIST = {
+  [key: string]: string
+}
+
+export const WS_EVENT_TYPES: WS_EVENT_TYPE_LIST = {
   CURRENT_USER_INFO: 'currentUserInfo',
   BOARD_LIST_RECEIVED: 'boardList',
   PEOPLE_UPDATE: 'peopleUpdate',
@@ -18,19 +27,20 @@ export const WS_EVENT_TYPES = {
   QUOTE_DELETED: 'quoteDeleted',
 };
 
-export const registerStore = store => {
+export const registerStore = (store: Store) => {
   _store = store;
 };
 
 export const connect = () => {
+  // @ts-ignore
   _socket = io.connect(window.SERVER_URI, {
     secure: true,
   });
   _socket.on('connected', () => console.log('Connected to WebSockets server.'));
   Object.keys(WS_EVENT_TYPES).forEach(eventType => _socket.on(WS_EVENT_TYPES[eventType],
-    payload => _store.dispatch({ type: WS_EVENT_TYPES[eventType], data: payload })));
+    (payload: IWebSocketMessagePayload) => _store.dispatch({ type: WS_EVENT_TYPES[eventType], data: payload })));
 };
 
 export const getSocket = () => _socket;
 
-export const emit = (type, payload) => _socket.emit(type, payload);
+export const emit = (type: string, payload: IWebSocketMessagePayload) => _socket.emit(type, payload);
