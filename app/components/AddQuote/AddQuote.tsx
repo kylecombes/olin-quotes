@@ -1,41 +1,61 @@
-import React from 'react';
+import * as React from 'react';
 import AddQuoteComponent from './AddQuoteComponent';
+import {
+  INewQuote,
+  IPerson,
+  IQuoteComponent,
+} from '../../data/types';
 
-export default class AddQuote extends React.Component {
+type Props = {
+  cancel: () => any
+  onAddPersonClicked?: () => any
+  people: IPerson[]
+  submit: (data: INewQuote) => any
+};
 
-  constructor(props) {
+type State = {
+  components: IQuoteComponent[]
+  context: string
+};
+
+const createEmptyComponent = (): IQuoteComponent => ({
+  words: '',
+  personId: null,
+});
+
+export default class AddQuote extends React.Component<Props, State> {
+
+  constructor(props: Props) {
     super(props);
-
-    this.originalState = {
-      components: {
-        0: {words: '', personId: null},
-        1: {words: '', personId: null},
-      },
-      context: '',
-    };
-
     this.state = Object.assign({}, this.originalState);
   }
 
-  onQuoteComponentChange = (componentIdx, newPartialData) => {
-    const components = Object.assign({}, this.state.components, {
-        [componentIdx]: Object.assign({}, this.state.components[componentIdx], newPartialData),
-      });
-    if (componentIdx === parseInt(Object.keys(components).pop())) { // Last slot used, so add a new one
-      components[componentIdx+1] = {words: '', personId: null};
+  originalState = {
+    components: [
+      createEmptyComponent(),
+      createEmptyComponent(),
+    ],
+    context: '',
+  };
+
+  onQuoteComponentChange = (componentIdx: number, newPartialData: {personId?: string, words?: string}) => {
+    let components = [...this.state.components];
+    components[componentIdx] = {...components[componentIdx], ...newPartialData};
+    if (componentIdx === components.length-1) { // Last slot used, so add a new one
+      components.push(createEmptyComponent());
     }
 
     this.setState({components});
   };
 
-  onContextChanged = event => this.setState({context: event.target.value});
+  onContextChanged = (event: React.ChangeEvent<HTMLTextAreaElement>) => this.setState({context: event.target.value});
 
   onAddClicked = () => {
     // Only keep components that have words and an author
     // TODO: Some input validation with feedback to the user
     const components = Object.values(this.state.components).filter(comp => comp.words && comp.personId);
 
-    const data = {components};
+    const data: INewQuote = {components};
     if (this.state.context) {
       data.context = this.state.context;
     }
@@ -45,7 +65,7 @@ export default class AddQuote extends React.Component {
 
   render() {
 
-    const quoteComponentEntryElems = Object.keys(this.state.components).map((quoteComponentId, idx) => (
+    const quoteComponentEntryElems = this.state.components.map((quoteComponent, idx) => (
       <AddQuoteComponent
         key={idx}
         onComponentChange={newPartialData => this.onQuoteComponentChange(idx, newPartialData)}
@@ -53,7 +73,7 @@ export default class AddQuote extends React.Component {
         speakerPlaceholder="Person"
         people={this.props.people}
         onAddPersonClick={this.props.onAddPersonClicked}
-        {...this.state.components[quoteComponentId]}
+        {...this.state.components[idx]}
       />
     ));
 

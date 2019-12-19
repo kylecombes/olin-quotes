@@ -1,9 +1,28 @@
-import React from 'react';
-import Autosuggest from 'react-autosuggest';
+import * as React from 'react';
+import * as Autosuggest from 'react-autosuggest';
+import {
+  IPerson,
+} from '../../data/types';
 
-export default class AddQuoteComponent extends React.Component {
+type Props = {
+  onAddPersonClick: () => any
+  onComponentChange: (arg0: any) => any
+  people: IPerson[]
+  speakerPlaceholder: string
+  words: string
+  wordsPlaceholder: string
+};
 
-  constructor(props) {
+type State = {
+  suggestions: (string|IPerson)[]
+  personInputValue: string
+}
+
+type Suggestion = string | IPerson;
+
+export default class AddQuoteComponent extends React.Component<Props, State> {
+
+  constructor(props: Props) {
     super(props);
 
     this.state = {
@@ -12,19 +31,22 @@ export default class AddQuoteComponent extends React.Component {
     };
   }
 
-  onSuggestionsFetchRequested = ({ value })  => {
+  onSuggestionsFetchRequested = ({ value }: ({value: string}))  => {
     const query = value.trim().toLowerCase();
-    const suggestions = query.length > 0 ? this.props.people.filter(person =>
+    const suggestions: (string|IPerson)[] = query.length > 0 ? this.props.people.filter(person =>
       person.displayName.toLowerCase().includes(query)
     ) : [];
     // Add a button to add a person
     suggestions.push('Add person');
-    this.setState({suggestions});
+    this.setState({
+      suggestions,
+      personInputValue: '',
+    });
   };
 
   onSuggestionsClearRequested = () => this.setState({suggestions: []});
 
-  onChange = (event, { newValue }) => {
+  onChange = (event: any, { newValue }: ({ newValue: Suggestion })) => {
     if (typeof newValue === 'string') {
       // User pressed a key on the keyboard
       this.setState({
@@ -35,15 +57,15 @@ export default class AddQuoteComponent extends React.Component {
       this.setState({
         personInputValue: newValue.displayName,
       });
-      this.props.onComponentChange({personId: newValue.id});
+      this.props.onComponentChange({personId: newValue._id});
     }
   };
 
-  getSuggestionValue = suggestion => suggestion === 'Add person'
+  getSuggestionValue = (suggestion: Suggestion): string => typeof suggestion === 'string'
     ? ''
-    : ({id: suggestion._id, displayName: suggestion.displayName});
+    : suggestion.displayName;
 
-  renderSuggestion = suggestion => suggestion === 'Add person'
+  renderSuggestion = (suggestion: string|IPerson) => typeof suggestion === 'string'
   ? (
     <div className="person-suggestion add-person" onClick={this.props.onAddPersonClick}>
       <span>Add Person</span>
@@ -55,7 +77,7 @@ export default class AddQuoteComponent extends React.Component {
     </div>
   );
 
-  wordsChanged = event => this.props.onComponentChange({words: event.target.value});
+  wordsChanged = (event: React.ChangeEvent<HTMLInputElement>) => this.props.onComponentChange({words: event.target.value});
 
   render() {
     const autosuggestInputProps = {

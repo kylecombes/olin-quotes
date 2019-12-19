@@ -5,7 +5,7 @@ import InfoSidebar from '../containers/InfoSidebar';
 import Login from './Login';
 import NavSidebar from '../containers/NavSidebar';
 // @ts-ignore
-import Popup from '../containers/popup'
+import Popup from '../containers/Popup'
 
 interface IProps {
   checkLoginStatus: () => null

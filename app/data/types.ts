@@ -1,8 +1,16 @@
 
-export interface IBoard {
+export interface IBoard extends INewBoard{
   _id: string
+}
+
+export interface INewBoard {
   description: string
   name: string
+}
+
+export interface INewQuote {
+  components: IQuoteComponent[]
+  context?: string
 }
 
 export interface IPopupState {
@@ -10,13 +18,12 @@ export interface IPopupState {
   type: string
 }
 
-export interface IQuote {
+export interface IQuote extends INewQuote {
   _id: string
   addDate: Date
   addedBy: string
   boardId: string
-  comments: IQuoteComment[]
-  components: IQuoteComponent[]
+  comments?: IQuoteComment[]
 }
 
 export interface IQuoteComment {
@@ -29,7 +36,12 @@ export interface IQuoteComponent {
   words: string
 }
 
-export interface IUser {
+export interface IQuoteComponentUpdate {
+  personId?: string
+  words?: string
+}
+
+export interface IPerson {
   _id: string | undefined
   firstName: string
   lastName: string
@@ -38,6 +50,9 @@ export interface IUser {
   avatarUrl: string
 }
 
+export interface IWebSocketMessagePayload {
+
+}
 
 /* ---------- Begin State Interfaces ---------- */
 
@@ -71,13 +86,13 @@ export interface IRootState {
   infoSidebar: IInfoSidebarState
   navSidebar: INavSidebarState
   people: {
-    [personId: string]: IUser
+    [personId: string]: IPerson
   }
   popup: IPopupState
   quotes: {
     [quoteId: string]: IQuote
   }
-  user: IUser
+  user: IPerson
 }
 
 /* ---------- End State Interfaces ---------- */

@@ -4,17 +4,22 @@ import {
   addQuote,
   closePopup,
 } from '../data/actions';
+import {
+  IQuote,
+  IRootState,
+} from '../data/types';
+import { ThunkDispatch } from 'redux-thunk';
 
-const mapStateToProps = (state, containerProps) => {
+const mapStateToProps = (state: IRootState) => {
   return {
     people: Object.values(state.people),
   }
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, any>) => {
   return {
     cancel: () => dispatch(closePopup()),
-    submit: data => dispatch(addQuote(data)),
+    submit: (data: IQuote) => dispatch(addQuote(data)),
   }
 };
 

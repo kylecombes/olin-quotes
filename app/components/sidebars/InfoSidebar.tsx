@@ -4,13 +4,13 @@ import PersonStats from '../../containers/PersonInfo';
 import QuoteInfo from '../../containers/QuoteInfo';
 
 import {
-  IUser,
+  IPerson,
 } from '../../data/types';
 
 type Props = {
   closeSidebar: () => any
   isVisible: boolean
-  person: IUser
+  person: IPerson
   sidebarType: string
 };
 

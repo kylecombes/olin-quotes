@@ -1,10 +1,10 @@
 import * as React from 'react';
 import {
-  IUser,
+  IPerson,
 } from '../../data/types';
 
 type Props = {
-  person: IUser
+  person: IPerson
 };
 
 export default class PersonInfo extends React.Component<Props> {

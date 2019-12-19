@@ -5,7 +5,7 @@ import { AnyAction } from 'redux';
 import {
   IBoard,
   IQuote,
-  IUser,
+  IPerson,
 } from '../data/types';
 // @ts-ignore
 import QuoteCard from './QuoteCard';
@@ -13,7 +13,7 @@ import QuoteCard from './QuoteCard';
 type Props = {
   board: IBoard | undefined;
   people: {
-    [personId: string]: IUser
+    [personId: string]: IPerson
   } | undefined;
   masonryLayoutTrigger: boolean;
   quotes: IQuote[] | undefined;

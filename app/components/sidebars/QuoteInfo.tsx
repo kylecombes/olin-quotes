@@ -2,13 +2,13 @@ import * as React from 'react';
 import AddComment from '../AddComment';
 import {
   IQuote,
-  IUser,
+  IPerson,
 } from '../../data/types';
 
 type Props = {
   addComment: (quoteId: string, commentText: string) => any
   people: {
-    [personId: string]: IUser
+    [personId: string]: IPerson
   }
   quote: IQuote
   showPersonStats: (personId: string) => any

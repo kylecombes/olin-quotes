@@ -6,7 +6,9 @@ import { ThunkDispatch } from 'redux-thunk';
 
 import {
   IBoard,
-  IQuote, IUser,
+  IQuote,
+  IPerson,
+  INewBoard,
 } from './types';
 import {
   connect as websocketConnect,
@@ -49,7 +51,7 @@ function makeApiRequest(endpoint: string, data?: any) {
   }
 }
 
-export function addBoard(boardInfo: IBoard) {
+export function addBoard(boardInfo: INewBoard) {
   // @ts-ignore
   return (dispatch: ThunkDispatch<{}, {}, any>, getStore, { emit }) => {
     emit(ActionTypes.ADD_BOARD, boardInfo);
@@ -133,7 +135,7 @@ export function masonryRecalculateLayout() {
   return { type: ActionTypes.MASONRY_RECALCULATE_LAYOUT };
 }
 
-export function saveUserInfo(userData: IUser) {
+export function saveUserInfo(userData: IPerson) {
   // @ts-ignore
   return (dispatch: ThunkDispatch<{}, {}, any>, getStore, { emit }) => {
     emit(WS_EVENT_TYPES.SAVE_USER_INFO, userData);
