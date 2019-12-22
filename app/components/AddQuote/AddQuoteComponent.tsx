@@ -9,8 +9,8 @@ type Props = {
   onComponentChange: (arg0: any) => any
   people: IPerson[]
   speakerPlaceholder: string
-  words: string
-  wordsPlaceholder: string
+  content: string
+  contentPlaceholder: string
 };
 
 type State = {
@@ -90,8 +90,8 @@ export default class AddQuoteComponent extends React.Component<Props, State> {
       <div className="quote-add-component">
         <input
           type="text"
-          placeholder={this.props.wordsPlaceholder}
-          value={this.props.words}
+          placeholder={this.props.contentPlaceholder}
+          value={this.props.content}
           onChange={this.wordsChanged}
         />
         <Autosuggest

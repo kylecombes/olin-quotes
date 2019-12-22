@@ -28,12 +28,12 @@ export interface IQuote extends INewQuote {
 
 export interface IQuoteComment {
   authorId: string
-  text: string
+  content: string
 }
 
 export interface IQuoteComponent {
   personId: string
-  words: string
+  content: string
 }
 
 export interface IQuoteComponentUpdate {

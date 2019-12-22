@@ -42,7 +42,7 @@ function onConnect(socket) {
     socket.on('createUserAccount', userData => onCreateUserAccount(userData, socket));
     socket.on('addBoard', boardData => addBoard(boardData, socket));
     socket.on('addQuote', quoteData => onAddQuote(quoteData, socket));
-    socket.on('addQuoteComment', onAddQuoteComment);
+    socket.on('addQuoteComment', commentData => onAddQuoteComment(commentData, socket));
     socket.on('saveUserInfo', userData => saveUserInfo(userData, socket));
     sendInitDataToClient(socket);
   } else { // Unauthenticated client attempting to connect
@@ -152,37 +152,32 @@ function onAddQuote(quoteData, socket) {
     .then(() => sendAllQuotesToClient(socket));
 }
 
-function onAddQuoteComment(request) {
+async function onAddQuoteComment(request, socket) {
   const {
     quoteId,
     text,
   } = request;
 
-  const filter = { _id: ObjectId(quoteId) };
-
   const comment = {
-    // authorId: ObjectId(authorId), TODO: Implement this with authentication/accounts
-    text,
+    authorId: socket.request.user._id,
+    content: text,
   };
 
-  _db.collection('quotes').update(filter, {$push: {comments: comment}}, (err, res) => {
-    if (err) {
-      console.error(err);
-    } else {
-      _io.collection('quotes').findOne(filter, (err, res) => {
-        if (err) {
-          console.error(err);
-        } else {
-          pushSingleQuoteUpdate(res);
-        }
-      });
-    }
-  });
+  const quoteDoc = await Quote.findOne({_id: quoteId});
 
+  if (!quoteDoc) {
+    console.warn(`Could not find quote ${quoteId} to add a comment.`);
+    return;
+  }
+
+  quoteDoc.comments.push(comment);
+  await quoteDoc.save();
+
+  pushSingleQuoteUpdate(quoteDoc.toObject());
 }
 
 function pushSingleQuoteUpdate(quoteData) {
-  this.io.emit('singleQuoteUpdate', quoteData);
+  _io.emit('singleQuoteUpdate', quoteData);
 }
 
 // eslint-disable-next-line no-unused-vars

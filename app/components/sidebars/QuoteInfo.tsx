@@ -19,10 +19,10 @@ const QuoteInfo: React.FC<Props> = (props: Props) => {
   const quoteElement = props.quote.components.map(comp => {
     const speaker = props.people[comp.personId];
     return (
-      <div className="quote-component" key={comp.words}>
+      <div className="quote-component" key={comp.content}>
         <img src={speaker.avatarUrl} title={speaker.displayName} onClick={() => props.showPersonStats(speaker._id)} />
         <div className="words">
-          {comp.words}
+          {comp.content}
         </div>
       </div>
     );
@@ -32,7 +32,7 @@ const QuoteInfo: React.FC<Props> = (props: Props) => {
     const author = props.people[comment.authorId];
     return (
       <div className="comment">
-        <p>{comment.text}</p>
+        <p>{comment.content}</p>
         <p>- {author.displayName}</p>
       </div>
     );
