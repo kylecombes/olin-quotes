@@ -2,6 +2,7 @@
 @import 'colors';
 @import 'AddQuote';
 @import 'BoardView';
+@import 'NavSidebar';
 
 $transition-all: all 0.3s ease;
 $font-family-default: 'Lato', sans-serif;
@@ -135,54 +136,6 @@ button {
     &:hover {
       background-color: $color-button-blue-dark;
     }
-  }
-}
-
-.sidebar {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  background: rgb(48,58,85);
-  position: relative;
-  background: radial-gradient(circle at 80% 0, rgba(48,58,85,1) 0%, rgba(29,38,65,1) 100%);
-
-  &.collapsed {
-    display: none;
-  }
-
-  .close-button {
-    position: absolute;
-    right: 1rem;
-    top: 1rem;
-    color: #aaa;
-    font-size: xx-large;
-    cursor: pointer;
-  }
-
-  .header {
-    margin: 1em;
-  }
-
-  nav {
-    span {
-      display: block;
-      padding: 0.5em 1em;
-      border-left: 0.2em solid rgba(38, 46, 70, 0);
-
-      &.current {
-        background-color: #262e46;
-        border-left: 0.2em solid #ccc;
-      }
-
-      &:hover {
-        background-color: #21283d;
-        cursor: pointer;
-      }
-    }
-  }
-
-  &.info {
-    width: 20%;
   }
 }
 

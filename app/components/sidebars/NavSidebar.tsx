@@ -14,7 +14,7 @@ export default class NavSidebar extends React.Component<Props> {
 
   render() {
     const boardListElems = this.props.boards.map(board => {
-      let className = this.props.currentBoardId === board._id ? 'current' : null;
+      let className = this.props.currentBoardId === board._id ? 'current sidebar-button' : 'sidebar-button';
       return (
         <span
           key={board._id}
@@ -31,10 +31,11 @@ export default class NavSidebar extends React.Component<Props> {
         <div className="header">
           <h1>Olin Quotes</h1>
         </div>
+        <span className="section-header boards-header">Boards</span>
         <nav>
           {boardListElems}
         </nav>
-        <a onClick={this.props.promptCreateBoard}>Create Board</a>
+        <a className="sidebar-button" onClick={this.props.promptCreateBoard}>+ Create Board</a>
       </div>
     )
   }
