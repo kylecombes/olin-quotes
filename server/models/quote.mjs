@@ -10,6 +10,7 @@ const QuoteSchema = new mongoose.Schema({
   board: ObjectId,
   comments: [
     {
+      added: Date,
       authorId: ObjectId,
       content: String,
     }

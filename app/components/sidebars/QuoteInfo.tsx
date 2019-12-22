@@ -1,4 +1,6 @@
 import * as React from 'react';
+import * as moment from 'moment';
+
 import AddComment from '../AddComment';
 import {
   IQuote,
@@ -33,7 +35,7 @@ const QuoteInfo: React.FC<Props> = (props: Props) => {
     return (
       <div className="comment">
         <p>{comment.content}</p>
-        <p>- {author.displayName}</p>
+        <p>- {author.displayName} on {moment(comment.added).format('MMM D, YYYY @ h:mm a')}</p>
       </div>
     );
   }) : <p className="no-comments">No comments</p>;

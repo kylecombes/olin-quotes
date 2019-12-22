@@ -159,6 +159,7 @@ async function onAddQuoteComment(request, socket) {
   } = request;
 
   const comment = {
+    added: new Date(),
     authorId: socket.request.user._id,
     content: text,
   };
