@@ -6,8 +6,8 @@ const {
 
 const QuoteSchema = new mongoose.Schema({
   addDate: Date,
-  addedBy: ObjectId,
-  board: ObjectId,
+  addedById: ObjectId,
+  boardId: ObjectId,
   comments: [
     {
       added: Date,

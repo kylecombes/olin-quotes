@@ -43,11 +43,11 @@ export default class BoardView extends React.Component<Props> {
           <div />
           <span className="board-name">{this.props.board.name}</span>
           <div className="button-container">
-            <button
+            <span
               onClick={this.props.showAddQuoteModal}
             >
-              Add Quote
-            </button>
+              +
+            </span>
           </div>
         </div>
         <span style={{display: 'none'}}>{this.props.masonryLayoutTrigger}</span>

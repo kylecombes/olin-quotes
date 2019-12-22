@@ -144,9 +144,9 @@ function saveUserInfo(userData, socket) {
   });
 }
 
-// TODO: Add object field checking to ensure not just anything sent from the frontend can be added the db
 function onAddQuote(quoteData, socket) {
   console.log('Adding quote...');
+  quoteData.addedById = socket.request.user._id;
   new Quote(quoteData).save()
     // TODO: Send just the new quote to all interested clients
     .then(() => sendAllQuotesToClient(socket));

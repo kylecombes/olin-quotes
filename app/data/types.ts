@@ -39,7 +39,7 @@ export interface IQuoteComponent {
 
 export interface IQuoteComponentUpdate {
   personId?: string
-  words?: string
+  content?: string
 }
 
 export interface IPerson {

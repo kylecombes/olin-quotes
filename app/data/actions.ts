@@ -8,7 +8,7 @@ import {
   IBoard,
   IQuote,
   IPerson,
-  INewBoard,
+  INewBoard, IRootState,
 } from './types';
 import {
   connect as websocketConnect,
@@ -61,8 +61,8 @@ export function addBoard(boardInfo: INewBoard) {
 export function addQuote(quoteData: IQuote) {
   // @ts-ignore
   return (dispatch, getStore, { emit }) => {
-    const state = getStore();
-    quoteData.boardId = state.boards.current._id;
+    const state: IRootState = getStore();
+    quoteData.boardId = state.boards.currentBoardId;
     emit(ActionTypes.ADD_QUOTE, quoteData);
   }
 }
