@@ -1,0 +1,79 @@
+@import 'constants';
+
+$border-radius: 1rem;
+
+.quote-card {
+  margin: $quote-cards-gutter-width;
+  width: (100% - 2*$quote-cards-per-row*$quote-cards-gutter-width)/$quote-cards-per-row;
+
+  .words {
+    background-color: $color-light-blue;
+    font-size: 1.2em;
+    display: block;
+    padding: 0.7em 1em;
+  }
+
+  .attributes {
+    font-size: 0.9em;
+    border: 0.2em solid $color-light-blue;
+    border-top: none;
+    display: flex;
+    align-items: flex-start;
+
+    .author-info {
+      display: flex;
+      align-items: center;
+      padding: 1em 0;
+
+      .avatar {
+        margin-right: 1em;
+        width: 2em;
+        min-width: 2em;
+        border-radius: 1em;
+        cursor: pointer;
+      }
+
+      .author-name {
+        cursor: pointer;
+        display: inline-block;
+        text-transform: uppercase;
+
+        &:hover {
+          color: white;
+        }
+      }
+    }
+
+    &:nth-child(4n) {
+      flex-direction: row-reverse;
+
+      .triangle {
+        transform: scale(-1, 1);
+      }
+    }
+  }
+
+  .triangle {
+    width: 4em;
+    padding: 0 1em 1em;
+    margin-top: -1px; /* To handle 1px separation artifact that happens in Firefox sometimes */
+  }
+
+  .quote-card-footer {
+    background-color: $color-light-blue;
+    border-top: none;
+    display: flex;
+    justify-content: flex-end;
+    padding: 1em;
+  }
+
+  & > :first-child {
+    border-top-left-radius: $border-radius;
+    border-top-right-radius: $border-radius;
+  }
+
+  & > :last-child {
+    border-bottom-left-radius: $border-radius;
+    border-bottom-right-radius: $border-radius;
+  }
+}

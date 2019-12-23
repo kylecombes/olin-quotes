@@ -16,57 +16,52 @@ type Props = {
 export default class QuoteCard extends React.Component<Props> {
 
   render() {
-    let contentElems = [];
-    let authorInfoElems = [];
-    if (this.props.quote.components.length === 1) {
-      const {personId, content} = this.props.quote.components[0];
+    let contentElements: React.ReactElement[] = [];
+    const buttons = (
+      <div className="buttons-container">
+        (Like) (Comments)
+      </div>
+    );
+    this.props.quote.components.forEach((quoteComp, idx: number) => {
+      const {
+        personId,
+        content,
+      } = quoteComp;
       const person = this.props.people[personId];
-      contentElems.push(<span className="words">{content}</span>);
       const showPersonStats = () => this.props.showPersonStats(personId);
-      authorInfoElems.push(
-        <div className="author-info" key={content}>
-          <img
-            src={person.avatarUrl}
-            title={person.displayName}
-            onClick={showPersonStats}
-          />
-          <span className="author-name" onClick={() => this.props.showPersonStats(personId)}>{person.displayName}</span>
+      contentElements.push(
+        <div className="words">
+          {content}
         </div>
       );
-    } else {
-      let authorIds: Set<string> = new Set();
-      this.props.quote.components.forEach(quoteComp => {
-        const {personId, content} = quoteComp;
-        const person = this.props.people[personId];
-        contentElems.push(
-          <div className="quote-component" key={content}>
-            <img src={person.avatarUrl} title={person.displayName} onClick={() => this.props.showPersonStats(person._id)} />
-            <div className="words">
-              {content}
-            </div>
+      contentElements.push(
+        <div className="attributes">
+          <img className="triangle" src="/assets/triangle.svg" />
+          <div className="author-info" key={content}>
+            <img
+              className="avatar"
+              src={person.avatarUrl}
+              title={person.displayName}
+              onClick={showPersonStats}
+            />
+            <span className="author-name" onClick={showPersonStats}>{person.displayName}</span>
+            {this.props.quote.components.length === 1 && buttons}
           </div>
-        );
-        if (!authorIds.has(personId)) {
-          authorInfoElems.push(
-            <span
-              className="author-name"
-              onClick={() => this.props.showPersonStats(person._id)}
-              key={person._id}
-            >
-            {person.displayName}
-          </span>
-          );
-          authorIds.add(personId);
-        }
-      });
+        </div>
+      );
+    });
+
+    if (this.props.quote.components.length > 1) {
+      contentElements.push(
+        <div className="quote-card-footer">
+          {buttons}
+        </div>
+      );
     }
 
     return (
       <div className="quote-card">
-        {contentElems}
-        <div className="attributes">
-          {authorInfoElems} | <span onClick={this.props.onClick}>Info</span>
-        </div>
+        {contentElements}
       </div>
     )
   }
