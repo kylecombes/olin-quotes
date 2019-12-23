@@ -40,11 +40,11 @@ export default class QuoteCard extends React.Component<Props> {
           <div className="author-info" key={content}>
             <img
               className="avatar"
-              src={person.avatarUrl}
-              title={person.displayName}
+              src={person?.avatarUrl}
+              title={person?.displayName}
               onClick={showPersonStats}
             />
-            <span className="author-name" onClick={showPersonStats}>{person.displayName}</span>
+            <span className="author-name" onClick={showPersonStats}>{person?.displayName}</span>
             {this.props.quote.components.length === 1 && buttons}
           </div>
         </div>
