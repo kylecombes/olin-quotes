@@ -8,7 +8,9 @@ import {
   IBoard,
   IQuote,
   IPerson,
-  INewBoard, IRootState,
+  INewBoard,
+  IRootState,
+  IQuoteComment,
 } from './types';
 import {
   getCurrentBoardId,
@@ -24,6 +26,7 @@ export const ActionTypes = {
   ADD_QUOTE_COMMENT: 'addQuoteComment',
   CLOSE_POPUP: 'CLOSE_POPUP',
   CLOSE_SIDEBAR: 'CLOSE_SIDEBAR',
+  DELETE_QUOTE_COMMENT: 'deleteQuoteComment',
   OPEN_POPUP: 'OPEN_POPUP',
   SWITCH_TO_BOARD: 'SWITCH_TO_BOARD',
   SHOW_ADD_QUOTE_MODAL: 'SHOW_ADD_QUOTE_MODAL',
@@ -84,6 +87,25 @@ export function addQuoteComment(quoteId: string, text: string) {
     });
   }
 }
+
+export function deleteQuoteComment(comment: IQuoteComment) {
+  // @ts-ignore
+  return (dispatch, getStore, { emit }) => {
+    emit(ActionTypes.DELETE_QUOTE_COMMENT, {
+      commentId: comment._id,
+    });
+  }
+}
+
+export function updateQuoteComment(comment: IQuoteComment) {
+  // @ts-ignore
+  return (dispatch, getStore, { emit }) => {
+    emit(ActionTypes.DELETE_QUOTE_COMMENT, {
+      commentId: comment._id,
+    });
+  }
+}
+
 
 export function checkLoginStatus() {
   return () => {

@@ -43,6 +43,7 @@ function onConnect(socket) {
     socket.on('addBoard', boardData => addBoard(boardData, socket));
     socket.on('addQuote', quoteData => onAddQuote(quoteData, socket));
     socket.on('addQuoteComment', commentData => onAddQuoteComment(commentData, socket));
+    socket.on('deleteQuoteComment', request => onDeleteQuoteComment(request, socket));
     socket.on('saveUserInfo', userData => saveUserInfo(userData, socket));
     sendInitDataToClient(socket);
   } else { // Unauthenticated client attempting to connect
@@ -172,6 +173,23 @@ async function onAddQuoteComment(request, socket) {
   }
 
   quoteDoc.comments.push(comment);
+  await quoteDoc.save();
+
+  pushSingleQuoteUpdate(quoteDoc.toObject());
+}
+
+async function onDeleteQuoteComment(request) {
+  const commentId = ObjectId(request.commentId);
+
+  const quoteDoc = await Quote.findOne({comments: {$elemMatch: {_id: commentId}}});
+
+  if (!quoteDoc) {
+    console.warn(`Could not find quote containing comment ${commentId} to delete comment.`);
+    return;
+  }
+
+  quoteDoc.comments = quoteDoc.comments.filter(c => !c._id.equals(commentId));
+
   await quoteDoc.save();
 
   pushSingleQuoteUpdate(quoteDoc.toObject());

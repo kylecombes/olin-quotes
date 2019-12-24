@@ -5,8 +5,11 @@ import QuoteInfoPage from '../components/pages/QuoteInfoPage';
 import {
   closeSidebar,
   addQuoteComment,
+  deleteQuoteComment,
+  updateQuoteComment,
 } from '../data/actions';
 import {
+  IQuoteComment,
   IRootState,
 } from '../data/types';
 import {
@@ -32,7 +35,9 @@ const mapStateToProps = (state: IRootState) => {
 const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, any>) => {
   return {
     closeSidebar: () => dispatch(closeSidebar()),
+    deleteComment: (comment: IQuoteComment) => dispatch(deleteQuoteComment(comment)),
     addComment: (quoteId: string, comment: string) => dispatch(addQuoteComment(quoteId, comment)),
+    updateQuoteComment: (comment: IQuoteComment) => dispatch(updateQuoteComment(comment)),
   }
 };
 

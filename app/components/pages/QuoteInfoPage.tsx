@@ -1,18 +1,21 @@
 import * as React from 'react';
-import * as moment from 'moment';
 
 import AddComment from '../AddComment';
+import Comment from '../Comment';
 import {
   IQuote,
   IPerson,
+  IQuoteComment,
 } from '../../data/types';
 
 type Props = {
   addComment: (quoteId: string, commentText: string) => any
+  deleteComment: (comment: IQuoteComment) => any
   people: {
     [personId: string]: IPerson
   }
   quote: IQuote
+  updateQuoteComment: (comment: IQuoteComment) => any
   showPersonStats: (personId: string) => any
 };
 
@@ -36,12 +39,13 @@ const QuoteInfoPage: React.FC<Props> = (props: Props) => {
 
   const comments = props.quote.comments ? props.quote.comments.map(comment => {
     const author = props.people[comment.authorId];
-    return (
-      <div className="comment">
-        <p>{comment.content}</p>
-        <p>- {author.displayName} on {moment(comment.added).format('MMM D, YYYY @ h:mm a')}</p>
-      </div>
-    );
+    const deleteComment = () => props.deleteComment(comment);
+    return <Comment
+      author={author}
+      comment={comment}
+      deleteComment={deleteComment}
+      updateQuoteComment={props.updateQuoteComment}
+    />;
   }) : <p className="no-comments">No comments</p>;
 
   const addComment = (commentText: string) => props.addComment(props.quote._id, commentText);

@@ -28,6 +28,7 @@ export interface IQuote extends INewQuote {
 }
 
 export interface IQuoteComment {
+  _id: string
   added: string
   authorId: string
   content: string
