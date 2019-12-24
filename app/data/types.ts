@@ -72,11 +72,6 @@ export interface IGeneralState {
   server: string
 }
 
-export interface IInfoSidebarState {
-  elementId: string
-  sidebarType: string
-}
-
 export interface INavSidebarState {
   visible: boolean
 }
@@ -84,7 +79,6 @@ export interface INavSidebarState {
 export interface IRootState {
   boards: IBoardsState
   general: IGeneralState
-  infoSidebar: IInfoSidebarState
   navSidebar: INavSidebarState
   people: {
     [personId: string]: IPerson

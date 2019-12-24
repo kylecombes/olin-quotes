@@ -11,7 +11,6 @@ import {
   history,
 } from '../data/setup-store';
 import BoardViewPage from '../containers/BoardViewPage';
-import InfoSidebar from '../containers/InfoSidebar';
 import Login from './Login';
 import NavSidebar from '../containers/NavSidebar';
 import PersonInfoPage from '../containers/PersonInfoPage';
@@ -50,7 +49,6 @@ const LoggedInView = (props: IProps) => (
               <Route exact path="/people/:id" component={PersonInfoPage} />
               <Route exact path="/quotes/:id" component={QuoteInfoPage} />
             </Switch>
-            <InfoSidebar/>
           </ConnectedRouter>
         </Provider>
       </div>

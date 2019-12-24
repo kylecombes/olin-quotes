@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {
   IBoard,
-} from '../../data/types';
+} from '../data/types';
 
 type Props = {
   boards: IBoard[]
