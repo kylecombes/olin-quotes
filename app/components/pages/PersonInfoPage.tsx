@@ -10,6 +10,9 @@ type Props = {
 export default class PersonInfoPage extends React.Component<Props> {
 
   render() {
+    if (!this.props.person) {
+      return null;
+    }
     return (
       <div className="person-info">
         <div className="header">

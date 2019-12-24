@@ -1,4 +1,6 @@
 import { connect } from 'react-redux';
+import { ThunkDispatch } from 'redux-thunk';
+
 import QuoteInfoPage from '../components/pages/QuoteInfoPage';
 import {
   closeSidebar,
@@ -7,15 +9,13 @@ import {
 import {
   IRootState,
 } from '../data/types';
-import { ThunkDispatch } from 'redux-thunk';
+import {
+  getCurrentQuoteId,
+} from '../utils';
 
 const mapStateToProps = (state: IRootState) => {
-  // Extract the quote ID from the URL
-  const regexMatch = state.router.location.pathname.match(/^\/quotes\/(\w+)/);
-  let quoteId;
-  if (regexMatch) {
-    quoteId = regexMatch[1];
-  } else {
+  const quoteId = getCurrentQuoteId(state);
+  if (!quoteId) {
     return {};
   }
 

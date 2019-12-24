@@ -15,19 +15,15 @@ import {
   IQuote,
   IRootState,
 } from '../data/types';
+import {
+  getCurrentBoardId,
+} from '../utils';
 
 const mapStateToProps = (state: IRootState) => {
-  // Extract the board ID from the URL
-  const regexMatch = state.router.location.pathname.match(/^\/boards\/(\w+)/);
-  let boardId;
-  if (regexMatch) {
-    boardId = regexMatch[1];
-  } else {
-    return {};
-  }
+  const boardId = getCurrentBoardId(state);
   const board = state.boards.allBoards[boardId];
   if (!board) {
-    // This function gets called after the URL changes, so sometimes the resolved ID
+    return {};
   }
   const quotes = Object.values(state.quotes).filter(q => q.boardId === board._id);
 

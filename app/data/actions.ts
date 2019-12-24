@@ -2,7 +2,6 @@
 
 import axios from 'axios'
 import { push } from 'connected-react-router';
-import { AnyAction } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
 
 import {
@@ -11,6 +10,9 @@ import {
   IPerson,
   INewBoard, IRootState,
 } from './types';
+import {
+  getCurrentBoardId,
+} from '../utils';
 import {
   connect as websocketConnect,
   WS_EVENT_TYPES,
@@ -63,7 +65,12 @@ export function addQuote(quoteData: IQuote) {
   // @ts-ignore
   return (dispatch, getStore, { emit }) => {
     const state: IRootState = getStore();
-    quoteData.boardId = state.boards.currentBoardId;
+    const currentBoardId = getCurrentBoardId(state);
+    if (!currentBoardId) {
+      console.error('addQuote: Could not resolve current board ID from URL.');
+      return;
+    }
+    quoteData.boardId = currentBoardId;
     emit(ActionTypes.ADD_QUOTE, quoteData);
   }
 }

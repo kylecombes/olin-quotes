@@ -13,13 +13,23 @@ type Props = {
 export default class NavSidebar extends React.Component<Props> {
 
   render() {
-    const boardListElems = this.props.boards.map(board => {
-      let className = this.props.currentBoardId === board._id ? 'current sidebar-button' : 'sidebar-button';
+    const {
+      currentBoardId,
+      boards,
+      switchToBoard,
+    } = this.props;
+
+    if (!boards) {
+      return null;
+    }
+
+    const boardListElems = boards.map(board => {
+      let className = currentBoardId === board._id ? 'current sidebar-button' : 'sidebar-button';
       return (
         <span
           key={board._id}
           className={className}
-          onClick={() => this.props.switchToBoard(board)}
+          onClick={() => switchToBoard(board)}
           title={board.description}>
           {board.name}
         </span>

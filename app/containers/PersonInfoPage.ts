@@ -1,4 +1,6 @@
 import { connect } from 'react-redux';
+import { ThunkDispatch } from 'redux-thunk';
+
 import PersonInfoPage from '../components/pages/PersonInfoPage';
 import {
   closeSidebar,
@@ -6,11 +8,17 @@ import {
 import {
   IRootState,
 } from '../data/types';
-import { ThunkDispatch } from 'redux-thunk';
+import {
+  getCurrentPersonId,
+} from '../utils';
 
 const mapStateToProps = (state: IRootState) => {
+  const personId = getCurrentPersonId(state);
+  if (!personId) {
+    return {};
+  }
   return {
-    person: state.people[state.infoSidebar.elementId],
+    person: state.people[personId],
   }
 };
 
