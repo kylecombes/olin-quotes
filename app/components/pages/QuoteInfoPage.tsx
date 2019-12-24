@@ -16,7 +16,7 @@ type Props = {
   showPersonStats: (personId: string) => any
 };
 
-const QuoteInfo: React.FC<Props> = (props: Props) => {
+const QuoteInfoPage: React.FC<Props> = (props: Props) => {
 
   const quoteElement = props.quote.components.map(comp => {
     const speaker = props.people[comp.personId];
@@ -60,4 +60,4 @@ const QuoteInfo: React.FC<Props> = (props: Props) => {
 
 };
 
-export default QuoteInfo;
+export default QuoteInfoPage;

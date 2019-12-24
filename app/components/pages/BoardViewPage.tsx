@@ -6,9 +6,9 @@ import {
   IBoard,
   IQuote,
   IPerson,
-} from '../data/types';
+} from '../../data/types';
 // @ts-ignore
-import QuoteCard from './QuoteCard';
+import QuoteCard from '../QuoteCard';
 
 type Props = {
   board: IBoard | undefined;
@@ -22,7 +22,7 @@ type Props = {
   showQuoteInfo: (quoteId: string) => AnyAction;
 };
 
-export default class BoardView extends React.Component<Props> {
+export default class BoardViewPage extends React.Component<Props> {
 
   render() {
     if (!this.props.people || !this.props.quotes || !this.props.board) return null;

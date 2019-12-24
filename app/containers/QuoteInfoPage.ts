@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import QuoteInfo from '../components/sidebars/QuoteInfo';
+import QuoteInfoPage from '../components/pages/QuoteInfoPage';
 import {
   closeSidebar,
   addQuoteComment,
@@ -26,4 +26,4 @@ const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, any>) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(QuoteInfo);
+)(QuoteInfoPage);

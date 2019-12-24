@@ -7,7 +7,7 @@ type Props = {
   person: IPerson
 };
 
-export default class PersonInfo extends React.Component<Props> {
+export default class PersonInfoPage extends React.Component<Props> {
 
   render() {
     return (

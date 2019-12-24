@@ -10,7 +10,7 @@ import {
   store,
   history,
 } from '../data/setup-store';
-import BoardView from '../containers/BoardView';
+import BoardView from '../containers/BoardViewPage';
 import InfoSidebar from '../containers/InfoSidebar';
 import Login from './Login';
 import NavSidebar from '../containers/NavSidebar';

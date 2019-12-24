@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import PersonStats from '../../containers/PersonInfo';
-import QuoteInfo from '../../containers/QuoteInfo';
+import PersonStats from '../../containers/PersonInfoPage';
+import QuoteInfo from '../../containers/QuoteInfoPage';
 
 import {
   IPerson,

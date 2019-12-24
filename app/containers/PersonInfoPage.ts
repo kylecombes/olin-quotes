@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import PersonInfo from '../components/sidebars/PersonInfo';
+import PersonInfoPage from '../components/pages/PersonInfoPage';
 import {
   closeSidebar,
 } from '../data/actions';
@@ -23,4 +23,4 @@ const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, any>) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(PersonInfo);
+)(PersonInfoPage);

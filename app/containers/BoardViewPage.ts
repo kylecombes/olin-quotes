@@ -5,7 +5,7 @@ import {
 } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
 
-import BoardView from '../components/BoardView';
+import BoardViewPage from '../components/pages/BoardViewPage';
 import {
   showAddQuoteModal,
   showPersonStats,
@@ -44,4 +44,4 @@ const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, AnyAction>) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(BoardView);
+)(BoardViewPage);
