@@ -13,6 +13,7 @@ const QuoteSchema = new mongoose.Schema({
       added: Date,
       authorId: ObjectId,
       content: String,
+      lastEdited: Date,
     }
   ],
   components: [

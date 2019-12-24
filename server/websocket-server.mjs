@@ -212,6 +212,7 @@ async function onUpdateQuoteComment(request) {
   for (let i = 0; i < quoteDoc.comments.length; ++i) {
     if (quoteDoc.comments[i]._id.equals(commentId)) {
       quoteDoc.comments[i].content = content;
+      quoteDoc.comments[i].lastEdited = new Date();
       break;
     }
   }
