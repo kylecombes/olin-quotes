@@ -11,6 +11,7 @@ type Props = {
   }
   quote: IQuote
   showPersonStats: (personId: string) => any
+  showQuoteInfo: (quote: IQuote) => any
 };
 
 export default class QuoteCard extends React.Component<Props> {
@@ -22,7 +23,8 @@ export default class QuoteCard extends React.Component<Props> {
         (Like) (Comments)
       </div>
     );
-    this.props.quote.components.forEach((quoteComp, idx: number) => {
+    const showQuoteInfo = () => this.props.showQuoteInfo(this.props.quote);
+    this.props.quote.components.forEach((quoteComp) => {
       const {
         personId,
         content,
@@ -30,7 +32,7 @@ export default class QuoteCard extends React.Component<Props> {
       const person = this.props.people[personId];
       const showPersonStats = () => this.props.showPersonStats(personId);
       contentElements.push(
-        <div className="words">
+        <div className="words" onClick={showQuoteInfo}>
           {content}
         </div>
       );

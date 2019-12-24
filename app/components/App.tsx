@@ -10,11 +10,13 @@ import {
   store,
   history,
 } from '../data/setup-store';
-import BoardView from '../containers/BoardViewPage';
+import BoardViewPage from '../containers/BoardViewPage';
 import InfoSidebar from '../containers/InfoSidebar';
 import Login from './Login';
 import NavSidebar from '../containers/NavSidebar';
+import PersonInfoPage from '../containers/PersonInfoPage';
 import Popup from '../containers/Popup'
+import QuoteInfoPage from '../containers/QuoteInfoPage';
 
 interface IProps {
   checkLoginStatus: () => null
@@ -44,8 +46,9 @@ const LoggedInView = (props: IProps) => (
         <Provider store={store}>
           <ConnectedRouter history={history}>
             <Switch>
-              <Route exact path="/" component={BoardView} />
-              <Route exact path="/boards/:id" component={BoardView} />
+              <Route exact path="/boards/:id" component={BoardViewPage} />
+              <Route exact path="/people/:id" component={PersonInfoPage} />
+              <Route exact path="/quotes/:id" component={QuoteInfoPage} />
             </Switch>
             <InfoSidebar/>
           </ConnectedRouter>

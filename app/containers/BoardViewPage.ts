@@ -12,14 +12,23 @@ import {
   showQuoteInfo,
 } from '../data/actions';
 import {
+  IQuote,
   IRootState,
 } from '../data/types';
 
 const mapStateToProps = (state: IRootState) => {
-  if (!state.boards.currentBoardId || !state.quotes) {
+  // Extract the board ID from the URL
+  const regexMatch = state.router.location.pathname.match(/^\/boards\/(\w+)/);
+  let boardId;
+  if (regexMatch) {
+    boardId = regexMatch[1];
+  } else {
     return {};
   }
-  const board = state.boards.allBoards[state.boards.currentBoardId];
+  const board = state.boards.allBoards[boardId];
+  if (!board) {
+    // This function gets called after the URL changes, so sometimes the resolved ID
+  }
   const quotes = Object.values(state.quotes).filter(q => q.boardId === board._id);
 
   return {
@@ -34,7 +43,7 @@ const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, AnyAction>) => {
   return bindActionCreators(
     {
       showPersonStats: (personId: string) => dispatch(showPersonStats(personId)),
-      showQuoteInfo: (quoteId: string) => dispatch(showQuoteInfo(quoteId)),
+      showQuoteInfo: (quote: IQuote) => dispatch(showQuoteInfo(quote)),
       showAddQuoteModal: () => dispatch(showAddQuoteModal()),
     },
     dispatch

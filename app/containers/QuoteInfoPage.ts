@@ -10,8 +10,21 @@ import {
 import { ThunkDispatch } from 'redux-thunk';
 
 const mapStateToProps = (state: IRootState) => {
+  // Extract the quote ID from the URL
+  const regexMatch = state.router.location.pathname.match(/^\/quotes\/(\w+)/);
+  let quoteId;
+  if (regexMatch) {
+    quoteId = regexMatch[1];
+  } else {
+    return {};
+  }
+
+  if (!state.quotes[quoteId]) {
+    return {};
+  }
+
   return {
-    quote: state.quotes[state.infoSidebar.elementId],
+    quote: state.quotes[quoteId],
     people: state.people,
   }
 };

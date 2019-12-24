@@ -7,7 +7,6 @@ import {
   IQuote,
   IPerson,
 } from '../../data/types';
-// @ts-ignore
 import QuoteCard from '../QuoteCard';
 
 type Props = {
@@ -19,7 +18,7 @@ type Props = {
   quotes: IQuote[] | undefined;
   showAddQuoteModal: () => AnyAction;
   showPersonStats: (personId: string) => AnyAction;
-  showQuoteInfo: (quoteId: string) => AnyAction;
+  showQuoteInfo: (quote: IQuote) => AnyAction;
 };
 
 export default class BoardViewPage extends React.Component<Props> {
@@ -33,8 +32,9 @@ export default class BoardViewPage extends React.Component<Props> {
           quote={quote}
           people={this.props.people}
           key={quote._id}
+          showQuoteInfo={this.props.showQuoteInfo}
           showPersonStats={this.props.showPersonStats}
-          onClick={() => this.props.showQuoteInfo(quote._id)}
+          onClick={() => this.props.showQuoteInfo(quote)}
         />)
     });
     return (

@@ -1,6 +1,7 @@
 /* This file contains all of the Redux actions. */
 
 import axios from 'axios'
+import { push } from 'connected-react-router';
 import { AnyAction } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
 
@@ -90,25 +91,19 @@ export function checkLoginStatus() {
 }
 
 export function switchToBoard(board: IBoard) {
-  return { type: ActionTypes.SWITCH_TO_BOARD, data: board };
+  return push(`/boards/${board._id}`);
 }
 
 export function showAddQuoteModal() {
   return { type: ActionTypes.OPEN_POPUP, data: 'addQuote' };
 }
 
-export function showQuoteInfo(quoteId: string) {
-  return (dispatch: ThunkDispatch<{}, {}, AnyAction>) => {
-    dispatch({type: ActionTypes.SHOW_QUOTE_INFO, data: quoteId});
-    dispatch(masonryRecalculateLayout());
-  }
+export function showQuoteInfo(quote: IQuote) {
+  return push(`/quotes/${quote._id}`);
 }
 
 export function showPersonStats(personId: string) {
-  return (dispatch: ThunkDispatch<{}, {}, AnyAction>) => {
-    dispatch({type: ActionTypes.SHOW_PERSON_STATS, data: personId});
-    dispatch(masonryRecalculateLayout());
-  }
+  return push(`/people/${personId}`);
 }
 
 export function openLogin() {

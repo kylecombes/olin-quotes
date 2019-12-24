@@ -18,6 +18,10 @@ type Props = {
 
 const QuoteInfoPage: React.FC<Props> = (props: Props) => {
 
+  if (!props.quote || Object.keys(props.people).length === 0) {
+    return null;
+  }
+
   const quoteElement = props.quote.components.map(comp => {
     const speaker = props.people[comp.personId];
     return (

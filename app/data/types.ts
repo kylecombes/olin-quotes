@@ -1,3 +1,4 @@
+import { RouterState } from 'connected-react-router';
 
 export interface IBoard extends INewBoard {
   _id: string
@@ -58,7 +59,6 @@ export interface IWebSocketMessagePayload {
 /* ---------- Begin State Interfaces ---------- */
 
 export interface IBoardsState {
-  currentBoardId: string | null
   allBoards: {
     [boardId: string]: IBoard
   }
@@ -93,6 +93,7 @@ export interface IRootState {
   quotes: {
     [quoteId: string]: IQuote
   }
+  router: RouterState
   user: IPerson
 }
 
