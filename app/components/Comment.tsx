@@ -20,13 +20,36 @@ const Comment: React.FC<Props> = (props: Props) => {
     comment,
   } = props;
 
-  return (
-    <div className="comment">
-      <p>{comment.content}</p>
-      <p>- {author.displayName} on {moment(comment.added).format('MMM D, YYYY @ h:mm a')}</p>
-      <p><span onClick={props.deleteComment}>Delete</span> <span>Edit</span></p>
-    </div>
-  );
+  const initialState = {
+    content: comment.content,
+    editing: false,
+  };
+  const [state, setState] = React.useState(initialState);
+
+  if (state.editing) {
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => setState({...state, content: e.target.value});
+    const discard = () => setState(initialState);
+    const save = () => {
+      props.updateQuoteComment({...comment, content: state.content});
+      setState(initialState);
+    };
+    return (
+      <div className="comment editing">
+        <input type="text" value={state.content} onChange={onChange}/>
+        <button className="button" onClick={discard}>Discard</button>
+        <button className="button" onClick={save}>Save</button>
+      </div>
+    )
+  } else {
+    const beginEditing = () => setState({content: props.comment.content, editing: true});
+    return (
+      <div className="comment">
+        <p>{comment.content}</p>
+        <p>- {author.displayName} on {moment(comment.added).format('MMM D, YYYY @ h:mm a')}</p>
+        <p><span onClick={beginEditing}>Edit</span> <span onClick={props.deleteComment}>Delete</span></p>
+      </div>
+    );
+  }
 };
 
 export default Comment;

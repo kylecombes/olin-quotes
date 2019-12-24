@@ -33,6 +33,7 @@ export const ActionTypes = {
   SHOW_PERSON_STATS: 'SHOW_PERSON_STATS',
   SHOW_QUOTE_INFO: 'SHOW_QUOTE_INFO',
   MASONRY_RECALCULATE_LAYOUT: 'MASONRY_RECALCULATE_LAYOUT',
+  UPDATE_QUOTE_COMMENT: 'updateQuoteComment',
 };
 
 let _axioInstance = axios.create({
@@ -92,7 +93,7 @@ export function deleteQuoteComment(comment: IQuoteComment) {
   // @ts-ignore
   return (dispatch, getStore, { emit }) => {
     emit(ActionTypes.DELETE_QUOTE_COMMENT, {
-      commentId: comment._id,
+      id: comment._id,
     });
   }
 }
@@ -100,8 +101,9 @@ export function deleteQuoteComment(comment: IQuoteComment) {
 export function updateQuoteComment(comment: IQuoteComment) {
   // @ts-ignore
   return (dispatch, getStore, { emit }) => {
-    emit(ActionTypes.DELETE_QUOTE_COMMENT, {
-      commentId: comment._id,
+    emit(ActionTypes.UPDATE_QUOTE_COMMENT, {
+      id: comment._id,
+      content: comment.content,
     });
   }
 }
