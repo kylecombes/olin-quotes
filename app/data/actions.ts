@@ -27,6 +27,7 @@ export const ActionTypes = {
   CLOSE_POPUP: 'CLOSE_POPUP',
   CLOSE_SIDEBAR: 'CLOSE_SIDEBAR',
   DELETE_QUOTE_COMMENT: 'deleteQuoteComment',
+  LIKE_UNLIKE_QUOTE_COMMENT: 'toggleCommentLike',
   OPEN_POPUP: 'OPEN_POPUP',
   SWITCH_TO_BOARD: 'SWITCH_TO_BOARD',
   SHOW_ADD_QUOTE_MODAL: 'SHOW_ADD_QUOTE_MODAL',
@@ -85,6 +86,15 @@ export function addQuoteComment(quoteId: string, text: string) {
     emit(ActionTypes.ADD_QUOTE_COMMENT, {
       quoteId,
       text,
+    });
+  }
+}
+
+export function toggleQuoteCommentLike(comment: IQuoteComment) {
+  // @ts-ignore
+  return (dispatch, getStore, { emit }) => {
+    emit(ActionTypes.LIKE_UNLIKE_QUOTE_COMMENT, {
+      id: comment._id,
     });
   }
 }

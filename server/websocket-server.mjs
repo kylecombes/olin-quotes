@@ -44,6 +44,7 @@ function onConnect(socket) {
     socket.on('addQuote', quoteData => onAddQuote(quoteData, socket));
     socket.on('addQuoteComment', commentData => onAddQuoteComment(commentData, socket));
     socket.on('deleteQuoteComment', request => onDeleteQuoteComment(request, socket));
+    socket.on('toggleCommentLike', request => toggleCommentLike(request, socket));
     socket.on('updateQuoteComment', request => onUpdateQuoteComment(request, socket));
     socket.on('saveUserInfo', userData => saveUserInfo(userData, socket));
     sendInitDataToClient(socket);
@@ -215,6 +216,45 @@ async function onUpdateQuoteComment(request) {
       quoteDoc.comments[i].lastEdited = new Date();
       break;
     }
+  }
+
+  await quoteDoc.save();
+
+  pushSingleQuoteUpdate(quoteDoc.toObject());
+}
+
+function indexOf(iter, checkFn) {
+  for (let i = 0; i < iter.length; ++i)
+    if (checkFn(iter[i]))
+      return i;
+  return -1;
+}
+
+async function toggleCommentLike(request, socket) {
+  const commentId = request.id;
+  const userId = socket.request.user._id;
+
+  const quoteDoc = await Quote.findOne({comments: {$elemMatch: {_id: commentId}}});
+
+  if (!quoteDoc) {
+    console.warn(`Could not find quote containing comment ${commentId} to delete comment.`);
+    return;
+  }
+
+  // First extract the comment in question
+  const comment = quoteDoc.comments[indexOf(quoteDoc.comments, c => c._id.equals(commentId))];
+
+  // Then toggle whether or not the user has liked it
+  const likeIdx = indexOf(comment.likes, l => l.personId.equals(userId));
+  if (likeIdx >= 0) {
+    // The user has liked the comment, so remove the like
+    comment.likes.splice(likeIdx, 1);
+  } else {
+    // The user has not liked the comment, so add a like
+    comment.likes.push({
+      personId: userId,
+      date: new Date(),
+    });
   }
 
   await quoteDoc.save();

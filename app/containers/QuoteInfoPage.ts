@@ -6,6 +6,7 @@ import {
   closeSidebar,
   addQuoteComment,
   deleteQuoteComment,
+  toggleQuoteCommentLike,
   updateQuoteComment,
 } from '../data/actions';
 import {
@@ -29,6 +30,7 @@ const mapStateToProps = (state: IRootState) => {
   return {
     quote: state.quotes[quoteId],
     people: state.people,
+    userId: state.user._id,
   }
 };
 
@@ -37,6 +39,7 @@ const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, any>) => {
     closeSidebar: () => dispatch(closeSidebar()),
     deleteComment: (comment: IQuoteComment) => dispatch(deleteQuoteComment(comment)),
     addComment: (quoteId: string, comment: string) => dispatch(addQuoteComment(quoteId, comment)),
+    toggleCommentLike: (comment: IQuoteComment) => dispatch(toggleQuoteCommentLike(comment)),
     updateQuoteComment: (comment: IQuoteComment) => dispatch(updateQuoteComment(comment)),
   }
 };

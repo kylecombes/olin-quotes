@@ -5,12 +5,17 @@ import {
   IPerson,
   IQuoteComment,
 } from '../data/types';
+import {
+  indexOf,
+} from '../utils';
 
 type Props = {
   author: IPerson
   comment: IQuoteComment
+  toggleCommentLike: () => any
   deleteComment: () => any
   updateQuoteComment: (comment: IQuoteComment) => any
+  userId: string
 };
 
 const Comment: React.FC<Props> = (props: Props) => {
@@ -18,6 +23,7 @@ const Comment: React.FC<Props> = (props: Props) => {
   const {
     author,
     comment,
+    userId,
   } = props;
 
   const initialState = {
@@ -42,11 +48,18 @@ const Comment: React.FC<Props> = (props: Props) => {
     )
   } else {
     const beginEditing = () => setState({content: props.comment.content, editing: true});
+    const userLiked = indexOf(comment.likes, l => l.personId === userId) >= 0;
     return (
       <div className="comment">
         <p>{comment.content}</p>
         <p>- {author.displayName} on {moment(comment.added).format('MMM D, YYYY @ h:mm a')}</p>
-        <p><span onClick={beginEditing}>Edit</span> <span onClick={props.deleteComment}>Delete</span></p>
+        <p>
+          <span onClick={props.toggleCommentLike}>{userLiked ? 'Unlike' : 'Like'}</span>
+          &nbsp;
+          <span onClick={beginEditing}>Edit</span>
+          &nbsp;
+          <span onClick={props.deleteComment}>Delete</span>
+        </p>
       </div>
     );
   }

@@ -4,6 +4,11 @@ export interface IBoard extends INewBoard {
   _id: string
 }
 
+export interface ILike {
+  date: Date
+  personId: string
+}
+
 export interface INewBoard {
   description: string
   name: string
@@ -32,6 +37,7 @@ export interface IQuoteComment {
   added: string
   authorId: string
   content: string
+  likes: ILike[]
 }
 
 export interface IQuoteComponent {

@@ -17,6 +17,8 @@ type Props = {
   quote: IQuote
   updateQuoteComment: (comment: IQuoteComment) => any
   showPersonStats: (personId: string) => any
+  toggleCommentLike: (comment: IQuoteComment) => any
+  userId: string
 };
 
 const QuoteInfoPage: React.FC<Props> = (props: Props) => {
@@ -40,11 +42,14 @@ const QuoteInfoPage: React.FC<Props> = (props: Props) => {
   const comments = props.quote.comments ? props.quote.comments.map(comment => {
     const author = props.people[comment.authorId];
     const deleteComment = () => props.deleteComment(comment);
+    const toggleCommentLike = () => props.toggleCommentLike(comment);
     return <Comment
       author={author}
       comment={comment}
       deleteComment={deleteComment}
+      toggleCommentLike={toggleCommentLike}
       updateQuoteComment={props.updateQuoteComment}
+      userId={props.userId}
     />;
   }) : <p className="no-comments">No comments</p>;
 

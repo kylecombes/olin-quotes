@@ -4,6 +4,11 @@ const {
   ObjectId,
 } = mongoose.Schema.Types;
 
+const Like = new mongoose.Schema({
+  date: Date,
+  personId: ObjectId,
+});
+
 const QuoteSchema = new mongoose.Schema({
   addDate: Date,
   addedById: ObjectId,
@@ -14,6 +19,7 @@ const QuoteSchema = new mongoose.Schema({
       authorId: ObjectId,
       content: String,
       lastEdited: Date,
+      likes: [Like],
     }
   ],
   components: [
@@ -22,6 +28,7 @@ const QuoteSchema = new mongoose.Schema({
       content: String,
     }
   ],
+  likes: [Like],
 });
 
 export default mongoose.model('Quote', QuoteSchema);
