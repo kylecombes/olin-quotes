@@ -180,43 +180,60 @@ async function onAddQuoteComment(request, socket) {
   pushSingleQuoteUpdate(quoteDoc.toObject());
 }
 
-async function onDeleteQuoteComment(request) {
+async function onDeleteQuoteComment(request, socket) {
   const commentId = ObjectId(request.id);
 
-  const quoteDoc = await Quote.findOne({comments: {$elemMatch: {_id: commentId}}});
+  const quoteDoc = await Quote.findQuoteByComment(commentId);
 
   if (!quoteDoc) {
     console.warn(`Could not find quote containing comment ${commentId} to delete comment.`);
     return;
   }
 
-  quoteDoc.comments = quoteDoc.comments.filter(c => !c._id.equals(commentId));
+  // Extract the comment
+  let comment = quoteDoc.getCommentById(commentId);
 
+  // Make sure the user has permission to edit it
+  const userId = socket.request.user._id;
+  if (!userCanModifyComment(comment, userId)) {
+    console.warn(`User ${userId} attempting to edit comment ${commentId}, which was not created by that user.`);
+    return;
+  }
+
+  // Remove the comment in question
+  quoteDoc.comments = quoteDoc.comments.filter(c => c !== comment);
+
+  // Save the quote
   await quoteDoc.save();
 
   pushSingleQuoteUpdate(quoteDoc.toObject());
 }
 
-async function onUpdateQuoteComment(request) {
+async function onUpdateQuoteComment(request, socket) {
   const {
     id: commentId,
     content,
   } = request;
 
-  const quoteDoc = await Quote.findOne({comments: {$elemMatch: {_id: commentId}}});
+  const quoteDoc = await Quote.findQuoteByComment(commentId);
 
   if (!quoteDoc) {
     console.warn(`Could not find quote containing comment ${commentId} to delete comment.`);
     return;
   }
 
-  for (let i = 0; i < quoteDoc.comments.length; ++i) {
-    if (quoteDoc.comments[i]._id.equals(commentId)) {
-      quoteDoc.comments[i].content = content;
-      quoteDoc.comments[i].lastEdited = new Date();
-      break;
-    }
+  // Extract the comment
+  let comment = quoteDoc.getCommentById(commentId);
+
+  // Make sure the user has permission to edit it
+  const userId = socket.request.user._id;
+  if (!userCanModifyComment(comment, userId)) {
+    console.warn(`User ${userId} attempting to edit comment ${commentId}, which was not created by that user.`);
+    return;
   }
+
+  comment.content = content;
+  comment.lastEdited = new Date();
 
   await quoteDoc.save();
 
@@ -230,11 +247,15 @@ function indexOf(iter, checkFn) {
   return -1;
 }
 
+function userCanModifyComment(comment, userId) {
+  return comment.authorId.equals(userId);
+}
+
 async function toggleCommentLike(request, socket) {
   const commentId = request.id;
   const userId = socket.request.user._id;
 
-  const quoteDoc = await Quote.findOne({comments: {$elemMatch: {_id: commentId}}});
+  const quoteDoc = await Quote.findQuoteByComment(commentId);
 
   if (!quoteDoc) {
     console.warn(`Could not find quote containing comment ${commentId} to delete comment.`);

@@ -31,4 +31,15 @@ const QuoteSchema = new mongoose.Schema({
   likes: [Like],
 });
 
+QuoteSchema.statics.findQuoteByComment = function (commentId) {
+  return this.findOne({comments: {$elemMatch: {_id: commentId}}});
+};
+
+QuoteSchema.methods.getCommentById = function (commentId) {
+  for (let i = 0; i < this.comments.length; ++i)
+    if (this.comments[i]._id.equals(commentId))
+      return this.comments[i];
+  return null;
+};
+
 export default mongoose.model('Quote', QuoteSchema);
