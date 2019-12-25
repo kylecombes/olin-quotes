@@ -59,7 +59,7 @@ const LoggedInView = (props: IProps) => (
 const LoggedOutView = (props: IProps) => (
   <div className="app logged-out">
     <div className="centered-box-container">
-      <Login {...props} />
+      <Login />
     </div>
   </div>
 );
