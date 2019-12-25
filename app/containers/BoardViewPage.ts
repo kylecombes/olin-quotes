@@ -10,6 +10,7 @@ import {
   showAddQuoteModal,
   showPersonStats,
   showQuoteInfo,
+  toggleQuoteLike,
 } from '../data/actions';
 import {
   IQuote,
@@ -32,6 +33,7 @@ const mapStateToProps = (state: IRootState) => {
     people: state.people,
     quotes,
     masonryLayoutTrigger: state.general.masonryLayoutTrigger,
+    userId: state.user._id,
   }
 };
 
@@ -41,6 +43,7 @@ const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, AnyAction>) => {
       showPersonStats: (personId: string) => dispatch(showPersonStats(personId)),
       showQuoteInfo: (quote: IQuote) => dispatch(showQuoteInfo(quote)),
       showAddQuoteModal: () => dispatch(showAddQuoteModal()),
+      toggleQuoteLike: (quote: IQuote) => dispatch(toggleQuoteLike(quote)),
     },
     dispatch
   );

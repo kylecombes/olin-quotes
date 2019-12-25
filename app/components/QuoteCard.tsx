@@ -12,6 +12,8 @@ type Props = {
   quote: IQuote
   showPersonStats: (personId: string) => any
   showQuoteInfo: (quote: IQuote) => any
+  toggleQuoteLike: () => any
+  userLikedQuote: boolean
 };
 
 export default class QuoteCard extends React.Component<Props> {
@@ -20,7 +22,7 @@ export default class QuoteCard extends React.Component<Props> {
     let contentElements: React.ReactElement[] = [];
     const buttons = (
       <div className="buttons-container">
-        (Like) (Comments)
+        (<span onClick={this.props.toggleQuoteLike}>{this.props.userLikedQuote ? 'Unlike' : 'Like'}</span>) (Comments)
       </div>
     );
     const showQuoteInfo = () => this.props.showQuoteInfo(this.props.quote);

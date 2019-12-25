@@ -44,7 +44,8 @@ function onConnect(socket) {
     socket.on('addQuote', quoteData => onAddQuote(quoteData, socket));
     socket.on('addQuoteComment', commentData => onAddQuoteComment(commentData, socket));
     socket.on('deleteQuoteComment', request => onDeleteQuoteComment(request, socket));
-    socket.on('toggleCommentLike', request => toggleCommentLike(request, socket));
+    socket.on('toggleQuoteLike', request => onToggleQuoteLike(request, socket));
+    socket.on('toggleCommentLike', request => onToggleCommentLike(request, socket));
     socket.on('updateQuoteComment', request => onUpdateQuoteComment(request, socket));
     socket.on('saveUserInfo', userData => saveUserInfo(userData, socket));
     sendInitDataToClient(socket);
@@ -251,7 +252,7 @@ function userCanModifyComment(comment, userId) {
   return comment.authorId.equals(userId);
 }
 
-async function toggleCommentLike(request, socket) {
+async function onToggleCommentLike(request, socket) {
   const commentId = request.id;
   const userId = socket.request.user._id;
 
@@ -262,25 +263,44 @@ async function toggleCommentLike(request, socket) {
     return;
   }
 
-  // First extract the comment in question
-  const comment = quoteDoc.comments[indexOf(quoteDoc.comments, c => c._id.equals(commentId))];
-
-  // Then toggle whether or not the user has liked it
-  const likeIdx = indexOf(comment.likes, l => l.personId.equals(userId));
-  if (likeIdx >= 0) {
-    // The user has liked the comment, so remove the like
-    comment.likes.splice(likeIdx, 1);
-  } else {
-    // The user has not liked the comment, so add a like
-    comment.likes.push({
-      personId: userId,
-      date: new Date(),
-    });
-  }
+  const comment = quoteDoc.getCommentById(commentId);
+  toggleLike(comment, userId);
 
   await quoteDoc.save();
 
   pushSingleQuoteUpdate(quoteDoc.toObject());
+}
+
+async function onToggleQuoteLike(request, socket) {
+  const quoteId = request.id;
+  const userId = socket.request.user._id;
+
+  const quoteDoc = await Quote.findById(quoteId);
+
+  if (!quoteDoc) {
+    console.warn(`Could not find quote ${quoteId}.`);
+    return;
+  }
+
+  toggleLike(quoteDoc, userId);
+
+  await quoteDoc.save();
+
+  pushSingleQuoteUpdate(quoteDoc.toObject());
+}
+
+function toggleLike(doc, userId) {
+  const likeIdx = indexOf(doc.likes, l => l.personId.equals(userId));
+  if (likeIdx >= 0) {
+    // The user has liked the comment, so remove the like
+    doc.likes.splice(likeIdx, 1);
+  } else {
+    // The user has not liked the comment, so add a like
+    doc.likes.push({
+      personId: userId,
+      date: new Date(),
+    });
+  }
 }
 
 function pushSingleQuoteUpdate(quoteData) {

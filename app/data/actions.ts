@@ -27,6 +27,7 @@ export const ActionTypes = {
   CLOSE_POPUP: 'CLOSE_POPUP',
   CLOSE_SIDEBAR: 'CLOSE_SIDEBAR',
   DELETE_QUOTE_COMMENT: 'deleteQuoteComment',
+  TOGGLE_QUOTE_LIKE: 'toggleQuoteLike',
   LIKE_UNLIKE_QUOTE_COMMENT: 'toggleCommentLike',
   OPEN_POPUP: 'OPEN_POPUP',
   SWITCH_TO_BOARD: 'SWITCH_TO_BOARD',
@@ -77,6 +78,15 @@ export function addQuote(quoteData: IQuote) {
     }
     quoteData.boardId = currentBoardId;
     emit(ActionTypes.ADD_QUOTE, quoteData);
+  }
+}
+
+export function toggleQuoteLike(quote: IQuote) {
+  // @ts-ignore
+  return (dispatch, getStore, { emit }) => {
+    emit(ActionTypes.TOGGLE_QUOTE_LIKE, {
+      id: quote._id,
+    });
   }
 }
 

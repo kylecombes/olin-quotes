@@ -30,6 +30,7 @@ export interface IQuote extends INewQuote {
   addedBy: string
   boardId: string
   comments?: IQuoteComment[]
+  likes: ILike[]
 }
 
 export interface IQuoteComment {
