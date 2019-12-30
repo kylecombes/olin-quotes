@@ -1,3 +1,4 @@
+@import 'constants';
 $base-left-padding: 0.8rem;
 
 .sidebar {
@@ -23,6 +24,12 @@ $base-left-padding: 0.8rem;
 
   .header {
     margin: 1em;
+
+    svg.Olin-Quotes-logo {
+      width: 8em;
+      padding: 0 1em;
+      fill: $color-content-text;
+    }
   }
 
   .sidebar-button {
