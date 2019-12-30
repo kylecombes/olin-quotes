@@ -4,13 +4,37 @@
 
   .header {
     display: flex;
+    flex-direction: row;
+    flex-grow: 0;
+    align-items: center;
     justify-content: space-between;
+    color: $color-content-text;
     background-color: $color-content-background;
-    border-bottom: 1px solid $color-gray-divider;
 
     .board-name {
       font-size: 1.2em;
       font-weight: bold;
+    }
+
+    .add-quote {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      padding: 1em;
+      transition: background-color 0.3s ease;
+      background-color: $color-content-background;
+
+      &:hover {
+        background-color: darken($color-content-background, $hover-delta);
+      }
+
+      .plus-icon {
+        width: 1.2em;
+      }
+
+      span {
+        margin-left: 0.7em;
+      }
     }
   }
 

@@ -7,10 +7,12 @@ import {
   IQuote,
   IPerson,
 } from '../../data/types';
-import QuoteCard from '../QuoteCard';
 import {
   indexOf,
 } from '../../utils';
+
+import PlusIcon from '../../assets/plus-icon.svg';
+import QuoteCard from '../QuoteCard';
 
 type Props = {
   board: IBoard | undefined;
@@ -26,45 +28,43 @@ type Props = {
   userId: string;
 };
 
-export default class BoardViewPage extends React.Component<Props> {
+export default (props: Props) => {
+  if (!props.people || !props.quotes || !props.board) return null;
 
-  render() {
-    if (!this.props.people || !this.props.quotes || !this.props.board) return null;
-
-    const cards = this.props.quotes.map(quote => {
-      const toggleQuoteLike = () => this.props.toggleQuoteLike(quote);
-      const userLikedQuote = quote.likes && indexOf(quote.likes, l => l.personId === this.props.userId) >= 0;
-      return (
-        <QuoteCard
-          quote={quote}
-          people={this.props.people}
-          key={quote._id}
-          showQuoteInfo={this.props.showQuoteInfo}
-          showPersonStats={this.props.showPersonStats}
-          onClick={() => this.props.showQuoteInfo(quote)}
-          toggleQuoteLike={toggleQuoteLike}
-          userLikedQuote={userLikedQuote}
-        />)
-    });
+  const cards = props.quotes.map(quote => {
+    const toggleQuoteLike = () => props.toggleQuoteLike(quote);
+    const userLikedQuote = quote.likes && indexOf(quote.likes, l => l.personId === props.userId) >= 0;
     return (
-      <div className="primary-content BoardView">
-        <div className="header">
-          <div />
-          <span className="board-name">{this.props.board.name}</span>
-          <div className="button-container">
-            <span
-              onClick={this.props.showAddQuoteModal}
-            >
-              +
-            </span>
+      <QuoteCard
+        quote={quote}
+        people={props.people}
+        key={quote._id}
+        showQuoteInfo={props.showQuoteInfo}
+        showPersonStats={props.showPersonStats}
+        onClick={() => props.showQuoteInfo(quote)}
+        toggleQuoteLike={toggleQuoteLike}
+        userLikedQuote={userLikedQuote}
+      />)
+  });
+  return (
+    <div className="primary-content BoardView">
+      <div className="header">
+        <div />
+        <span className="board-name">{props.board.name}</span>
+        <div className="button-container">
+          <div
+            className="add-quote"
+            onClick={props.showAddQuoteModal}
+          >
+            <PlusIcon />
+            <span className="add-quote-text">Add Quote</span>
           </div>
         </div>
-        <span style={{display: 'none'}}>{this.props.masonryLayoutTrigger}</span>
-        <Masonry className="quote-cards">
-          {cards}
-        </Masonry>
       </div>
-    )
-  }
-
+      <span style={{display: 'none'}}>{props.masonryLayoutTrigger}</span>
+      <Masonry className="quote-cards">
+        {cards}
+      </Masonry>
+    </div>
+  );
 }
