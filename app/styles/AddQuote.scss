@@ -51,7 +51,7 @@
           &:hover,
           &:focus,
           &.react-autosuggest__suggestion--highlighted {
-            background-color: darken($color-content-background, $darken-delta);
+            background-color: darken($color-content-background, $hover-delta);
           }
 
           .person-suggestion {

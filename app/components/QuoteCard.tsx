@@ -3,6 +3,8 @@ import {
   IPerson,
   IQuote,
 } from '../data/types';
+import CommentIcon from './CommentIcon';
+import LikeIcon from './LikeIcon';
 
 type Props = {
   onClick: () => any
@@ -20,12 +22,15 @@ export default class QuoteCard extends React.Component<Props> {
 
   render() {
     let contentElements: React.ReactElement[] = [];
+    const showQuoteInfo = () => this.props.showQuoteInfo(this.props.quote);
+    const commentCount = this.props.quote.comments.length;
+    const commentButtonTitle = commentCount + (commentCount === 1 ? ' comment' : ' comments');
     const buttons = (
       <div className="buttons-container">
-        (<span onClick={this.props.toggleQuoteLike}>{this.props.userLikedQuote ? 'Unlike' : 'Like'}</span>) (Comments)
+        <LikeIcon liked={this.props.userLikedQuote} onClick={this.props.toggleQuoteLike}/>
+        <CommentIcon commentCount={commentCount} onClick={showQuoteInfo}/>
       </div>
     );
-    const showQuoteInfo = () => this.props.showQuoteInfo(this.props.quote);
     this.props.quote.components.forEach((quoteComp) => {
       const {
         personId,
@@ -40,17 +45,19 @@ export default class QuoteCard extends React.Component<Props> {
       );
       contentElements.push(
         <div className="attributes">
-          <img className="triangle" src="/assets/triangle.svg" />
-          <div className="author-info" key={content}>
-            <img
-              className="avatar"
-              src={person?.avatarUrl}
-              title={person?.displayName}
-              onClick={showPersonStats}
-            />
-            <span className="author-name" onClick={showPersonStats}>{person?.displayName}</span>
-            {this.props.quote.components.length === 1 && buttons}
+          <div className="attribution">
+            <img className="triangle" src="/assets/triangle.svg" />
+            <div className="author-info" key={content}>
+              <img
+                className="avatar"
+                src={person?.avatarUrl}
+                title={person?.displayName}
+                onClick={showPersonStats}
+              />
+              <span className="author-name" onClick={showPersonStats}>{person?.displayName}</span>
+            </div>
           </div>
+          {this.props.quote.components.length === 1 && buttons}
         </div>
       );
     });

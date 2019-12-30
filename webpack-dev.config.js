@@ -38,8 +38,10 @@ module.exports = {
         use: ['babel-loader'],
       },
       {
-        test: /\.svg$/,
-        use: 'raw-loader',
+        loader: 'react-svg-loader',
+        options: {
+          jsx: true,
+        },
       },
       {
         test: /\.scss$/,

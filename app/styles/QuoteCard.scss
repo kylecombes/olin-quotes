@@ -13,43 +13,99 @@ $border-radius: 1rem;
     padding: 0.7em 1em;
   }
 
+  .buttons-container {
+    display: flex;
+    flex-direction: row;
+
+    div:not(:last-child) {
+      margin-right: 0.8em;
+    }
+
+    svg {
+      height: 1.5em;
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+
+      &:hover {
+        opacity: 1;
+      }
+
+      &.comment-icon {
+        fill: $color-icon-blue;
+
+        &:hover {
+          fill: $color-icon-blue-lighter;
+        }
+
+        text {
+          fill: $color-medium-blue-background;
+          font-size: 1.2em;
+          font-family: Arial, sans-serif;
+        }
+      }
+
+      &.like-heart {
+        stroke: $color-icon-blue;
+        stroke-width: 5px;
+        fill: $color-medium-blue-background;
+
+        &.liked:not(:hover),
+        &:hover:not(.liked) {
+          fill: $color-icon-blue;
+        }
+      }
+    }
+  }
+
   .attributes {
     font-size: 0.9em;
     border: 0.2em solid $color-light-blue;
     border-top: none;
     display: flex;
-    align-items: flex-start;
+    align-items: center;
+    justify-content: space-between;
 
-    .author-info {
+    .attribution {
       display: flex;
-      align-items: center;
-      padding: 1em 0;
+      flex-direction: row;
+      align-items: flex-start;
 
-      .avatar {
-        margin-right: 1em;
-        width: 2em;
-        min-width: 2em;
-        border-radius: 1em;
-        cursor: pointer;
+      .author-info {
+        display: flex;
+        align-items: center;
+        padding: 1em 0;
+
+        .avatar {
+          margin-right: 1em;
+          width: 2em;
+          min-width: 2em;
+          border-radius: 1em;
+          cursor: pointer;
+        }
+
+        .author-name {
+          cursor: pointer;
+          display: inline-block;
+          text-transform: uppercase;
+
+          &:hover {
+            color: white;
+          }
+        }
       }
 
-      .author-name {
-        cursor: pointer;
-        display: inline-block;
-        text-transform: uppercase;
+      &:nth-child(4n) {
+        flex-direction: row-reverse;
 
-        &:hover {
-          color: white;
+        .triangle {
+          transform: scale(-1, 1);
         }
       }
     }
 
-    &:nth-child(4n) {
-      flex-direction: row-reverse;
-
-      .triangle {
-        transform: scale(-1, 1);
-      }
+    .buttons-container {
+      margin-right: 1em;
     }
   }
 

@@ -3,15 +3,17 @@ $quote-cards-per-row: 4;
 $quote-cards-gutter-width: 1%;
 
 /** ---------- Begin Colors ---------- **/
-$darken-delta: 3;
+$hover-delta: 7;
 $color-gray-divider: #353f57;
 $color-content-background: #2d364d;
 $color-button-blue: #304367;
-$color-button-blue-dark: darken($color-button-blue, $darken-delta);
+$color-button-blue-dark: darken($color-button-blue, $hover-delta);
 $color-button-gray: $color-content-background;
-$color-button-gray-dark: darken($color-button-gray, $darken-delta);
+$color-button-gray-dark: darken($color-button-gray, $hover-delta);
 $color-content-text: #ccc;
 $color-light-blue: #2f3954;;
+$color-icon-blue: #51657d;
+$color-icon-blue-lighter: lighten($color-icon-blue, $hover-delta);
 $color-medium-blue-background: rgba(35,42,66,1);
 
 /** ---------- End Colors ---------- **/
