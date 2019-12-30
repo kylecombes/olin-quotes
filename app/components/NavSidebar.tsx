@@ -3,6 +3,7 @@ import {
   IBoard,
 } from '../data/types';
 
+import PlusIcon from '../assets/plus-icon.svg';
 import OlinQuotesLogo from '../assets/olin-quotes-logo.svg';
 
 type Props = {
@@ -45,7 +46,10 @@ export default (props: Props) => {
       <nav>
         {boardListElems}
       </nav>
-      <a className="sidebar-button" onClick={props.promptCreateBoard}>+ Create Board</a>
+      <div className="sidebar-button add-board" onClick={props.promptCreateBoard}>
+        <PlusIcon />
+        <span className="text">Create Board</span>
+      </div>
     </div>
   );
 }

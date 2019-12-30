@@ -58,4 +58,14 @@ $base-left-padding: 0.8rem;
   &.info {
     width: 20%;
   }
+
+  .add-board {
+    display: flex;
+    align-items: center;
+
+    svg.plus-icon {
+      width: 0.7em;
+      margin-right: 0.5em;
+    }
+  }
 }
