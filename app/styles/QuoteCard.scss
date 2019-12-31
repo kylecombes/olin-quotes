@@ -94,8 +94,12 @@ $border-radius: 1rem;
           }
         }
       }
+    }
 
-      &:nth-child(4n) {
+    &:nth-child(4n) {
+      justify-content: flex-end;
+      
+      .attribution {
         flex-direction: row-reverse;
 
         .triangle {
