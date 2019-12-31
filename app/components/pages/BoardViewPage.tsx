@@ -8,7 +8,7 @@ import {
   IPerson,
 } from '../../data/types';
 import {
-  userLikedQuote,
+  userLikedItem,
 } from '../../utils';
 
 import GearIcon from '../../assets/gear-icon.svg';
@@ -43,7 +43,7 @@ export default (props: Props) => {
         showPersonStats={props.showPersonStats}
         onClick={() => props.showQuoteInfo(quote)}
         toggleQuoteLike={toggleQuoteLike}
-        userLikedQuote={userLikedQuote(quote, props.user)}
+        userLikedQuote={userLikedItem(quote, props.user)}
       />)
   });
   return (

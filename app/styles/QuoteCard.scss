@@ -24,11 +24,6 @@ $border-radius: 1rem;
       cursor: pointer;
       transition: all 0.3s ease;
 
-
-      &:hover {
-        opacity: 1;
-      }
-
       &.comment-icon {
         fill: $color-icon-blue;
 
@@ -40,17 +35,6 @@ $border-radius: 1rem;
           fill: $color-medium-blue-background;
           font-size: 1.2em;
           font-family: Arial, sans-serif;
-        }
-      }
-
-      &.like-heart {
-        stroke: $color-icon-blue;
-        stroke-width: 5px;
-        fill: $color-medium-blue-background;
-
-        &.liked:not(:hover),
-        &:hover:not(.liked) {
-          fill: $color-icon-blue;
         }
       }
     }
@@ -76,9 +60,6 @@ $border-radius: 1rem;
 
         .avatar {
           margin-right: 1em;
-          width: 2em;
-          min-width: 2em;
-          border-radius: 1em;
           cursor: pointer;
         }
 

@@ -1,7 +1,10 @@
 @import url('https://fonts.googleapis.com/css?family=Lato:300,400');
 @import 'constants';
+@import 'AddComment';
 @import 'AddQuote';
 @import 'BoardView';
+@import 'Comment';
+@import 'LikeIcon';
 @import 'NavSidebar';
 @import 'QuoteCard';
 @import 'QuoteInfoPage';
@@ -36,6 +39,13 @@ body,
   background: rgb(48,58,85);
   background: radial-gradient(circle at 80% 0, rgba(35,42,66,1) 0%, rgba(22,27,50,1) 100%);
   color: $color-content-text;
+}
+
+
+.avatar {
+  width: 2em;
+  min-width: 2em;
+  border-radius: 1em;
 }
 
 .split-page-2 {
@@ -192,11 +202,6 @@ button {
   margin-right: auto;
 }
 
-.comment-add {
-
-}
-
-
 input[type='text'] {
   border-top: none;
   border-left: none;
@@ -235,23 +240,6 @@ textarea {
 
   .no-comments {
     font-style: italic;
-  }
-
-  .comment-add {
-
-    textarea {
-      border-top: 1px solid $color-gray-divider;
-    }
-
-    .buttons button {
-      width: 50%;
-      border-top: 1px solid $color-gray-divider;
-      border-bottom: 1px solid $color-gray-divider;
-
-      &:last-of-type {
-        border-left: 1px solid $color-gray-divider;
-      }
-    }
   }
 }
 

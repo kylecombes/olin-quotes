@@ -17,7 +17,7 @@ import {
 } from '../data/types';
 import {
   getCurrentQuoteId,
-  userLikedQuote,
+  userLikedItem,
 } from '../utils';
 
 const mapStateToProps = (state: IRootState) => {
@@ -35,8 +35,8 @@ const mapStateToProps = (state: IRootState) => {
   return {
     quote,
     people: state.people,
-    userId: state.user._id,
-    userLikedQuote: userLikedQuote(quote, state.user),
+    user: state.user,
+    userLikedQuote: userLikedItem(quote, state.user),
   }
 };
 

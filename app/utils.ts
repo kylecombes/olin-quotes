@@ -1,4 +1,5 @@
 import {
+  ILike,
   IPerson, IQuote,
   IRootState,
 } from './data/types';
@@ -22,6 +23,6 @@ export function indexOf<T> (iter: Array<T>, checkFn: (item: T) => boolean): numb
   return -1;
 }
 
-export function userLikedQuote(quote: IQuote, user: IPerson) {
-  return quote.likes && indexOf(quote.likes, l => l.personId === user._id) >= 0;
+export function userLikedItem(item: {likes: ILike[]}, user: IPerson) {
+  return item.likes && indexOf(item.likes, l => l.personId === user._id) >= 0;
 }

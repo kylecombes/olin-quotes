@@ -6,8 +6,10 @@ import {
   IQuoteComment,
 } from '../data/types';
 import {
-  indexOf,
+  userLikedItem,
 } from '../utils';
+
+import LikeIcon from './LikeIcon';
 
 type Props = {
   author: IPerson
@@ -15,7 +17,7 @@ type Props = {
   toggleCommentLike: () => any
   deleteComment: () => any
   updateQuoteComment: (comment: IQuoteComment) => any
-  userId: string
+  user: IPerson
 };
 
 const Comment: React.FC<Props> = (props: Props) => {
@@ -23,7 +25,7 @@ const Comment: React.FC<Props> = (props: Props) => {
   const {
     author,
     comment,
-    userId,
+    user,
   } = props;
 
   const initialState = {
@@ -31,41 +33,58 @@ const Comment: React.FC<Props> = (props: Props) => {
     editing: false,
   };
   const [state, setState] = React.useState(initialState);
+  const beginEditing = () => setState({content: props.comment.content, editing: true});
+  const userLiked = userLikedItem(comment, user);
+  const buttons = comment.authorId === user._id ? [
+    <span onClick={beginEditing}>Edit</span>,
+    <span>&nbsp;</span>,
+    <span onClick={props.deleteComment}>Delete</span>,
+  ] : (
+    <LikeIcon onClick={props.toggleCommentLike} liked={userLiked} />
+  );
+  const dateText = moment(comment.added).format('MMM D, YYYY @ h:mm a');
+  let body;
 
   if (state.editing) {
-    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => setState({...state, content: e.target.value});
+    const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => setState({...state, content: e.target.value});
     const discard = () => setState(initialState);
     const save = () => {
       props.updateQuoteComment({...comment, content: state.content});
       setState(initialState);
     };
-    return (
-      <div className="comment editing">
-        <input type="text" value={state.content} onChange={onChange}/>
-        <button className="button" onClick={discard}>Discard</button>
-        <button className="button" onClick={save}>Save</button>
+    body = (
+      <div className="comment-body editing">
+        <textarea value={state.content} onChange={onChange}/>
+        <div className="buttons">
+          <button className="button" onClick={discard}>Discard</button>
+          <button className="button" onClick={save}>Save</button>
+        </div>
       </div>
-    )
+    );
   } else {
-    const beginEditing = () => setState({content: props.comment.content, editing: true});
-    const userLiked = indexOf(comment.likes, l => l.personId === userId) >= 0;
-    const adminButtons = comment.authorId === userId ? [
-      <span>&nbsp;</span>,
-      <span onClick={beginEditing}>Edit</span>,
-      <span>&nbsp;</span>,
-      <span onClick={props.deleteComment}>Delete</span>,
-    ] : null;
-    return (
-      <div className="comment">
-        <p>{comment.content}</p>
-        <p>- {author.displayName} on {moment(comment.added).format('MMM D, YYYY @ h:mm a')}</p>
-        <p>
-          <span onClick={props.toggleCommentLike}>{userLiked ? 'Unlike' : 'Like'}</span>
-          {adminButtons}
-        </p>
+    body = (
+      <div className="comment-body">
+        <div className="content">
+          {comment.content}
+        </div>
+        <div className="buttons">
+          {buttons}
+        </div>
       </div>
     );
   }
+  return (
+    <div className="Comment">
+      <div className="comment-header">
+        <div className="author">
+          <img src={author.avatarUrl} className="avatar" alt={author.displayName} />
+          <span className="name">{author.displayName}</span>
+        </div>
+        <span className="date">{dateText}</span>
+      </div>
+      {body}
+    </div>
+  );
 };
 
 export default Comment;

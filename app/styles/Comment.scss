@@ -1,0 +1,73 @@
+@import 'constants';
+
+.Comment {
+  padding: 1em;
+  border-bottom: 1px solid $color-gray-divider;
+
+  .buttons > * {
+    cursor: pointer;
+  }
+
+  .comment-header {
+    display: flex;
+    justify-content: space-between;
+
+    .author {
+      display: flex;
+      align-items: center;
+
+      .avatar {
+        margin-right: 0.5em;
+      }
+
+      .name {
+        font-size: 0.8em;
+        font-weight: bold;
+      }
+    }
+
+    .date {
+      color: $color-icon-blue;
+    }
+  }
+
+  .comment-body {
+    display: flex;
+    margin-top: 0.25em;
+
+    .content {
+      margin-left: 2.5em;
+    }
+
+    .LikeIcon {
+      margin-left: 1em;
+
+      svg {
+        width: 1.5em;
+      }
+    }
+
+    &.editing {
+      display: flex;
+      flex-direction: column;
+
+      textarea {
+        resize: vertical;
+        border-bottom: 1px solid $color-gray-divider;
+      }
+
+      .buttons {
+        display: flex;
+
+        & > * {
+          flex-grow: 1;
+
+          &:not(first-child) {
+            border-left: 1px solid $color-gray-divider;
+          }
+        }
+      }
+    }
+  }
+
+}

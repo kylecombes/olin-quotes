@@ -20,7 +20,7 @@ type Props = {
   showPersonStats: (personId: string) => any
   toggleCommentLike: (comment: IQuoteComment) => any
   toggleQuoteLike: (quote: IQuote) => any
-  userId: string
+  user: IPerson
   userLikedQuote: boolean
 };
 
@@ -46,7 +46,7 @@ const QuoteInfoPage: React.FC<Props> = (props: Props) => {
       deleteComment={deleteComment}
       toggleCommentLike={toggleCommentLike}
       updateQuoteComment={props.updateQuoteComment}
-      userId={props.userId}
+      user={props.user}
     />;
   }) : <p className="no-comments">No comments</p>;
 
@@ -72,7 +72,7 @@ const QuoteInfoPage: React.FC<Props> = (props: Props) => {
         <InfoSection title="Likes">
           {likeCount} {likeCount === 1 ? 'person likes' : 'people like'} this quote.
         </InfoSection>
-        <InfoSection title="Comments">
+        <InfoSection title="Comments" className="comments">
           {comments}
           <AddComment onSubmit={addComment}/>
         </InfoSection>
@@ -84,10 +84,11 @@ const QuoteInfoPage: React.FC<Props> = (props: Props) => {
 type InfoSectionProps = {
   title: string
   children: React.ReactNode
+  className?: string
 };
 
 const InfoSection: React.FC<InfoSectionProps> = (props: InfoSectionProps) => (
-  <div className="InfoSection">
+  <div className={'InfoSection ' + (props.className || '')}>
     <h1 className="info-section-header">{props.title}</h1>
     {props.children}
   </div>
