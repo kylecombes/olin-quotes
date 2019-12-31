@@ -16,24 +16,28 @@
       font-weight: bold;
     }
 
-    .add-quote {
+    .button-container {
       display: flex;
-      align-items: center;
-      cursor: pointer;
-      padding: 1em;
-      transition: background-color 0.3s ease;
-      background-color: $color-content-background;
 
-      &:hover {
-        background-color: darken($color-content-background, $hover-delta);
-      }
+      & > div {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        padding: 1em;
+        transition: background-color 0.3s ease;
+        background-color: $color-content-background;
 
-      .plus-icon {
-        width: 1.2em;
-      }
+        &:hover {
+          background-color: darken($color-content-background, $hover-delta);
+        }
 
-      span {
-        margin-left: 0.7em;
+        svg {
+          width: 1.2em;
+        }
+
+        span {
+          margin-left: 0.7em;
+        }
       }
     }
   }

@@ -21,6 +21,15 @@ body,
   font-family: $font-family-default;
 }
 
+.gear-icon {
+  fill: $color-icon-blue;
+}
+
+.plus-icon {
+  stroke: $color-icon-blue;
+  stroke-width: 0.25rem;
+}
+
 .app {
   position: relative;
   background: rgb(48,58,85);

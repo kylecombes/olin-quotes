@@ -11,6 +11,7 @@ import {
   indexOf,
 } from '../../utils';
 
+import GearIcon from '../../assets/gear-icon.svg';
 import PlusIcon from '../../assets/plus-icon.svg';
 import QuoteCard from '../QuoteCard';
 
@@ -57,7 +58,13 @@ export default (props: Props) => {
             onClick={props.showAddQuoteModal}
           >
             <PlusIcon />
-            <span className="add-quote-text">Add Quote</span>
+            <span className="title">Add Quote</span>
+          </div>
+          <div
+            className="board-settings"
+          >
+            <GearIcon />
+            <span className="title">Board Settings</span>
           </div>
         </div>
       </div>
