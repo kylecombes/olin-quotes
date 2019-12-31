@@ -8,13 +8,16 @@ import {
   deleteQuoteComment,
   toggleQuoteCommentLike,
   updateQuoteComment,
+  toggleQuoteLike,
 } from '../data/actions';
 import {
+  IQuote,
   IQuoteComment,
   IRootState,
 } from '../data/types';
 import {
   getCurrentQuoteId,
+  userLikedQuote,
 } from '../utils';
 
 const mapStateToProps = (state: IRootState) => {
@@ -27,10 +30,13 @@ const mapStateToProps = (state: IRootState) => {
     return {};
   }
 
+  const quote = state.quotes[quoteId];
+
   return {
-    quote: state.quotes[quoteId],
+    quote,
     people: state.people,
     userId: state.user._id,
+    userLikedQuote: userLikedQuote(quote, state.user),
   }
 };
 
@@ -40,6 +46,7 @@ const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, any>) => {
     deleteComment: (comment: IQuoteComment) => dispatch(deleteQuoteComment(comment)),
     addComment: (quoteId: string, comment: string) => dispatch(addQuoteComment(quoteId, comment)),
     toggleCommentLike: (comment: IQuoteComment) => dispatch(toggleQuoteCommentLike(comment)),
+    toggleQuoteLike: (quote: IQuote) => dispatch(toggleQuoteLike(quote)),
     updateQuoteComment: (comment: IQuoteComment) => dispatch(updateQuoteComment(comment)),
   }
 };

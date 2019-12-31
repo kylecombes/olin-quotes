@@ -4,6 +4,7 @@
 @import 'BoardView';
 @import 'NavSidebar';
 @import 'QuoteCard';
+@import 'QuoteInfoPage';
 
 $transition-all: all 0.3s ease;
 $font-family-default: 'Lato', sans-serif;
@@ -35,6 +36,19 @@ body,
   background: rgb(48,58,85);
   background: radial-gradient(circle at 80% 0, rgba(35,42,66,1) 0%, rgba(22,27,50,1) 100%);
   color: $color-content-text;
+}
+
+.split-page-2 {
+  display: flex;
+  flex-direction: row;
+
+  & > div {
+    flex-grow: 1;
+
+    &:first-child {
+      border-right: 1px solid $color-gray-divider;
+    }
+  }
 }
 
 .centered-box-container {
@@ -97,6 +111,7 @@ body,
 .primary-content {
   flex: 1 1 auto;
   position: relative;
+  overflow-y: auto;
 }
 
 input[type='text'] {

@@ -1,0 +1,31 @@
+@import 'constants';
+
+.QuoteInfoPage {
+  padding: 1em;
+  overflow: hidden;
+
+  &.split-page-2 > div {
+    padding: 1em;
+    overflow-y: auto;
+
+    &:first-child {
+      padding-right: 1.5em;
+    }
+
+    &:last-child {
+      padding-left: 1.5em;
+    }
+  }
+
+  .InfoSection {
+    &:first-child h1 {
+      margin-top: 0;
+    }
+
+    h1 {
+      font-weight: 400;
+      padding-bottom: 0.25em;
+      border-bottom: 2px solid $color-gray-divider;
+    }
+  }
+}

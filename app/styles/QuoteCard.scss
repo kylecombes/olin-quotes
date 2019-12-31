@@ -2,9 +2,7 @@
 
 $border-radius: 1rem;
 
-.quote-card {
-  margin: $quote-cards-gutter-width;
-  width: (100% - 2*$quote-cards-per-row*$quote-cards-gutter-width)/$quote-cards-per-row;
+.QuoteCard {
 
   .words {
     background-color: $color-light-blue;

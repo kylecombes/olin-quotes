@@ -7,6 +7,7 @@ import {
   IPerson,
   IQuoteComment,
 } from '../../data/types';
+import QuoteCard from '../QuoteCard';
 
 type Props = {
   addComment: (quoteId: string, commentText: string) => any
@@ -18,26 +19,22 @@ type Props = {
   updateQuoteComment: (comment: IQuoteComment) => any
   showPersonStats: (personId: string) => any
   toggleCommentLike: (comment: IQuoteComment) => any
+  toggleQuoteLike: (quote: IQuote) => any
   userId: string
+  userLikedQuote: boolean
 };
 
 const QuoteInfoPage: React.FC<Props> = (props: Props) => {
+  const {
+    people,
+    quote,
+    showPersonStats,
+    userLikedQuote,
+  } = props;
 
   if (!props.quote || Object.keys(props.people).length === 0) {
     return null;
   }
-
-  const quoteElement = props.quote.components.map(comp => {
-    const speaker = props.people[comp.personId];
-    return (
-      <div className="quote-component" key={comp.content}>
-        <img src={speaker.avatarUrl} title={speaker.displayName} onClick={() => props.showPersonStats(speaker._id)} />
-        <div className="words">
-          {comp.content}
-        </div>
-      </div>
-    );
-  });
 
   const comments = props.quote.comments ? props.quote.comments.map(comment => {
     const author = props.people[comment.authorId];
@@ -54,23 +51,46 @@ const QuoteInfoPage: React.FC<Props> = (props: Props) => {
   }) : <p className="no-comments">No comments</p>;
 
   const addComment = (commentText: string) => props.addComment(props.quote._id, commentText);
+  const toggleQuoteLike = () => props.toggleQuoteLike(quote);
+  const likeCount = quote.likes?.length || 0;
 
   return (
-    <div className="quote-info">
-      <h1 className="centered">Quote Details</h1>
-      <div className="quote">
-        {quoteElement}
+    <div className="QuoteInfoPage primary-content split-page-2">
+      <div>
+        <QuoteCard
+          hideCommentsButton={true}
+          people={people}
+          quote={quote}
+          showPersonStats={showPersonStats}
+          toggleQuoteLike={toggleQuoteLike}
+          userLikedQuote={userLikedQuote}
+          />
+        <div className="quote-stats">
+        </div>
       </div>
-      <div className="quote-stats">
-      </div>
-      <div className="comments">
-        <h2>Comments</h2>
-        {comments}
-        <AddComment onSubmit={addComment}/>
+      <div>
+        <InfoSection title="Likes">
+          {likeCount} {likeCount === 1 ? 'person likes' : 'people like'} this quote.
+        </InfoSection>
+        <InfoSection title="Comments">
+          {comments}
+          <AddComment onSubmit={addComment}/>
+        </InfoSection>
       </div>
     </div>
-  )
-
+  );
 };
+
+type InfoSectionProps = {
+  title: string
+  children: React.ReactNode
+};
+
+const InfoSection: React.FC<InfoSectionProps> = (props: InfoSectionProps) => (
+  <div className="InfoSection">
+    <h1 className="info-section-header">{props.title}</h1>
+    {props.children}
+  </div>
+);
 
 export default QuoteInfoPage;

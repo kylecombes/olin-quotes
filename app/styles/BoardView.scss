@@ -42,4 +42,9 @@
     }
   }
 
+  .QuoteCard {
+    margin: $quote-cards-gutter-width;
+    width: (100% - 2*$quote-cards-per-row*$quote-cards-gutter-width)/$quote-cards-per-row;
+  }
+
 }

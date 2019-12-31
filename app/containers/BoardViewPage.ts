@@ -33,7 +33,7 @@ const mapStateToProps = (state: IRootState) => {
     people: state.people,
     quotes,
     masonryLayoutTrigger: state.general.masonryLayoutTrigger,
-    userId: state.user._id,
+    user: state.user,
   }
 };
 

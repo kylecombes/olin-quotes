@@ -8,7 +8,7 @@ import {
   IPerson,
 } from '../../data/types';
 import {
-  indexOf,
+  userLikedQuote,
 } from '../../utils';
 
 import GearIcon from '../../assets/gear-icon.svg';
@@ -26,7 +26,7 @@ type Props = {
   showPersonStats: (personId: string) => AnyAction;
   showQuoteInfo: (quote: IQuote) => AnyAction;
   toggleQuoteLike: (quote: IQuote) => AnyAction;
-  userId: string;
+  user: IPerson;
 };
 
 export default (props: Props) => {
@@ -34,7 +34,6 @@ export default (props: Props) => {
 
   const cards = props.quotes.map(quote => {
     const toggleQuoteLike = () => props.toggleQuoteLike(quote);
-    const userLikedQuote = quote.likes && indexOf(quote.likes, l => l.personId === props.userId) >= 0;
     return (
       <QuoteCard
         quote={quote}
@@ -44,7 +43,7 @@ export default (props: Props) => {
         showPersonStats={props.showPersonStats}
         onClick={() => props.showQuoteInfo(quote)}
         toggleQuoteLike={toggleQuoteLike}
-        userLikedQuote={userLikedQuote}
+        userLikedQuote={userLikedQuote(quote, props.user)}
       />)
   });
   return (
