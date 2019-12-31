@@ -9,6 +9,7 @@ import {
   toggleQuoteCommentLike,
   updateQuoteComment,
   toggleQuoteLike,
+  showPersonStats,
 } from '../data/actions';
 import {
   IQuote,
@@ -48,6 +49,7 @@ const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, any>) => {
     toggleCommentLike: (comment: IQuoteComment) => dispatch(toggleQuoteCommentLike(comment)),
     toggleQuoteLike: (quote: IQuote) => dispatch(toggleQuoteLike(quote)),
     updateQuoteComment: (comment: IQuoteComment) => dispatch(updateQuoteComment(comment)),
+    showPersonStats: (userId: string) => dispatch(showPersonStats(userId)),
   }
 };
 

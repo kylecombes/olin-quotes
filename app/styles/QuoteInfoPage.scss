@@ -32,4 +32,10 @@
       margin-bottom: 0;
     }
   }
+
+  .likes {
+    .person-name {
+      cursor: pointer;
+    }
+  }
 }

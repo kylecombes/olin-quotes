@@ -6,6 +6,7 @@ import {
   IQuote,
   IPerson,
   IQuoteComment,
+  ILike,
 } from '../../data/types';
 import QuoteCard from '../QuoteCard';
 
@@ -36,6 +37,8 @@ const QuoteInfoPage: React.FC<Props> = (props: Props) => {
     return null;
   }
 
+  const likesText = getLikesText(quote.likes, people, showPersonStats);
+
   const comments = props.quote.comments ? props.quote.comments.map(comment => {
     const author = props.people[comment.authorId];
     const deleteComment = () => props.deleteComment(comment);
@@ -52,7 +55,6 @@ const QuoteInfoPage: React.FC<Props> = (props: Props) => {
 
   const addComment = (commentText: string) => props.addComment(props.quote._id, commentText);
   const toggleQuoteLike = () => props.toggleQuoteLike(quote);
-  const likeCount = quote.likes?.length || 0;
 
   return (
     <div className="QuoteInfoPage primary-content split-page-2">
@@ -69,8 +71,8 @@ const QuoteInfoPage: React.FC<Props> = (props: Props) => {
         </div>
       </div>
       <div>
-        <InfoSection title="Likes">
-          {likeCount} {likeCount === 1 ? 'person likes' : 'people like'} this quote.
+        <InfoSection title="Likes" className="likes">
+          {likesText}
         </InfoSection>
         <InfoSection title="Comments" className="comments">
           {comments}
@@ -79,6 +81,45 @@ const QuoteInfoPage: React.FC<Props> = (props: Props) => {
       </div>
     </div>
   );
+};
+
+const getLikesText = (likes: ILike[], people: {[pid: string]: IPerson}, showPersonStats: (pid: string) => any) => {
+  const numLikes = likes?.length || 0;
+  let likesText;
+  if (numLikes > 0) {
+    const recentCount = 5;
+    const recentLikes = likes?.slice(-recentCount);
+    const names = recentLikes.reverse().map(like => {
+      const viewPerson = () => showPersonStats(like.personId);
+      return <span className="person-name" onClick={viewPerson}>{people[like.personId].displayName}</span>;
+    });
+    if (numLikes === 1) {
+      likesText = [names[0], <span> likes this quote.</span>];
+    } else if (numLikes <= names.length) {
+      likesText = [];
+      names.forEach((nameSpan, idx) => {
+        likesText.push(nameSpan);
+        if (idx < names.length-2) {
+          likesText.push(<span className="separator">, </span>);
+        } else if (idx === names.length-2) {
+          likesText.push(<span className="separator"> & </span>);
+        }
+      });
+      likesText.push(<span className="suffix"> like this quote.</span>);
+    } else {
+      likesText = [];
+      names.forEach((nameSpan, idx) => {
+        likesText.push(nameSpan);
+        if (idx !== names.length-1) {
+          likesText.push(<span className="separator">, </span>);
+        }
+      });
+      likesText.push(<span className="suffix"> & {numLikes-recentCount} others like this quote.</span>);
+    }
+  } else {
+    likesText = 'Nobody has liked this quote yet.';
+  }
+  return likesText;
 };
 
 type InfoSectionProps = {
