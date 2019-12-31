@@ -16,6 +16,7 @@ type Props = {
   comment: IQuoteComment
   toggleCommentLike: () => any
   deleteComment: () => any
+  showAuthorPage: () => any
   updateQuoteComment: (comment: IQuoteComment) => any
   user: IPerson
 };
@@ -25,6 +26,7 @@ const Comment: React.FC<Props> = (props: Props) => {
   const {
     author,
     comment,
+    showAuthorPage,
     user,
   } = props;
 
@@ -77,8 +79,8 @@ const Comment: React.FC<Props> = (props: Props) => {
     <div className="Comment">
       <div className="comment-header">
         <div className="author">
-          <img src={author.avatarUrl} className="avatar" alt={author.displayName} />
-          <span className="name">{author.displayName}</span>
+          <img src={author.avatarUrl} className="avatar" alt={author.displayName} onClick={showAuthorPage} />
+          <span className="name" onClick={showAuthorPage}>{author.displayName}</span>
         </div>
         <span className="date">{dateText}</span>
       </div>

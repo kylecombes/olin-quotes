@@ -43,10 +43,12 @@ const QuoteInfoPage: React.FC<Props> = (props: Props) => {
     const author = props.people[comment.authorId];
     const deleteComment = () => props.deleteComment(comment);
     const toggleCommentLike = () => props.toggleCommentLike(comment);
+    const showAuthorPage = () => showPersonStats(comment.authorId);
     return <Comment
       author={author}
       comment={comment}
       deleteComment={deleteComment}
+      showAuthorPage={showAuthorPage}
       toggleCommentLike={toggleCommentLike}
       updateQuoteComment={props.updateQuoteComment}
       user={props.user}
