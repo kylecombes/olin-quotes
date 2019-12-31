@@ -17,6 +17,21 @@
     }
   }
 
+  .quote-stats {
+    margin: 1em;
+    color: $color-icon-blue;
+    font-style: italic;
+
+    .author-name {
+      cursor: pointer;
+      transition: color 0.3s ease;
+
+      &:hover {
+        color: $color-content-text;
+      }
+    }
+  }
+
   .InfoSection {
     &:first-child h1 {
       margin-top: 0;
@@ -36,6 +51,11 @@
   .likes {
     .person-name {
       cursor: pointer;
+      transition: opacity 0.3s ease;
+
+      &:hover {
+        opacity: 0.7;
+      }
     }
   }
 }

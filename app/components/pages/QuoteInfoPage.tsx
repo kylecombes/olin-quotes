@@ -9,6 +9,7 @@ import {
   ILike,
 } from '../../data/types';
 import QuoteCard from '../QuoteCard';
+import * as moment from 'moment';
 
 type Props = {
   addComment: (quoteId: string, commentText: string) => any
@@ -55,6 +56,7 @@ const QuoteInfoPage: React.FC<Props> = (props: Props) => {
     />;
   }) : <p className="no-comments">No comments</p>;
 
+  const showAuthorPage = () => showPersonStats(quote.addedBy);
   const addComment = (commentText: string) => props.addComment(props.quote._id, commentText);
   const toggleQuoteLike = () => props.toggleQuoteLike(quote);
 
@@ -70,6 +72,7 @@ const QuoteInfoPage: React.FC<Props> = (props: Props) => {
           userLikedQuote={userLikedQuote}
           />
         <div className="quote-stats">
+          Added by <span className="author-name" onClick={showAuthorPage}>{people[quote.addedBy].displayName}</span> on {moment(quote.addDate).format('MMM D, YYYY @ h:mm a')}.
         </div>
       </div>
       <div>
