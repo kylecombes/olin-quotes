@@ -33,9 +33,8 @@ BoardSchema.statics.findOneForClient = function (boardId) {
   return this.findOne({_id: boardId}, clientProjection);
 };
 
-// TODO: Filter the results for user
-BoardSchema.statics.getBoards = function () {
-  return this.find({}, clientProjection);
+BoardSchema.statics.getBoardsForUser = function (userId) {
+  return this.find({members: {$elemMatch: {personId: userId}}}, clientProjection);
 };
 
 export default mongoose.model('Board', BoardSchema);

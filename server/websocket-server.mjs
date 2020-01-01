@@ -57,6 +57,7 @@ function onConnect(socket) {
 }
 
 function sendInitDataToClient(socket) {
+  const user = socket.request.user;
   Promise.all([
     // Send the user info (name, profile pic, etc)
     User.find().lean().exec()
@@ -67,8 +68,8 @@ function sendInitDataToClient(socket) {
         socket.emit('peopleUpdate', people);
       }),
     sendAllQuotesToClient(socket),
-    // Send all the boards the user has access to TODO Filter!!
-    Board.find().lean().exec()
+    // Send all the boards the user has access to
+    Board.getBoardsForUser(user._id).exec()
       .then(boardList => {
         const boards = {};
         boardList.forEach(b => boards[b._id] = b);
@@ -153,8 +154,9 @@ async function addBoardMember(data, socket) {
 }
 
 function pushBoardListUpdate(socket) {
+  const user = socket.request.user;
   return new Promise((resolve, reject) => {
-    Board.getBoards().lean().exec((err, boards) => {
+    Board.getBoardsForUser(user._id).lean().exec((err, boards) => {
       if (err) {
         reject(err);
       } else {
