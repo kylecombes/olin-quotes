@@ -1,9 +1,21 @@
 import * as React from "react";
-import BoardView from '../containers/BoardView';
-import InfoSidebar from '../containers/InfoSidebar';
+import { Provider } from 'react-redux';
+import {
+  Route,
+  Switch,
+} from 'react-router';
+import { ConnectedRouter } from 'connected-react-router';
+
+import {
+  store,
+  history,
+} from '../data/setup-store';
+import BoardViewPage from '../containers/BoardViewPage';
 import Login from './Login';
 import NavSidebar from '../containers/NavSidebar';
+import PersonInfoPage from '../containers/PersonInfoPage';
 import Popup from '../containers/Popup'
+import QuoteInfoPage from '../containers/QuoteInfoPage';
 
 interface IProps {
   checkLoginStatus: () => null
@@ -30,8 +42,15 @@ const LoggedInView = (props: IProps) => (
     <div className="primary-container">
       <div className="content">
         <NavSidebar/>
-        <BoardView/>
-        <InfoSidebar/>
+        <Provider store={store}>
+          <ConnectedRouter history={history}>
+            <Switch>
+              <Route exact path="/boards/:id" component={BoardViewPage} />
+              <Route exact path="/people/:id" component={PersonInfoPage} />
+              <Route exact path="/quotes/:id" component={QuoteInfoPage} />
+            </Switch>
+          </ConnectedRouter>
+        </Provider>
       </div>
     </div>
   </div>
@@ -40,7 +59,7 @@ const LoggedInView = (props: IProps) => (
 const LoggedOutView = (props: IProps) => (
   <div className="app logged-out">
     <div className="centered-box-container">
-      <Login {...props} />
+      <Login />
     </div>
   </div>
 );

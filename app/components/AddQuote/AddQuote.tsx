@@ -19,7 +19,7 @@ type State = {
 };
 
 const createEmptyComponent = (): IQuoteComponent => ({
-  words: '',
+  content: '',
   personId: null,
 });
 
@@ -53,7 +53,7 @@ export default class AddQuote extends React.Component<Props, State> {
   onAddClicked = () => {
     // Only keep components that have words and an author
     // TODO: Some input validation with feedback to the user
-    const components = Object.values(this.state.components).filter(comp => comp.words && comp.personId);
+    const components = Object.values(this.state.components).filter(comp => comp.content && comp.personId);
 
     const data: INewQuote = {components};
     if (this.state.context) {
@@ -69,11 +69,11 @@ export default class AddQuote extends React.Component<Props, State> {
       <AddQuoteComponent
         key={idx}
         onComponentChange={newPartialData => this.onQuoteComponentChange(idx, newPartialData)}
-        wordsPlaceholder="Quote"
+        contentPlaceholder="Quote"
         speakerPlaceholder="Person"
         people={this.props.people}
         onAddPersonClick={this.props.onAddPersonClicked}
-        {...this.state.components[idx]}
+        {...quoteComponent}
       />
     ));
 

@@ -42,7 +42,11 @@ function onConnect(socket) {
     socket.on('createUserAccount', userData => onCreateUserAccount(userData, socket));
     socket.on('addBoard', boardData => addBoard(boardData, socket));
     socket.on('addQuote', quoteData => onAddQuote(quoteData, socket));
-    socket.on('addQuoteComment', onAddQuoteComment);
+    socket.on('addQuoteComment', commentData => onAddQuoteComment(commentData, socket));
+    socket.on('deleteQuoteComment', request => onDeleteQuoteComment(request, socket));
+    socket.on('toggleQuoteLike', request => onToggleQuoteLike(request, socket));
+    socket.on('toggleCommentLike', request => onToggleCommentLike(request, socket));
+    socket.on('updateQuoteComment', request => onUpdateQuoteComment(request, socket));
     socket.on('saveUserInfo', userData => saveUserInfo(userData, socket));
     sendInitDataToClient(socket);
   } else { // Unauthenticated client attempting to connect
@@ -144,45 +148,163 @@ function saveUserInfo(userData, socket) {
   });
 }
 
-// TODO: Add object field checking to ensure not just anything sent from the frontend can be added the db
 function onAddQuote(quoteData, socket) {
   console.log('Adding quote...');
+  quoteData.addedById = socket.request.user._id;
   new Quote(quoteData).save()
     // TODO: Send just the new quote to all interested clients
     .then(() => sendAllQuotesToClient(socket));
 }
 
-function onAddQuoteComment(request) {
+async function onAddQuoteComment(request, socket) {
   const {
     quoteId,
     text,
   } = request;
 
-  const filter = { _id: ObjectId(quoteId) };
-
   const comment = {
-    // authorId: ObjectId(authorId), TODO: Implement this with authentication/accounts
-    text,
+    added: new Date(),
+    authorId: socket.request.user._id,
+    content: text,
   };
 
-  _db.collection('quotes').update(filter, {$push: {comments: comment}}, (err, res) => {
-    if (err) {
-      console.error(err);
-    } else {
-      _io.collection('quotes').findOne(filter, (err, res) => {
-        if (err) {
-          console.error(err);
-        } else {
-          pushSingleQuoteUpdate(res);
-        }
-      });
-    }
-  });
+  const quoteDoc = await Quote.findOne({_id: quoteId});
 
+  if (!quoteDoc) {
+    console.warn(`Could not find quote ${quoteId} to add a comment.`);
+    return;
+  }
+
+  quoteDoc.comments.push(comment);
+  await quoteDoc.save();
+
+  pushSingleQuoteUpdate(quoteDoc.toObject());
+}
+
+async function onDeleteQuoteComment(request, socket) {
+  const commentId = ObjectId(request.id);
+
+  const quoteDoc = await Quote.findQuoteByComment(commentId);
+
+  if (!quoteDoc) {
+    console.warn(`Could not find quote containing comment ${commentId} to delete comment.`);
+    return;
+  }
+
+  // Extract the comment
+  let comment = quoteDoc.getCommentById(commentId);
+
+  // Make sure the user has permission to edit it
+  const userId = socket.request.user._id;
+  if (!userCanModifyComment(comment, userId)) {
+    console.warn(`User ${userId} attempting to edit comment ${commentId}, which was not created by that user.`);
+    return;
+  }
+
+  // Remove the comment in question
+  quoteDoc.comments = quoteDoc.comments.filter(c => c !== comment);
+
+  // Save the quote
+  await quoteDoc.save();
+
+  pushSingleQuoteUpdate(quoteDoc.toObject());
+}
+
+async function onUpdateQuoteComment(request, socket) {
+  const {
+    id: commentId,
+    content,
+  } = request;
+
+  const quoteDoc = await Quote.findQuoteByComment(commentId);
+
+  if (!quoteDoc) {
+    console.warn(`Could not find quote containing comment ${commentId} to delete comment.`);
+    return;
+  }
+
+  // Extract the comment
+  let comment = quoteDoc.getCommentById(commentId);
+
+  // Make sure the user has permission to edit it
+  const userId = socket.request.user._id;
+  if (!userCanModifyComment(comment, userId)) {
+    console.warn(`User ${userId} attempting to edit comment ${commentId}, which was not created by that user.`);
+    return;
+  }
+
+  comment.content = content;
+  comment.lastEdited = new Date();
+
+  await quoteDoc.save();
+
+  pushSingleQuoteUpdate(quoteDoc.toObject());
+}
+
+function indexOf(iter, checkFn) {
+  for (let i = 0; i < iter.length; ++i)
+    if (checkFn(iter[i]))
+      return i;
+  return -1;
+}
+
+function userCanModifyComment(comment, userId) {
+  return comment.authorId.equals(userId);
+}
+
+async function onToggleCommentLike(request, socket) {
+  const commentId = request.id;
+  const userId = socket.request.user._id;
+
+  const quoteDoc = await Quote.findQuoteByComment(commentId);
+
+  if (!quoteDoc) {
+    console.warn(`Could not find quote containing comment ${commentId} to delete comment.`);
+    return;
+  }
+
+  const comment = quoteDoc.getCommentById(commentId);
+  toggleLike(comment, userId);
+
+  await quoteDoc.save();
+
+  pushSingleQuoteUpdate(quoteDoc.toObject());
+}
+
+async function onToggleQuoteLike(request, socket) {
+  const quoteId = request.id;
+  const userId = socket.request.user._id;
+
+  const quoteDoc = await Quote.findById(quoteId);
+
+  if (!quoteDoc) {
+    console.warn(`Could not find quote ${quoteId}.`);
+    return;
+  }
+
+  toggleLike(quoteDoc, userId);
+
+  await quoteDoc.save();
+
+  pushSingleQuoteUpdate(quoteDoc.toObject());
+}
+
+function toggleLike(doc, userId) {
+  const likeIdx = indexOf(doc.likes, l => l.personId.equals(userId));
+  if (likeIdx >= 0) {
+    // The user has liked the comment, so remove the like
+    doc.likes.splice(likeIdx, 1);
+  } else {
+    // The user has not liked the comment, so add a like
+    doc.likes.push({
+      personId: userId,
+      date: new Date(),
+    });
+  }
 }
 
 function pushSingleQuoteUpdate(quoteData) {
-  this.io.emit('singleQuoteUpdate', quoteData);
+  _io.emit('singleQuoteUpdate', quoteData);
 }
 
 // eslint-disable-next-line no-unused-vars

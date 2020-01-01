@@ -1,0 +1,15 @@
+@import 'constants';
+
+.LikeIcon {
+  display: inline-block;
+  stroke: $color-icon-blue;
+  stroke-width: 5px;
+  fill: $color-medium-blue-background;
+  transition: all 0.3s ease;
+  cursor: pointer;
+
+  &.liked:not(:hover),
+  &:hover:not(.liked) {
+    fill: $color-icon-blue;
+  }
+}

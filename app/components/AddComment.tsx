@@ -33,7 +33,7 @@ export default class AddComment extends React.Component<Props, State> {
 
   render() {
     return (
-      <div className="comment-add">
+      <div className="AddComment">
         <textarea
           name="comment"
           value={this.state.comment}

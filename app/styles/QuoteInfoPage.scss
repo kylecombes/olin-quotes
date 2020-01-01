@@ -1,0 +1,61 @@
+@import 'constants';
+
+.QuoteInfoPage {
+  padding: 1em;
+  overflow: hidden;
+
+  &.split-page-2 > div {
+    padding: 1em;
+    overflow-y: auto;
+
+    &:first-child {
+      padding-right: 1.5em;
+    }
+
+    &:last-child {
+      padding-left: 1.5em;
+    }
+  }
+
+  .quote-stats {
+    margin: 1em;
+    color: $color-icon-blue;
+    font-style: italic;
+
+    .author-name {
+      cursor: pointer;
+      transition: color 0.3s ease;
+
+      &:hover {
+        color: $color-content-text;
+      }
+    }
+  }
+
+  .InfoSection {
+    &:first-child h1 {
+      margin-top: 0;
+    }
+
+    h1 {
+      font-weight: 400;
+      padding-bottom: 0.25em;
+      border-bottom: 2px solid $color-gray-divider;
+    }
+
+    &.comments h1 {
+      margin-bottom: 0;
+    }
+  }
+
+  .likes {
+    .person-name {
+      cursor: pointer;
+      transition: opacity 0.3s ease;
+
+      &:hover {
+        opacity: 0.7;
+      }
+    }
+  }
+}

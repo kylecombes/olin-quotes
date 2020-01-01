@@ -1,17 +1,50 @@
-@import 'colors';
+@import 'constants';
 
 .BoardView {
 
   .header {
     display: flex;
+    flex-direction: row;
+    flex-grow: 0;
+    align-items: center;
     justify-content: space-between;
+    color: $color-content-text;
     background-color: $color-content-background;
-    border-bottom: 1px solid $color-gray-divider;
 
     .board-name {
-      font-size: 1.3em;
+      font-size: 1.2em;
       font-weight: bold;
     }
+
+    .button-container {
+      display: flex;
+
+      & > div {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        padding: 1em;
+        transition: background-color 0.3s ease;
+        background-color: $color-content-background;
+
+        &:hover {
+          background-color: darken($color-content-background, $hover-delta);
+        }
+
+        svg {
+          width: 1.2em;
+        }
+
+        span {
+          margin-left: 0.7em;
+        }
+      }
+    }
+  }
+
+  .QuoteCard {
+    margin: $quote-cards-gutter-width;
+    width: (100% - 2*$quote-cards-per-row*$quote-cards-gutter-width)/$quote-cards-per-row;
   }
 
 }

@@ -1,7 +1,13 @@
 @import url('https://fonts.googleapis.com/css?family=Lato:300,400');
-@import 'colors';
+@import 'constants';
+@import 'AddComment';
 @import 'AddQuote';
 @import 'BoardView';
+@import 'Comment';
+@import 'LikeIcon';
+@import 'NavSidebar';
+@import 'QuoteCard';
+@import 'QuoteInfoPage';
 
 $transition-all: all 0.3s ease;
 $font-family-default: 'Lato', sans-serif;
@@ -19,11 +25,45 @@ body,
   font-family: $font-family-default;
 }
 
+.gear-icon {
+  fill: $color-icon-blue;
+}
+
+.plus-icon {
+  stroke: $color-icon-blue;
+  stroke-width: 0.25rem;
+}
+
+.button-container,
+.button {
+  user-select: none;
+}
+
 .app {
   position: relative;
   background: rgb(48,58,85);
   background: radial-gradient(circle at 80% 0, rgba(35,42,66,1) 0%, rgba(22,27,50,1) 100%);
   color: $color-content-text;
+}
+
+
+.avatar {
+  width: 2em;
+  min-width: 2em;
+  border-radius: 1em;
+}
+
+.split-page-2 {
+  display: flex;
+  flex-direction: row;
+
+  & > div {
+    flex-grow: 1;
+
+    &:first-child {
+      border-right: 1px solid $color-gray-divider;
+    }
+  }
 }
 
 .centered-box-container {
@@ -60,29 +100,6 @@ body,
   bottom: 0;
 }
 
-.header {
-  flex-grow: 0;
-  color: $color-content-text;
-  padding: 1em;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-
-  .logo {
-    font-size: xx-large;
-  }
-
-  .user-info {
-    button.login {
-      border: 3px solid $color-button-blue;
-      -webkit-border-radius: 1em;
-      -moz-border-radius: 1em;
-      border-radius: 0.3em;
-    };
-  }
-}
-
 .popup-container {
   display: flex;
   align-items: center;
@@ -109,6 +126,7 @@ body,
 .primary-content {
   flex: 1 1 auto;
   position: relative;
+  overflow-y: auto;
 }
 
 input[type='text'] {
@@ -135,54 +153,6 @@ button {
     &:hover {
       background-color: $color-button-blue-dark;
     }
-  }
-}
-
-.sidebar {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  background: rgb(48,58,85);
-  position: relative;
-  background: radial-gradient(circle at 80% 0, rgba(48,58,85,1) 0%, rgba(29,38,65,1) 100%);
-
-  &.collapsed {
-    display: none;
-  }
-
-  .close-button {
-    position: absolute;
-    right: 1rem;
-    top: 1rem;
-    color: #aaa;
-    font-size: xx-large;
-    cursor: pointer;
-  }
-
-  .header {
-    margin: 1em;
-  }
-
-  nav {
-    span {
-      display: block;
-      padding: 0.5em 1em;
-      border-left: 0.2em solid rgba(38, 46, 70, 0);
-
-      &.current {
-        background-color: #262e46;
-        border-left: 0.2em solid #ccc;
-      }
-
-      &:hover {
-        background-color: #21283d;
-        cursor: pointer;
-      }
-    }
-  }
-
-  &.info {
-    width: 20%;
   }
 }
 
@@ -237,11 +207,6 @@ button {
   margin-right: auto;
 }
 
-.comment-add {
-
-}
-
-
 input[type='text'] {
   border-top: none;
   border-left: none;
@@ -263,79 +228,7 @@ textarea {
 }
 
 .quote-cards {
-  $quote-cards-per-row: 4;
-  $quote-cards-gutter-width: 1%;
   overflow-x: hidden;
-
-  .quote-card {
-    margin: $quote-cards-gutter-width;
-    border-radius: 1em;
-    background-color: #303a55;
-    width: (100% - 2*$quote-cards-per-row*$quote-cards-gutter-width)/$quote-cards-per-row;
-
-    .words {
-      font-size: 1.3em;
-      display: block;
-    }
-
-    span.words {
-      margin: 1em;
-    }
-
-    .attributes {
-      border-top: 1px solid #546480;
-      display: flex;
-      align-items: center;
-    }
-
-    .attributes {
-      padding: 1em;
-    }
-
-    .attributes {
-      font-size: 0.8em;
-
-      .author-info {
-        display: flex;
-        align-items: center;
-      }
-
-       .author-name {
-         cursor: pointer;
-         display: inline-block;
-
-         &:first-of-type {
-           margin-left: 1em;
-         }
-
-         &:not(:last-of-type)::after {
-           content: ',';
-           margin-right: 0.2em;
-         }
-
-         &:hover {
-           color: white;
-         }
-       }
-    }
-
-    img {
-      width: 2em;
-      min-width: 2em;
-      border-radius: 1em;
-      cursor: pointer;
-    }
-
-    .quote-component {
-      display: flex;
-      align-items: center;
-      margin: 1.5em;
-
-      .words {
-        margin-left: 1em;
-      }
-    }
-  }
 }
 
 .quote-info {
@@ -352,23 +245,6 @@ textarea {
 
   .no-comments {
     font-style: italic;
-  }
-
-  .comment-add {
-
-    textarea {
-      border-top: 1px solid $color-gray-divider;
-    }
-
-    .buttons button {
-      width: 50%;
-      border-top: 1px solid $color-gray-divider;
-      border-bottom: 1px solid $color-gray-divider;
-
-      &:last-of-type {
-        border-left: 1px solid $color-gray-divider;
-      }
-    }
   }
 }
 

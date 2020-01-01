@@ -5,21 +5,27 @@ import {
 } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
 
-import BoardView from '../components/BoardView';
+import BoardViewPage from '../components/pages/BoardViewPage';
 import {
   showAddQuoteModal,
   showPersonStats,
   showQuoteInfo,
+  toggleQuoteLike,
 } from '../data/actions';
 import {
+  IQuote,
   IRootState,
 } from '../data/types';
+import {
+  getCurrentBoardId,
+} from '../utils';
 
 const mapStateToProps = (state: IRootState) => {
-  if (!state.boards.currentBoardId || !state.quotes) {
+  const boardId = getCurrentBoardId(state);
+  const board = state.boards.allBoards[boardId];
+  if (!board) {
     return {};
   }
-  const board = state.boards.allBoards[state.boards.currentBoardId];
   const quotes = Object.values(state.quotes).filter(q => q.boardId === board._id);
 
   return {
@@ -27,6 +33,7 @@ const mapStateToProps = (state: IRootState) => {
     people: state.people,
     quotes,
     masonryLayoutTrigger: state.general.masonryLayoutTrigger,
+    user: state.user,
   }
 };
 
@@ -34,8 +41,9 @@ const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, AnyAction>) => {
   return bindActionCreators(
     {
       showPersonStats: (personId: string) => dispatch(showPersonStats(personId)),
-      showQuoteInfo: (quoteId: string) => dispatch(showQuoteInfo(quoteId)),
+      showQuoteInfo: (quote: IQuote) => dispatch(showQuoteInfo(quote)),
       showAddQuoteModal: () => dispatch(showAddQuoteModal()),
+      toggleQuoteLike: (quote: IQuote) => dispatch(toggleQuoteLike(quote)),
     },
     dispatch
   );
@@ -44,4 +52,4 @@ const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, AnyAction>) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(BoardView);
+)(BoardViewPage);

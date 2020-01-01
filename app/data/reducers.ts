@@ -8,26 +8,18 @@ import {
   IBoard,
   IBoardsState,
   IGeneralState,
-  IInfoSidebarState,
   IPopupState,
 } from './types';
 
 const defaultBoardsState: IBoardsState = {
   allBoards: {},
-  currentBoardId: null,
 };
 
 export function boards(state: IBoardsState = defaultBoardsState, action: AnyAction) {
   switch (action.type) {
     case WS_EVENT_TYPES.BOARD_LIST_RECEIVED:
-      const boards: {[id: string]: IBoard} = action.data;
-      let newData = Object.assign({}, state, {
-        allBoards: boards,
-      });
-      if (!state.currentBoardId || !boards[state.currentBoardId]) {
-        newData.currentBoardId = Object.values(boards)[0]._id;
-      }
-      return newData;
+      const allBoards: {[id: string]: IBoard} = action.data;
+      return {...state, allBoards};
     case ActionTypes.SWITCH_TO_BOARD:
     case WS_EVENT_TYPES.SWITCH_TO_BOARD:
       return Object.assign({}, state, {
@@ -60,35 +52,7 @@ export function general(state: IGeneralState = defaultGeneralState, action: AnyA
   }
 }
 
-const defaultInfoSidebarState: IInfoSidebarState = {
-  sidebarType: null,
-  elementId: null,
-};
-
-export function infoSidebar(state: IInfoSidebarState = defaultInfoSidebarState, action: AnyAction) {
-  switch (action.type) {
-    case ActionTypes.SHOW_PERSON_STATS:
-      return Object.assign({}, state, {
-        sidebarType: 'personInfo',
-        elementId: action.data,
-      });
-    case ActionTypes.SHOW_QUOTE_INFO:
-      return Object.assign({}, state, {
-        sidebarType: 'quoteInfo',
-        elementId: action.data,
-      });
-    case ActionTypes.CLOSE_SIDEBAR:
-      return Object.assign({}, state, {
-        sidebarType: null,
-        elementId: null,
-      });
-    default:
-      return state;
-  }
-}
-
 export function people(state = {}, action: AnyAction) {
-
   switch (action.type) {
     case WS_EVENT_TYPES.PEOPLE_UPDATE:
       return action.data;

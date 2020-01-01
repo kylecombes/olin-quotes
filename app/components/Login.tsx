@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-const Login: React.FC<any> = () => {
+const Login: React.FC = () => {
   return (
     <div className="login-signup">
       <h1>Olin Quotes</h1>

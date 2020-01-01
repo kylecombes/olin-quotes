@@ -1,0 +1,23 @@
+@import 'constants';
+
+.AddComment {
+
+  textarea {
+    background-color: transparent;
+    resize: vertical;
+  }
+
+  .buttons button {
+    background-color: transparent;
+    width: 50%;
+    border-top: 1px solid $color-gray-divider;
+
+    &:hover {
+      background-color: $color-button-blue-dark;
+    }
+
+    &:last-of-type {
+      border-left: 1px solid $color-gray-divider;
+    }
+  }
+}

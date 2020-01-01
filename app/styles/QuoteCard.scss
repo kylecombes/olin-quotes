@@ -1,0 +1,118 @@
+@import 'constants';
+
+$border-radius: 1rem;
+
+.QuoteCard {
+
+  .words {
+    background-color: $color-light-blue;
+    font-size: 1.2em;
+    display: block;
+    padding: 0.7em 1em;
+  }
+
+  .buttons-container {
+    display: flex;
+    flex-direction: row;
+
+    div:not(:last-child) {
+      margin-right: 0.8em;
+    }
+
+    svg {
+      height: 1.5em;
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &.comment-icon {
+        fill: $color-icon-blue;
+
+        &:hover {
+          fill: $color-icon-blue-lighter;
+        }
+
+        text {
+          fill: $color-medium-blue-background;
+          font-size: 1.2em;
+          font-family: Arial, sans-serif;
+        }
+      }
+    }
+  }
+
+  .attributes {
+    font-size: 0.9em;
+    border: 0.2em solid $color-light-blue;
+    border-top: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .attribution {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+
+      .author-info {
+        display: flex;
+        align-items: center;
+        padding: 1em 0;
+
+        .avatar {
+          margin-right: 1em;
+          cursor: pointer;
+        }
+
+        .author-name {
+          cursor: pointer;
+          display: inline-block;
+          text-transform: uppercase;
+
+          &:hover {
+            color: white;
+          }
+        }
+      }
+    }
+
+    &:nth-child(4n) {
+      justify-content: flex-end;
+
+      .attribution {
+        flex-direction: row-reverse;
+
+        .triangle {
+          transform: scale(-1, 1);
+        }
+      }
+    }
+
+    .buttons-container {
+      margin-right: 1em;
+    }
+  }
+
+  .triangle {
+    width: 4em;
+    padding: 0 1em 1em;
+    margin-top: -1px; /* To handle 1px separation artifact that happens in Firefox sometimes */
+  }
+
+  .quote-card-footer {
+    background-color: $color-light-blue;
+    border-top: none;
+    display: flex;
+    justify-content: flex-end;
+    padding: 1em;
+  }
+
+  & > :first-child {
+    border-top-left-radius: $border-radius;
+    border-top-right-radius: $border-radius;
+  }
+
+  & > :last-child {
+    border-bottom-left-radius: $border-radius;
+    border-bottom-right-radius: $border-radius;
+  }
+}

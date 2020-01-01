@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 
-import NavSidebar from '../components/sidebars/NavSidebar';
 import {
   promptCreateBoard,
   switchToBoard,
@@ -10,15 +10,18 @@ import {
   IRootState,
 } from '../data/types';
 import {
-  Dispatch,
-} from 'redux';
+  getCurrentBoardId,
+} from '../utils';
+
+import NavSidebar from '../components/NavSidebar';
 
 const mapStateToProps = (state: IRootState) => {
+  const currentBoardId = getCurrentBoardId(state);
   if (!state.boards) {
     return {};
   }
   return {
-    currentBoardId: state.boards.currentBoardId,
+    currentBoardId,
     boards: Object.values(state.boards.allBoards),
   }
 };

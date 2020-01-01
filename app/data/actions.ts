@@ -1,7 +1,7 @@
 /* This file contains all of the Redux actions. */
 
 import axios from 'axios'
-import { AnyAction } from 'redux';
+import { push } from 'connected-react-router';
 import { ThunkDispatch } from 'redux-thunk';
 
 import {
@@ -9,7 +9,12 @@ import {
   IQuote,
   IPerson,
   INewBoard,
+  IRootState,
+  IQuoteComment,
 } from './types';
+import {
+  getCurrentBoardId,
+} from '../utils';
 import {
   connect as websocketConnect,
   WS_EVENT_TYPES,
@@ -21,12 +26,16 @@ export const ActionTypes = {
   ADD_QUOTE_COMMENT: 'addQuoteComment',
   CLOSE_POPUP: 'CLOSE_POPUP',
   CLOSE_SIDEBAR: 'CLOSE_SIDEBAR',
+  DELETE_QUOTE_COMMENT: 'deleteQuoteComment',
+  TOGGLE_QUOTE_LIKE: 'toggleQuoteLike',
+  LIKE_UNLIKE_QUOTE_COMMENT: 'toggleCommentLike',
   OPEN_POPUP: 'OPEN_POPUP',
   SWITCH_TO_BOARD: 'SWITCH_TO_BOARD',
   SHOW_ADD_QUOTE_MODAL: 'SHOW_ADD_QUOTE_MODAL',
   SHOW_PERSON_STATS: 'SHOW_PERSON_STATS',
   SHOW_QUOTE_INFO: 'SHOW_QUOTE_INFO',
   MASONRY_RECALCULATE_LAYOUT: 'MASONRY_RECALCULATE_LAYOUT',
+  UPDATE_QUOTE_COMMENT: 'updateQuoteComment',
 };
 
 let _axioInstance = axios.create({
@@ -61,9 +70,23 @@ export function addBoard(boardInfo: INewBoard) {
 export function addQuote(quoteData: IQuote) {
   // @ts-ignore
   return (dispatch, getStore, { emit }) => {
-    const state = getStore();
-    quoteData.boardId = state.boards.current._id;
+    const state: IRootState = getStore();
+    const currentBoardId = getCurrentBoardId(state);
+    if (!currentBoardId) {
+      console.error('addQuote: Could not resolve current board ID from URL.');
+      return;
+    }
+    quoteData.boardId = currentBoardId;
     emit(ActionTypes.ADD_QUOTE, quoteData);
+  }
+}
+
+export function toggleQuoteLike(quote: IQuote) {
+  // @ts-ignore
+  return (dispatch, getStore, { emit }) => {
+    emit(ActionTypes.TOGGLE_QUOTE_LIKE, {
+      id: quote._id,
+    });
   }
 }
 
@@ -76,6 +99,35 @@ export function addQuoteComment(quoteId: string, text: string) {
     });
   }
 }
+
+export function toggleQuoteCommentLike(comment: IQuoteComment) {
+  // @ts-ignore
+  return (dispatch, getStore, { emit }) => {
+    emit(ActionTypes.LIKE_UNLIKE_QUOTE_COMMENT, {
+      id: comment._id,
+    });
+  }
+}
+
+export function deleteQuoteComment(comment: IQuoteComment) {
+  // @ts-ignore
+  return (dispatch, getStore, { emit }) => {
+    emit(ActionTypes.DELETE_QUOTE_COMMENT, {
+      id: comment._id,
+    });
+  }
+}
+
+export function updateQuoteComment(comment: IQuoteComment) {
+  // @ts-ignore
+  return (dispatch, getStore, { emit }) => {
+    emit(ActionTypes.UPDATE_QUOTE_COMMENT, {
+      id: comment._id,
+      content: comment.content,
+    });
+  }
+}
+
 
 export function checkLoginStatus() {
   return () => {
@@ -90,25 +142,19 @@ export function checkLoginStatus() {
 }
 
 export function switchToBoard(board: IBoard) {
-  return { type: ActionTypes.SWITCH_TO_BOARD, data: board };
+  return push(`/boards/${board._id}`);
 }
 
 export function showAddQuoteModal() {
   return { type: ActionTypes.OPEN_POPUP, data: 'addQuote' };
 }
 
-export function showQuoteInfo(quoteId: string) {
-  return (dispatch: ThunkDispatch<{}, {}, AnyAction>) => {
-    dispatch({type: ActionTypes.SHOW_QUOTE_INFO, data: quoteId});
-    dispatch(masonryRecalculateLayout());
-  }
+export function showQuoteInfo(quote: IQuote) {
+  return push(`/quotes/${quote._id}`);
 }
 
 export function showPersonStats(personId: string) {
-  return (dispatch: ThunkDispatch<{}, {}, AnyAction>) => {
-    dispatch({type: ActionTypes.SHOW_PERSON_STATS, data: personId});
-    dispatch(masonryRecalculateLayout());
-  }
+  return push(`/people/${personId}`);
 }
 
 export function openLogin() {

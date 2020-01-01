@@ -1,0 +1,72 @@
+@import 'constants';
+$base-left-padding: 0.8rem;
+
+.sidebar {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: rgb(48,58,85);
+  position: relative;
+  background: radial-gradient(circle at 80% 0, rgba(48,58,85,1) 0%, rgba(29,38,65,1) 100%);
+
+  &.collapsed {
+    display: none;
+  }
+
+  .close-button {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    color: #aaa;
+    font-size: xx-large;
+    cursor: pointer;
+  }
+
+  .header {
+    margin: 1em;
+
+    svg.Olin-Quotes-logo {
+      width: 8em;
+      padding: 0.7em 1em;
+      fill: $color-content-text;
+    }
+  }
+
+  .sidebar-button {
+    display: block;
+    padding: 0.4rem ($base-left-padding+0.3rem);
+    border-left: 0.2rem solid rgba(38, 46, 70, 0);
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: #21283d;
+      cursor: pointer;
+    }
+  }
+
+  .section-header {
+    padding: 0.2rem $base-left-padding 0.2rem;
+    font-size: 0.9em;
+  }
+
+  nav {
+    span.current {
+      background-color: #262e46;
+      border-left: 0.2em solid #ccc;
+    }
+  }
+
+  &.info {
+    width: 20%;
+  }
+
+  .add-board {
+    display: flex;
+    align-items: center;
+
+    svg.plus-icon {
+      width: 0.7em;
+      margin-right: 0.5em;
+    }
+  }
+}
