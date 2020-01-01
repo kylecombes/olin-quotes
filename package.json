@@ -19,6 +19,7 @@
     "express": "^4.16.4",
     "express-session": "^1.15.6",
     "history": "^4.10.1",
+    "lodash": "^4.17.15",
     "moment": "^2.24.0",
     "mongodb": "^3.1.10",
     "mongoose": "^5.5.15",
@@ -60,6 +61,7 @@
   ],
   "devDependencies": {
     "@types/history": "^4.7.3",
+    "@types/lodash": "^4.14.149",
     "@types/react": "^16.9.16",
     "@types/react-autosuggest": "^9.3.13",
     "@types/react-dom": "^16.9.4",

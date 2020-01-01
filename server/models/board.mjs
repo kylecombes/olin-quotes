@@ -9,13 +9,33 @@ const BoardSchema = new mongoose.Schema({
   createdOn: Date,
   description: String,
   name: String,
+  members: [{
+    addedBy: ObjectId,
+    addedOn: Date,
+    personId: ObjectId,
+    role: {
+      type: String,
+      enum: [
+        'admin',
+        'contributor',
+        'viewer',
+      ],
+    },
+  }],
 });
+
+const clientProjection = {
+  '$members.addedBy': false,
+  '$members.addedOn': false,
+};
+
+BoardSchema.statics.findOneForClient = function (boardId) {
+  return this.findOne({_id: boardId}, clientProjection);
+};
 
 // TODO: Filter the results for user
 BoardSchema.statics.getBoards = function () {
-  return this.find({}, {
-    createdBy: false,
-  });
+  return this.find({}, clientProjection);
 };
 
 export default mongoose.model('Board', BoardSchema);

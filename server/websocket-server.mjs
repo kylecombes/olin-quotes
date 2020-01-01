@@ -3,7 +3,7 @@ import cookieParser from 'cookie-parser';
 import mongodb from 'mongodb';
 import passport from 'passport';
 import passportSocketIo from 'passport.socketio';
-import Board from './models/board.mjs';
+import Board  from './models/board.mjs';
 import User from './models/user.mjs';
 import Quote from './models/quote.mjs';
 import { getDb } from './database.mjs';
@@ -41,6 +41,7 @@ function onConnect(socket) {
     socket.emit('currentUserInfo', socket.request.user);
     socket.on('createUserAccount', userData => onCreateUserAccount(userData, socket));
     socket.on('addBoard', boardData => addBoard(boardData, socket));
+    socket.on('addBoardMember', request => addBoardMember(request, socket));
     socket.on('addQuote', quoteData => onAddQuote(quoteData, socket));
     socket.on('addQuoteComment', commentData => onAddQuoteComment(commentData, socket));
     socket.on('deleteQuoteComment', request => onDeleteQuoteComment(request, socket));
@@ -102,6 +103,53 @@ function addBoard(data, socket) {
         .then(() => socket.emit('switchToBoard', newBoard._id));
     }
   });
+}
+
+const roleTypes = ['admin', 'contributor', 'viewer'];
+
+async function addBoardMember(data, socket) {
+  const user = socket.request.user;
+
+  const {
+    boardId,
+    personId,
+    role,
+  } = data;
+
+  // TODO: Ensure current user has requisite privileges on board
+  const boardDoc = await Board.findOne({_id: boardId});
+
+  if (!boardDoc) {
+    console.warn(`User ${user._id} attempting to add member to board ${boardId}, which cannot be found.`);
+    return null;
+  }
+
+  // Make sure the role is a valid role
+  if (roleTypes.indexOf(role) === -1) {
+    console.warn(`User ${user._id} attempting to add board member with unrecognized role '${role}'.`);
+    return null;
+  }
+
+  // Make sure the user isn't already added (just in case)
+  const memberIdx = indexOf(boardDoc.members, mem => mem.personId.equals(personId));
+  if (memberIdx >= 0) {
+    console.warn(`User ${user._id} attempting to add ${personId} to board ${boardId}, but user`
+     + ' is already a member of that board. Ignoring request.');
+    return null;
+  }
+
+  boardDoc.members.push({
+    addedBy: user._id,
+    addedOn: new Date(),
+    personId,
+    role,
+  });
+
+  await boardDoc.save();
+
+  const updatedBoardDoc = await Board.findOneForClient(boardId);
+
+  pushBoardUpdate(updatedBoardDoc.toObject());
 }
 
 function pushBoardListUpdate(socket) {
@@ -301,6 +349,10 @@ function toggleLike(doc, userId) {
       date: new Date(),
     });
   }
+}
+
+function pushBoardUpdate(boardData) {
+  _io.emit('boardUpdate', boardData);
 }
 
 function pushSingleQuoteUpdate(quoteData) {

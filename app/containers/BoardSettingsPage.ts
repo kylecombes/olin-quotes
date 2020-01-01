@@ -5,16 +5,14 @@ import {
 } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
 
-import BoardViewPage from '../components/pages/BoardViewPage';
+import BoardSettingsPage from '../components/pages/BoardSettingsPage';
 import {
-  showAddQuoteModal,
-  showBoardSettings,
-  showPersonStats,
-  showQuoteInfo,
-  toggleQuoteLike,
+  addBoardMember,
 } from '../data/actions';
 import {
-  IQuote,
+  IBoard,
+  IBoardMemberRole,
+  IPerson,
   IRootState,
 } from '../data/types';
 import {
@@ -27,13 +25,9 @@ const mapStateToProps = (state: IRootState) => {
   if (!board) {
     return {};
   }
-  const quotes = Object.values(state.quotes).filter(q => q.boardId === board._id);
-
   return {
     board,
     people: state.people,
-    quotes,
-    masonryLayoutTrigger: state.general.masonryLayoutTrigger,
     user: state.user,
   }
 };
@@ -41,11 +35,7 @@ const mapStateToProps = (state: IRootState) => {
 const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, AnyAction>) => {
   return bindActionCreators(
     {
-      showBoardSettings: (boardId: string) => dispatch(showBoardSettings(boardId)),
-      showPersonStats: (personId: string) => dispatch(showPersonStats(personId)),
-      showQuoteInfo: (quote: IQuote) => dispatch(showQuoteInfo(quote)),
-      showAddQuoteModal: () => dispatch(showAddQuoteModal()),
-      toggleQuoteLike: (quote: IQuote) => dispatch(toggleQuoteLike(quote)),
+      addBoardMember: (b: IBoard, p: IPerson, r: IBoardMemberRole) => dispatch(addBoardMember(b, p, r)),
     },
     dispatch
   );
@@ -54,4 +44,4 @@ const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, AnyAction>) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(BoardViewPage);
+)(BoardSettingsPage);

@@ -18,6 +18,7 @@ type WS_EVENT_TYPE_LIST = {
 export const WS_EVENT_TYPES: WS_EVENT_TYPE_LIST = {
   CURRENT_USER_INFO: 'currentUserInfo',
   BOARD_LIST_RECEIVED: 'boardList',
+  BOARD_UPDATE: 'boardUpdate',
   PEOPLE_UPDATE: 'peopleUpdate',
   SINGLE_QUOTE_UPDATE: 'singleQuoteUpdate',
   SAVE_USER_INFO: 'saveUserInfo',

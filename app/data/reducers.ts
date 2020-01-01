@@ -20,6 +20,15 @@ export function boards(state: IBoardsState = defaultBoardsState, action: AnyActi
     case WS_EVENT_TYPES.BOARD_LIST_RECEIVED:
       const allBoards: {[id: string]: IBoard} = action.data;
       return {...state, allBoards};
+    case WS_EVENT_TYPES.BOARD_UPDATE:
+      const board = action.data;
+      return {
+        ...state,
+        allBoards: {
+          ...state.allBoards,
+          [board._id]: board,
+        },
+      };
     case ActionTypes.SWITCH_TO_BOARD:
     case WS_EVENT_TYPES.SWITCH_TO_BOARD:
       return Object.assign({}, state, {

@@ -11,6 +11,7 @@ import {
   INewBoard,
   IRootState,
   IQuoteComment,
+  IBoardMemberRole,
 } from './types';
 import {
   getCurrentBoardId,
@@ -23,6 +24,7 @@ import {
 export const ActionTypes = {
   ADD_QUOTE: 'addQuote',
   ADD_BOARD: 'addBoard',
+  ADD_BOARD_MEMBER: 'addBoardMember',
   ADD_QUOTE_COMMENT: 'addQuoteComment',
   CLOSE_POPUP: 'CLOSE_POPUP',
   CLOSE_SIDEBAR: 'CLOSE_SIDEBAR',
@@ -65,6 +67,17 @@ export function addBoard(boardInfo: INewBoard) {
     emit(ActionTypes.ADD_BOARD, boardInfo);
     dispatch(closePopup());
   }
+}
+
+export function addBoardMember(board: IBoard, person: IPerson, role: IBoardMemberRole) {
+  // @ts-ignore
+  return (dispatch: ThunkDispatch<{}, {}, any>, getStore, { emit }) => {
+    emit(ActionTypes.ADD_BOARD_MEMBER, {
+      boardId: board._id,
+      personId: person._id,
+      role,
+    });
+  };
 }
 
 export function addQuote(quoteData: IQuote) {
@@ -155,6 +168,10 @@ export function showQuoteInfo(quote: IQuote) {
 
 export function showPersonStats(personId: string) {
   return push(`/people/${personId}`);
+}
+
+export function showBoardSettings(boardId: string) {
+  return push(`/boards/${boardId}/settings`);
 }
 
 export function openLogin() {
