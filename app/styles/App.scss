@@ -34,6 +34,11 @@ body,
   stroke-width: 0.25rem;
 }
 
+.button-container,
+.button {
+  user-select: none;
+}
+
 .app {
   position: relative;
   background: rgb(48,58,85);
