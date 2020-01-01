@@ -39,7 +39,7 @@ const Comment: React.FC<Props> = (props: Props) => {
   const userLiked = userLikedItem(comment, user);
   const buttons = comment.authorId === user._id ? [
     <span onClick={beginEditing}>Edit</span>,
-    <span>&nbsp;</span>,
+    <span> | </span>,
     <span onClick={props.deleteComment}>Delete</span>,
   ] : (
     <LikeIcon onClick={props.toggleCommentLike} liked={userLiked} />
