@@ -7,13 +7,41 @@
     border-top: 1px solid $color-gray-divider;
   }
 
+  $cell-padding: 0.5em 1em;
+
   tr td {
-    padding: 0.5em 1em;
+    padding: $cell-padding;
     vertical-align: center;
+
+    &.role-select {
+      padding: 0;
+    }
+  }
+
+  .role-select {
+    padding: $cell-padding;
   }
 
   .avatar {
     max-width: 7em;
     border-radius: 3.5em;
+  }
+
+  .bordered {
+    border-left: 1px solid $color-gray-divider;
+    border-right: 1px solid $color-gray-divider;
+  }
+
+  select.dark-flat {
+    appearance: none;
+    -webkit-appearance: none;
+    color: $color-content-text;
+    background-image: url('/assets/down-arrow.svg'); // linear-gradient(to bottom, $color-content-background 0%, $color-content-background 100%);
+    background-repeat: no-repeat;
+    background-position: right 0.5em top 50%, 0 0;
+    background-size: 0.7em auto;
+    border: none;
+    border-radius: 0;
+    background-color: transparent;
   }
 }

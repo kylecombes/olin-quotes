@@ -111,7 +111,7 @@ const Member: React.FC<MemberProps> = (props: MemberProps) => {
         <img className="avatar" src={person.avatarUrl} />
       </td>
       <td className="name">{person.displayName}</td>
-      <td className="role-select">
+      <td className="role-select bordered">
         <RoleSelect
           currentSelection={role}
           onSelect={changeRole}
@@ -133,7 +133,7 @@ const RoleSelect: React.FC<RoleSelectProps> = (props: RoleSelectProps) => {
   } = props;
   const onChangeSelection = (e: React.ChangeEvent<HTMLSelectElement>) => onSelect(e.target.value as IBoardMemberRole);
   return (
-    <select onChange={onChangeSelection} className="role-select">
+    <select onChange={onChangeSelection} className="role-select dark-flat">
       <option value="admin" selected={s === 'admin'}>Admin</option>
       <option value="contributor" selected={s === 'contributor'}>Contributor</option>
       <option value="viewer" selected={s === 'viewer'}>View Only</option>
