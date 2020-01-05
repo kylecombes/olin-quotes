@@ -1,0 +1,19 @@
+@import 'constants';
+
+.BoardMembersEditor {
+  border-collapse: collapse;
+
+  & > :not(:first-child) td {
+    border-top: 1px solid $color-gray-divider;
+  }
+
+  tr td {
+    padding: 0.5em 1em;
+    vertical-align: center;
+  }
+
+  .avatar {
+    max-width: 7em;
+    border-radius: 3.5em;
+  }
+}
