@@ -1,6 +1,7 @@
 import * as React from 'react';
 
 import AutosuggestPerson from './AutosuggestPerson';
+import Avatar from './Avatar';
 
 import {
   IBoard,
@@ -67,7 +68,7 @@ const BoardMembersEditor: React.FC<MembersListProps> = (props: MembersListProps)
       </tbody>
       <tfoot className="add-member">
         <td>
-          <img src={state.user?.avatarUrl} className="avatar" />
+          <Avatar user={state.user}/>
         </td>
         <td className="autosuggest-person">
           <AutosuggestPerson
@@ -108,7 +109,7 @@ const Member: React.FC<MemberProps> = (props: MemberProps) => {
   return (
     <tr className="Member">
       <td>
-        <img className="avatar" src={person.avatarUrl} />
+        <Avatar user={person} />
       </td>
       <td className="name">{person.displayName}</td>
       <td className="role-select bordered">

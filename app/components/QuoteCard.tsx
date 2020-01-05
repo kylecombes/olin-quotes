@@ -1,8 +1,11 @@
 import * as React from 'react';
+
 import {
   IPerson,
   IQuote,
 } from '../data/types';
+
+import Avatar from './Avatar';
 import CommentIcon from './CommentIcon';
 import LikeIcon from './LikeIcon';
 
@@ -55,10 +58,8 @@ export default (props: Props) => {
         <div className="attribution">
           <img className="triangle" src="/assets/triangle.svg" />
           <div className="author-info" key={content}>
-            <img
-              className="avatar"
-              src={person?.avatarUrl}
-              title={person?.displayName}
+            <Avatar
+              user={person}
               onClick={viewPerson}
             />
             <span className="author-name" onClick={viewPerson}>{person?.displayName}</span>

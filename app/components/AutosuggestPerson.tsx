@@ -1,6 +1,8 @@
 import * as React from 'react';
 import * as Autosuggest from 'react-autosuggest';
 
+import Avatar from './Avatar';
+
 import {
   IPerson,
 } from '../data/types';
@@ -67,7 +69,7 @@ export default class AutosuggestPerson extends React.Component<Props, State> {
       </div>
     ) : (
       <div className="person-suggestion">
-        <img src={suggestion.avatarUrl} alt={suggestion.displayName} />
+        <Avatar user={suggestion}/>
         <span>{suggestion.displayName}</span>
       </div>
     );

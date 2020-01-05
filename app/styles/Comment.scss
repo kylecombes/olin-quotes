@@ -20,9 +20,8 @@
         transition: opacity 0.3s ease;
       }
 
-      .avatar {
+      .Avatar {
         margin-right: 0.5em;
-        cursor: pointer;
       }
 
       .name {
@@ -31,7 +30,7 @@
         cursor: pointer;
       }
 
-      .avatar:hover,
+      .Avatar:hover,
       .name:hover {
         opacity: 0.7;
       }

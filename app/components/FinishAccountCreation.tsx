@@ -2,6 +2,7 @@ import * as React from 'react';
 import {
   IPerson,
 } from '../data/types';
+import Avatar from './Avatar';
 
 type Props = {
   close: () => any
@@ -31,7 +32,7 @@ export default class FinishAccountCreation extends React.Component<Props, State>
       <div className="person-add sidebar">
         <h2 className="header">Let's verify a few details...</h2>
         <div className="img-container">
-          <img alt="Profile picture" src={this.state.avatarUrl} />
+          <Avatar user={this.state} />
         </div>
         <input name="firstName" placeholder="First name" type="text" value={this.state.firstName} onChange={this.textFieldChanged} />
         <input name="lastName" placeholder="Last name" type="text" value={this.state.lastName} onChange={this.textFieldChanged} />

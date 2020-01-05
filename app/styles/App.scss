@@ -48,10 +48,32 @@ body,
 }
 
 
-.avatar {
+.Avatar {
   width: 2em;
-  min-width: 2em;
+  height: 2em;
   border-radius: 1em;
+  overflow: hidden;
+
+  &.clickable {
+    cursor: pointer;
+  }
+
+  &.blank-avatar {
+    margin: 0.5em 1em;
+    svg {
+      width: 2em;
+      height: 2em;
+      fill: none;
+
+      .fill {
+        fill: $color-content-background;
+      }
+      .stroke {
+        stroke: $color-content-background;
+        stroke-width: 7px;
+      }
+    }
+  }
 }
 
 .split-page-2 {
