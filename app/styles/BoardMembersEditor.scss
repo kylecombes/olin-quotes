@@ -7,6 +7,10 @@
     border-top: 1px solid $color-gray-divider;
   }
 
+  td.avatar {
+    text-align: center;
+  }
+
   $cell-padding: 0.5em 1em;
 
   tr td {

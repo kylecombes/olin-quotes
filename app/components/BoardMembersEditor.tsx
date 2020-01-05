@@ -67,7 +67,7 @@ const BoardMembersEditor: React.FC<MembersListProps> = (props: MembersListProps)
         {memberElements}
       </tbody>
       <tfoot className="add-member">
-        <td>
+        <td className="avatar">
           <Avatar user={state.user}/>
         </td>
         <td className="autosuggest-person">

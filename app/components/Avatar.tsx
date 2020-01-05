@@ -29,13 +29,14 @@ export default (props: Props) => {
     classNames.push('clickable');
   }
 
-  if (user && user.avatarUrl) {
-    return <img className={classNames.join(' ')} src={user?.avatarUrl} onClick={onClick}/>;
-  } else {
-    return (
-      <div className="Avatar blank-avatar" onClick={onClick}>
-        <BlankAvatar/>
-      </div>
-    );
-  }
+  return (
+    <object
+      className={classNames.join(' ')}
+      data={user?.avatarUrl}
+      onClick={onClick}
+      type="image/jpeg"
+    >
+      <BlankAvatar/>
+    </object>
+  );
 };

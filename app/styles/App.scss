@@ -58,20 +58,17 @@ body,
     cursor: pointer;
   }
 
-  &.blank-avatar {
-    margin: 0.5em 1em;
-    svg {
-      width: 2em;
-      height: 2em;
-      fill: none;
+  svg {
+    width: 2em;
+    height: 2em;
+    fill: none;
 
-      .fill {
-        fill: $color-content-background;
-      }
-      .stroke {
-        stroke: $color-content-background;
-        stroke-width: 7px;
-      }
+    .fill {
+      fill: $color-content-background;
+    }
+    .stroke {
+      stroke: $color-content-background;
+      stroke-width: 7px;
     }
   }
 }
