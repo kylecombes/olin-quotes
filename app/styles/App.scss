@@ -3,12 +3,14 @@
 @import 'AddComment';
 @import 'AddQuote';
 @import 'AutosuggestPerson';
+@import 'Avatar';
 @import 'BoardMembersEditor';
 @import 'BoardView';
 @import 'Comment';
 @import 'InfoSection';
 @import 'LikeIcon';
 @import 'NavSidebar';
+@import 'Popup';
 @import 'QuoteCard';
 @import 'QuoteInfoPage';
 
@@ -49,32 +51,6 @@ body,
   color: $color-content-text;
 }
 
-
-.Avatar {
-  width: 2em;
-  height: 2em;
-  border-radius: 1em;
-  overflow: hidden;
-
-  &.clickable {
-    cursor: pointer;
-  }
-
-  svg {
-    width: 2em;
-    height: 2em;
-    fill: none;
-
-    .fill {
-      fill: $color-content-background;
-    }
-    .stroke {
-      stroke: $color-content-background;
-      stroke-width: 7px;
-    }
-  }
-}
-
 .split-page-2 {
   display: flex;
   flex-direction: row;
@@ -102,16 +78,6 @@ body,
   padding: 2em;
 }
 
-.popup-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.7);
-  z-index: 10000;
-}
-
 .primary-container {
   display: flex;
   flex-direction: column;
@@ -133,19 +99,6 @@ body,
     & > div {
       max-width: 100em;
     }
-  }
-}
-
-.popup-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-
-  & > div {
-    display: inline-block;
-    color: $color-content-text;
-    background-color: $color-content-background;
   }
 }
 
@@ -222,25 +175,6 @@ button {
   }
 }
 
-.quote-info {
-  img {
-    width: 2em;
-    min-width: 2em;
-    border-radius: 1em;
-    cursor: pointer;
-  }
-
-  .quote-component {
-    display: flex;
-    align-items: center;
-    margin: 1.5em;
-
-    .words {
-      margin-left: 1em;
-    }
-  }
-}
-
 .centered {
   text-align: center;
   margin-left: auto;
@@ -265,27 +199,6 @@ textarea {
   padding: 1em;
   font-family: $font-family-default;
   min-height: 3em;
-}
-
-.quote-cards {
-  overflow-x: hidden;
-}
-
-.quote-info {
-
-  h2 {
-    font-size: 1.2em;
-    margin: 0.5rem;
-  }
-
-  .comment,
-  .no-comments {
-    margin: 1rem;
-  }
-
-  .no-comments {
-    font-style: italic;
-  }
 }
 
 .person-add input {
