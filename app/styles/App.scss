@@ -6,6 +6,7 @@
 @import 'BoardMembersEditor';
 @import 'BoardView';
 @import 'Comment';
+@import 'InfoSection';
 @import 'LikeIcon';
 @import 'NavSidebar';
 @import 'QuoteCard';
@@ -119,6 +120,20 @@ body,
   left: 0;
   right: 0;
   bottom: 0;
+}
+
+.page {
+  flex-grow: 1;
+
+  &.constrained-content {
+    padding: 2em;
+    display: flex;
+    justify-content: center;
+
+    & > div {
+      max-width: 100em;
+    }
+  }
 }
 
 .popup-container {

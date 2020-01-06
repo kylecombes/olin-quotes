@@ -3,8 +3,8 @@
 .BoardMembersEditor {
   border-collapse: collapse;
 
-  & > :not(:first-child) td {
-    border-top: 1px solid $color-gray-divider;
+  td {
+    border-bottom: 1px solid $color-gray-divider;
   }
 
   td.avatar {
@@ -14,8 +14,9 @@
   $cell-padding: 0.5em 1em;
 
   tr td {
-    padding: $cell-padding;
-    vertical-align: center;
+    &:not(.no-padding) {
+      padding: $cell-padding;
+    }
 
     &.role-select {
       padding: 0;

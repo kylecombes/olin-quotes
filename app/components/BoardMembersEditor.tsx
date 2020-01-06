@@ -65,12 +65,6 @@ const BoardMembersEditor: React.FC<MembersListProps> = (props: MembersListProps)
 
   return (
     <table className="BoardMembersEditor">
-      <thead>
-        <td/>
-        <td>Name</td>
-        <td>Role</td>
-        <td>Actions</td>
-      </thead>
       <tbody>
         {memberElements}
       </tbody>
@@ -128,7 +122,7 @@ const Member: React.FC<MemberProps> = (props: MemberProps) => {
           onSelect={changeRole}
         />
       </td>
-      <td>
+      <td className="no-padding">
         <button onClick={removeFromBoard}>Remove</button>
       </td>
     </tr>
