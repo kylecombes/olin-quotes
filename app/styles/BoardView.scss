@@ -42,9 +42,41 @@
     }
   }
 
-  .QuoteCard {
-    margin: $quote-cards-gutter-width;
-    width: (100% - 2*$quote-cards-per-row*$quote-cards-gutter-width)/$quote-cards-per-row;
-  }
+  .quote-cards {
+    padding: $quote-cards-gutter-width;
+    position: relative;
 
+    .QuoteCard {
+      margin: 1em $quote-cards-gutter-width;
+
+      $quote-cards-per-row: 1;
+      $min-quote-card-width: 25em;
+
+      @function calcQuoteCardWidth($cards-per-row) {
+        @return (100% - 2*$cards-per-row*$quote-cards-gutter-width - 2*$quote-cards-gutter-width)/$cards-per-row;
+      }
+
+      width: calcQuoteCardWidth(1);
+
+      @media screen and (min-width: $min-quote-card-width*2) {
+        width: calcQuoteCardWidth(2);
+      }
+
+      @media screen and (min-width: $min-quote-card-width*3) {
+        width: calcQuoteCardWidth(3);
+      }
+
+      @media screen and (min-width: $min-quote-card-width*4) {
+        width: calcQuoteCardWidth(4);
+      }
+
+      @media screen and (min-width: $min-quote-card-width*5) {
+        width: calcQuoteCardWidth(5);
+      }
+
+      @media screen and (min-width: $min-quote-card-width*6) {
+        width: calcQuoteCardWidth(6);
+      }
+    }
+  }
 }
