@@ -83,15 +83,23 @@ function sendInitDataToClient(socket) {
     .catch(console.error);
 }
 
-function sendAllQuotesToClient(socket) {
-  // Send all the quotes for the user TODO Filter!!
-  return Quote.find().lean().exec()
-    .then(res => {
-      const quotes = {};
-      res.forEach(q => quotes[q._id] = q);
-      console.log('Sending quotes update...');
-      socket.emit('quotesUpdate', quotes);
-    });
+async function sendAllQuotesToClient(socket) {
+  const user = socket.request.user;
+
+  // Get the boards this user is a member of
+  const boardIds = await Board.getUserBoardIds(user._id);
+
+  const quotes = await Quote.findByBoardId(boardIds);
+
+  // Extract the added time from the _id and convert the array to an object
+  const quotesDict = {};
+  quotes.forEach(q => {
+    q.addDate = q._id.getTimestamp();
+    quotesDict[q._id] = q;
+  });
+
+  console.log('Sending quotes update...');
+  socket.emit('quotesUpdate', quotesDict);
 }
 
 function addBoard(data, socket) {

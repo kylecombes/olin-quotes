@@ -42,4 +42,8 @@ QuoteSchema.methods.getCommentById = function (commentId) {
   return null;
 };
 
+QuoteSchema.statics.findByBoardId = function (boardIds) {
+  return this.find({ boardId: {$in: boardIds} });
+};
+
 export default mongoose.model('Quote', QuoteSchema);
