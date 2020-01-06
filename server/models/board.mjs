@@ -24,10 +24,7 @@ const BoardSchema = new mongoose.Schema({
   }],
 });
 
-const clientProjection = {
-  '$members.addedBy': false,
-  '$members.addedOn': false,
-};
+const clientProjection = {};
 
 BoardSchema.statics.findOneForClient = function (boardId) {
   return this.findOne({_id: boardId}, clientProjection);
