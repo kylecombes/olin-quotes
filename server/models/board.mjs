@@ -37,4 +37,13 @@ BoardSchema.statics.getBoardsForUser = function (userId) {
   return this.find({members: {$elemMatch: {personId: userId}}}, clientProjection);
 };
 
+BoardSchema.methods.getUserRole = function (userId) {
+  for (let i = 0; i < this.members.length; ++i) {
+    if (this.members[i].personId.equals(userId)) {
+      return this.members[i].role;
+    }
+  }
+  return null;
+};
+
 export default mongoose.model('Board', BoardSchema);
