@@ -8,6 +8,7 @@ import { ThunkDispatch } from 'redux-thunk';
 import BoardSettingsPage from '../components/pages/BoardSettingsPage';
 import {
   addBoardMember,
+  removeBoardMember,
 } from '../data/actions';
 import {
   IBoard,
@@ -36,6 +37,7 @@ const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, AnyAction>) => {
   return bindActionCreators(
     {
       addBoardMember: (b: IBoard, p: IPerson, r: IBoardMemberRole) => dispatch(addBoardMember(b, p, r)),
+      removeBoardMember: (b: IBoard, p: IPerson) => dispatch(removeBoardMember(b, p)),
     },
     dispatch
   );

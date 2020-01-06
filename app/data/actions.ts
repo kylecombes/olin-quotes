@@ -80,6 +80,16 @@ export function addBoardMember(board: IBoard, person: IPerson, role: IBoardMembe
   };
 }
 
+export function removeBoardMember(board: IBoard, person: IPerson) {
+  // @ts-ignore
+  return (dispatch: ThunkDispatch<{}, {}, any>, getStore, { emit }) => {
+    emit(WS_EVENT_TYPES.REMOVE_USER_FROM_BOARD, {
+      boardId: board._id,
+      personId: person._id,
+    });
+  };
+}
+
 export function addQuote(quoteData: IQuote) {
   // @ts-ignore
   return (dispatch, getStore, { emit }) => {

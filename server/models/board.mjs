@@ -37,4 +37,17 @@ BoardSchema.statics.getBoardsForUser = function (userId) {
   return this.find({members: {$elemMatch: {personId: userId}}}, clientProjection);
 };
 
+BoardSchema.statics.removeUserFromBoard = function (boardId, userId) {
+  return this.update(
+    { _id: boardId },
+    {
+      $pull: {
+        members: {
+          personId: userId,
+        },
+      },
+    },
+  );
+}
+
 export default mongoose.model('Board', BoardSchema);

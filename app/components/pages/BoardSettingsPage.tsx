@@ -13,6 +13,7 @@ type Props = {
   addBoardMember: (b: IBoard, p: IPerson, r: IBoardMemberRole) => any
   board: IBoard
   people: {[pid: string]: IPerson}
+  removeBoardMember: (b: IBoard, p: IPerson) => any
 };
 
 export default (props: Props) => {
@@ -20,6 +21,7 @@ export default (props: Props) => {
     addBoardMember,
     board,
     people,
+    removeBoardMember,
   } = props;
 
   if (!board || _.isEmpty(people)) return null;
@@ -31,6 +33,7 @@ export default (props: Props) => {
         addBoardMember={addBoardMember}
         board={board}
         people={people}
+        removeBoardMember={removeBoardMember}
       />
     </div>
   );

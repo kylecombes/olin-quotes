@@ -45,6 +45,7 @@ function onConnect(socket) {
     socket.on('addQuote', quoteData => onAddQuote(quoteData, socket));
     socket.on('addQuoteComment', commentData => onAddQuoteComment(commentData, socket));
     socket.on('deleteQuoteComment', request => onDeleteQuoteComment(request, socket));
+    socket.on('removeUserFromBoard', request => removeBoardMember(request, socket));
     socket.on('toggleQuoteLike', request => onToggleQuoteLike(request, socket));
     socket.on('toggleCommentLike', request => onToggleCommentLike(request, socket));
     socket.on('updateQuoteComment', request => onUpdateQuoteComment(request, socket));
@@ -147,6 +148,23 @@ async function addBoardMember(data, socket) {
   });
 
   await boardDoc.save();
+
+  const updatedBoardDoc = await Board.findOneForClient(boardId);
+
+  pushBoardUpdate(updatedBoardDoc.toObject());
+}
+
+async function removeBoardMember(data, socket) {
+
+  const {
+    boardId,
+    personId,
+  } = data;
+
+  // TODO: Ensure current user has requisite privileges on board
+  // const user = socket.request.user;
+
+  await Board.removeUserFromBoard(boardId, personId);
 
   const updatedBoardDoc = await Board.findOneForClient(boardId);
 

@@ -20,6 +20,7 @@ export const WS_EVENT_TYPES: WS_EVENT_TYPE_LIST = {
   BOARD_LIST_RECEIVED: 'boardList',
   BOARD_UPDATE: 'boardUpdate',
   PEOPLE_UPDATE: 'peopleUpdate',
+  REMOVE_USER_FROM_BOARD: 'removeUserFromBoard',
   SINGLE_QUOTE_UPDATE: 'singleQuoteUpdate',
   SAVE_USER_INFO: 'saveUserInfo',
   SWITCH_TO_BOARD: 'switchToBoard',

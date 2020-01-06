@@ -14,6 +14,7 @@ type MembersListProps = {
   addBoardMember: (b: IBoard, p: IPerson, r: IBoardMemberRole) => any
   board: IBoard
   people: {[pid: string]: IPerson}
+  removeBoardMember: (b: IBoard, p: IPerson) => any
 };
 
 type MembersListState = {
@@ -31,6 +32,7 @@ const BoardMembersEditor: React.FC<MembersListProps> = (props: MembersListProps)
     addBoardMember,
     board,
     people,
+    removeBoardMember,
   } = props;
 
   const [state, setState] = React.useState(initialState);
@@ -45,12 +47,15 @@ const BoardMembersEditor: React.FC<MembersListProps> = (props: MembersListProps)
   };
 
   const memberElements = board.members?.map(m => {
+    const person = people[m.personId];
     const changeRole = () => {};
+    const removeUserFromBoard = () => removeBoardMember(board, person);
     return (
       <Member
         changeRole={changeRole}
         key={m.personId}
-        person={people[m.personId]}
+        person={person}
+        removeFromBoard={removeUserFromBoard}
         role={m.role}
       />
     );
@@ -62,6 +67,7 @@ const BoardMembersEditor: React.FC<MembersListProps> = (props: MembersListProps)
         <td/>
         <td>Name</td>
         <td>Role</td>
+        <td>Actions</td>
       </thead>
       <tbody>
         {memberElements}
@@ -96,6 +102,7 @@ const BoardMembersEditor: React.FC<MembersListProps> = (props: MembersListProps)
 type MemberProps = {
   changeRole: (newRole: IBoardMemberRole) => any
   person: IPerson
+  removeFromBoard: () => any
   role: IBoardMemberRole
 };
 
@@ -103,6 +110,7 @@ const Member: React.FC<MemberProps> = (props: MemberProps) => {
   const {
     changeRole,
     person,
+    removeFromBoard,
     role,
   } = props;
 
@@ -117,6 +125,9 @@ const Member: React.FC<MemberProps> = (props: MemberProps) => {
           currentSelection={role}
           onSelect={changeRole}
         />
+      </td>
+      <td>
+        <button onClick={removeFromBoard}>Remove</button>
       </td>
     </tr>
   );
