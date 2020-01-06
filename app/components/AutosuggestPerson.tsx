@@ -10,6 +10,7 @@ import {
 type Suggestion = string | IPerson;
 
 type Props = {
+  className?: string
   onAddPersonClick: () => any
   onPersonSelected: (person: IPerson) => any
   people: IPerson[]
@@ -81,17 +82,21 @@ export default class AutosuggestPerson extends React.Component<Props, State> {
       onChange: this.onChange,
     };
 
+    const className = "AutosuggestPerson " + (this.props.className || '');
+
     return (
-      <Autosuggest
-        suggestions={this.state.suggestions}
-        onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-        onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-        getSuggestionValue={this.getSuggestionValue}
-        onSuggestionSelected={this.onSuggestionSelected}
-        renderSuggestion={this.renderSuggestion}
-        inputProps={autosuggestInputProps}
-      />
-    )
+      <div className={className}>
+        <Autosuggest
+          suggestions={this.state.suggestions}
+          onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+          onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+          getSuggestionValue={this.getSuggestionValue}
+          onSuggestionSelected={this.onSuggestionSelected}
+          renderSuggestion={this.renderSuggestion}
+          inputProps={autosuggestInputProps}
+        />
+      </div>
+    );
   }
 
 }
