@@ -80,6 +80,17 @@ export function addBoardMember(board: IBoard, person: IPerson, role: IBoardMembe
   };
 }
 
+export function changeBoardMemberRole(board: IBoard, person: IPerson, role: IBoardMemberRole) {
+  // @ts-ignore
+  return (dispatch: ThunkDispatch<{}, {}, any>, getStore, { emit }) => {
+    emit(WS_EVENT_TYPES.CHANGE_BOARD_MEMBER_ROLE, {
+      boardId: board._id,
+      personId: person._id,
+      role,
+    });
+  };
+}
+
 export function removeBoardMember(board: IBoard, person: IPerson) {
   // @ts-ignore
   return (dispatch: ThunkDispatch<{}, {}, any>, getStore, { emit }) => {

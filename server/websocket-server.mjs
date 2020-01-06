@@ -44,6 +44,7 @@ function onConnect(socket) {
     socket.on('addBoardMember', request => addBoardMember(request, socket));
     socket.on('addQuote', quoteData => onAddQuote(quoteData, socket));
     socket.on('addQuoteComment', commentData => onAddQuoteComment(commentData, socket));
+    socket.on('changeBoardMemberRole', request => changeBoardMemberRole(request, socket));
     socket.on('deleteQuoteComment', request => onDeleteQuoteComment(request, socket));
     socket.on('removeUserFromBoard', request => removeBoardMember(request, socket));
     socket.on('toggleQuoteLike', request => onToggleQuoteLike(request, socket));
@@ -154,6 +155,47 @@ async function addBoardMember(data, socket) {
   pushBoardUpdate(updatedBoardDoc.toObject());
 }
 
+async function changeBoardMemberRole(data, socket) {
+
+  const {
+    boardId,
+    personId,
+    role,
+  } = data;
+
+  // TODO: Ensure current user has requisite privileges on board
+  // const user = socket.request.user;
+
+  // Ensure the role is valid
+  if (roleTypes.indexOf(role) === -1) {
+    console.warn(`User ${user._id} attempting to set board member's role to unrecognized role '${role}'.`);
+    return null;
+  }
+
+  const boardDoc = await Board.findOne({_id: boardId});
+
+  if (!boardDoc) {
+    console.warn(`User ${user._id} attempting to change member role on board ${boardId}, which cannot be found.`);
+    return null;
+  }
+
+  // Get the position of the user in the members list
+  const memberIdx = indexOf(boardDoc.members, mem => mem.personId.equals(personId));
+  if (memberIdx === -1) {
+    console.warn(`Could not find user ${personId} in list of members on ${boardId}.`);
+    return null;
+  }
+
+  // Update the user's role
+  boardDoc.members[memberIdx].role = role;
+
+  await boardDoc.save();
+
+  const updatedBoardDoc = await Board.findOneForClient(boardId);
+
+  pushBoardUpdate(updatedBoardDoc.toObject());
+}
+
 async function removeBoardMember(data, socket) {
 
   const {
@@ -164,7 +206,24 @@ async function removeBoardMember(data, socket) {
   // TODO: Ensure current user has requisite privileges on board
   // const user = socket.request.user;
 
-  await Board.removeUserFromBoard(boardId, personId);
+  const boardDoc = await Board.findOne({_id: boardId});
+
+  if (!boardDoc) {
+    console.warn(`User ${user._id} attempting to remove member from board ${boardId}, which cannot be found.`);
+    return null;
+  }
+
+  // Get the position of the user in the members list
+  const memberIdx = indexOf(boardDoc.members, mem => mem.personId.equals(personId));
+  if (memberIdx === -1) {
+    console.warn(`Could not find user ${personId} in list of members on ${boardId}.`);
+    return null;
+  }
+
+  // Remove the user
+  boardDoc.members.splice(memberIdx, 1);
+
+  boardDoc.save();
 
   const updatedBoardDoc = await Board.findOneForClient(boardId);
 

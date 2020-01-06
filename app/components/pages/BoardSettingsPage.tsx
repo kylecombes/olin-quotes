@@ -12,6 +12,7 @@ import {
 type Props = {
   addBoardMember: (b: IBoard, p: IPerson, r: IBoardMemberRole) => any
   board: IBoard
+  changeBoardMemberRole: (b: IBoard, p: IPerson, r: IBoardMemberRole) => any
   people: {[pid: string]: IPerson}
   removeBoardMember: (b: IBoard, p: IPerson) => any
 };
@@ -20,6 +21,7 @@ export default (props: Props) => {
   const {
     addBoardMember,
     board,
+    changeBoardMemberRole,
     people,
     removeBoardMember,
   } = props;
@@ -32,6 +34,7 @@ export default (props: Props) => {
       <BoardMembersEditor
         addBoardMember={addBoardMember}
         board={board}
+        changeBoardMemberRole={changeBoardMemberRole}
         people={people}
         removeBoardMember={removeBoardMember}
       />

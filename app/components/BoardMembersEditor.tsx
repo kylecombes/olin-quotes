@@ -13,6 +13,7 @@ import {
 type MembersListProps = {
   addBoardMember: (b: IBoard, p: IPerson, r: IBoardMemberRole) => any
   board: IBoard
+  changeBoardMemberRole: (b: IBoard, p: IPerson, r: IBoardMemberRole) => any
   people: {[pid: string]: IPerson}
   removeBoardMember: (b: IBoard, p: IPerson) => any
 };
@@ -31,6 +32,7 @@ const BoardMembersEditor: React.FC<MembersListProps> = (props: MembersListProps)
   const {
     addBoardMember,
     board,
+    changeBoardMemberRole,
     people,
     removeBoardMember,
   } = props;
@@ -48,7 +50,7 @@ const BoardMembersEditor: React.FC<MembersListProps> = (props: MembersListProps)
 
   const memberElements = board.members?.map(m => {
     const person = people[m.personId];
-    const changeRole = () => {};
+    const changeRole = (role: IBoardMemberRole) => changeBoardMemberRole(board, person, role);
     const removeUserFromBoard = () => removeBoardMember(board, person);
     return (
       <Member
@@ -140,15 +142,15 @@ type RoleSelectProps = {
 
 const RoleSelect: React.FC<RoleSelectProps> = (props: RoleSelectProps) => {
   const {
-    currentSelection: s,
+    currentSelection,
     onSelect,
   } = props;
   const onChangeSelection = (e: React.ChangeEvent<HTMLSelectElement>) => onSelect(e.target.value as IBoardMemberRole);
   return (
-    <select onChange={onChangeSelection} className="role-select dark-flat">
-      <option value="admin" selected={s === 'admin'}>Admin</option>
-      <option value="contributor" selected={s === 'contributor'}>Contributor</option>
-      <option value="viewer" selected={s === 'viewer'}>View Only</option>
+    <select value={currentSelection} onChange={onChangeSelection} className="role-select dark-flat">
+      <option value="admin">Admin</option>
+      <option value="contributor">Contributor</option>
+      <option value="viewer">View Only</option>
     </select>
   );
 };
