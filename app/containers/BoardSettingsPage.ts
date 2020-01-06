@@ -10,6 +10,7 @@ import {
   addBoardMember,
   changeBoardMemberRole,
   removeBoardMember,
+  renameBoard,
 } from '../data/actions';
 import {
   IBoard,
@@ -40,6 +41,7 @@ const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, AnyAction>) => {
       addBoardMember: (b: IBoard, p: IPerson, r: IBoardMemberRole) => dispatch(addBoardMember(b, p, r)),
       changeBoardMemberRole: (b: IBoard, p: IPerson, r: IBoardMemberRole) => dispatch(changeBoardMemberRole(b, p, r)),
       removeBoardMember: (b: IBoard, p: IPerson) => dispatch(removeBoardMember(b, p)),
+      renameBoard: (b: IBoard, newName: string) => dispatch(renameBoard(b, newName)),
     },
     dispatch
   );

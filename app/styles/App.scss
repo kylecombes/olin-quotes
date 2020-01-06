@@ -179,8 +179,12 @@ button {
   padding: 1em;
   cursor: pointer;
 
-  &:hover {
+  &:hover:not(:disabled) {
     background: $color-button-gray-dark;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
   }
 
   &.submit {

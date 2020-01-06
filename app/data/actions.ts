@@ -101,6 +101,16 @@ export function removeBoardMember(board: IBoard, person: IPerson) {
   };
 }
 
+export function renameBoard(board: IBoard, newName: string) {
+  // @ts-ignore
+  return (dispatch: ThunkDispatch<{}, {}, any>, getStore, { emit }) => {
+    emit(WS_EVENT_TYPES.RENAME_BOARD, {
+      boardId: board._id,
+      name: newName,
+    });
+  };
+}
+
 export function addQuote(quoteData: IQuote) {
   // @ts-ignore
   return (dispatch, getStore, { emit }) => {

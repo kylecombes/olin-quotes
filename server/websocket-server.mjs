@@ -47,6 +47,7 @@ function onConnect(socket) {
     socket.on('changeBoardMemberRole', request => changeBoardMemberRole(request, socket));
     socket.on('deleteQuoteComment', request => onDeleteQuoteComment(request, socket));
     socket.on('removeUserFromBoard', request => removeBoardMember(request, socket));
+    socket.on('renameBoard', request => renameBoard(request, socket));
     socket.on('toggleQuoteLike', request => onToggleQuoteLike(request, socket));
     socket.on('toggleCommentLike', request => onToggleCommentLike(request, socket));
     socket.on('updateQuoteComment', request => onUpdateQuoteComment(request, socket));
@@ -223,7 +224,37 @@ async function removeBoardMember(data, socket) {
   // Remove the user
   boardDoc.members.splice(memberIdx, 1);
 
-  boardDoc.save();
+  await boardDoc.save();
+
+  const updatedBoardDoc = await Board.findOneForClient(boardId);
+
+  pushBoardUpdate(updatedBoardDoc.toObject());
+}
+
+async function renameBoard(data, socket) {
+
+  const {
+    boardId,
+    name,
+  } = data;
+
+  const boardDoc = await Board.findOne({_id: boardId});
+  if (!boardDoc) {
+    console.warn(`User ${user._id} attempting to remove member from board ${boardId}, which cannot be found.`);
+    return null;
+  }
+
+  // Ensure the user has permission to rename
+  const user = socket.request.user;
+  const userRole = await boardDoc.getUserRole(user._id);
+  if (userRole !== 'admin') {
+    console.warn(`User ${user._id} attempting to rename board ${boardId}, where they are only a ${userRole}`);
+    return null;
+  }
+
+  boardDoc.name = name;
+
+  await boardDoc.save();
 
   const updatedBoardDoc = await Board.findOneForClient(boardId);
 
