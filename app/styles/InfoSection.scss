@@ -1,0 +1,19 @@
+@import 'constants';
+
+.InfoSection {
+  &:first-child {
+    .info-section-header {
+      margin-top: 0;
+    }
+  }
+
+  .info-section-header {
+    font-weight: 400;
+    padding-bottom: 0.25em;
+    border-bottom: 2px solid $color-gray-divider;
+
+    &.no-bottom-margin {
+      margin-bottom: 0;
+    }
+  }
+}

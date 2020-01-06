@@ -1,82 +1,22 @@
 @import 'constants';
 
 .AddQuote {
-
-  $quote-entry-width: 70%;
   width: 40rem;
   max-width: 70rem;
 
   .quote-add-component {
-
     position: relative;
 
-    input[type='text'] {
-      width: $quote-entry-width;
-    }
-
-    & > input[type='text'] {
+    & > input {
+      float: left;
+      width: 70%;
       border-right: 1px solid $color-gray-divider;
     }
 
-    .react-autosuggest__container {
-      width: (100% - $quote-entry-width);
-      display: inline-block;
-      position: absolute;
+    & > .AutosuggestPerson {
+      float: left;
+      width: 30%;
     }
-
-    .react-autosuggest__container--open {
-      z-index: 400;
-    }
-
-    .react-autosuggest__container .react-autosuggest__input {
-      width: 100%;
-      z-index: 200;
-    }
-
-    .react-autosuggest__suggestions-container {
-      overflow: auto;
-      background-color: $color-content-background;
-      z-index: 100;
-
-      ul {
-        margin: 0;
-        padding: 0;
-        list-style-type: none;
-
-        li {
-          padding: 1em;
-          border-bottom: 1px solid $color-gray-divider;
-          cursor: pointer;
-
-          &:hover,
-          &:focus,
-          &.react-autosuggest__suggestion--highlighted {
-            background-color: darken($color-content-background, $hover-delta);
-          }
-
-          .person-suggestion {
-            display: flex;
-            align-items: center;
-
-            img {
-              height: 2em;
-              border-radius: 1em;
-            }
-
-            span {
-              margin-left: 1em;
-              color: $color-content-text;
-              -webkit-user-select: none;
-              -moz-user-select: none;
-              -ms-user-select: none;
-              user-select: none;
-            }
-          }
-
-        }
-      }
-    }
-
   }
 
   .context {

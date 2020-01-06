@@ -1,15 +1,17 @@
 import * as React from 'react';
+import * as moment from 'moment';
 
-import AddComment from '../AddComment';
-import Comment from '../Comment';
 import {
   IQuote,
   IPerson,
   IQuoteComment,
   ILike,
 } from '../../data/types';
+
+import AddComment from '../AddComment';
+import Comment from '../Comment';
+import InfoSection from '../InfoSection';
 import QuoteCard from '../QuoteCard';
-import * as moment from 'moment';
 
 type Props = {
   addComment: (quoteId: string, commentText: string) => any
@@ -126,18 +128,5 @@ const getLikesText = (likes: ILike[], people: {[pid: string]: IPerson}, showPers
   }
   return likesText;
 };
-
-type InfoSectionProps = {
-  title: string
-  children: React.ReactNode
-  className?: string
-};
-
-const InfoSection: React.FC<InfoSectionProps> = (props: InfoSectionProps) => (
-  <div className={'InfoSection ' + (props.className || '')}>
-    <h1 className="info-section-header">{props.title}</h1>
-    {props.children}
-  </div>
-);
 
 export default QuoteInfoPage;

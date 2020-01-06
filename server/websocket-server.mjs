@@ -41,9 +41,13 @@ function onConnect(socket) {
     socket.emit('currentUserInfo', socket.request.user);
     socket.on('createUserAccount', userData => onCreateUserAccount(userData, socket));
     socket.on('addBoard', boardData => addBoard(boardData, socket));
+    socket.on('addBoardMember', request => addBoardMember(request, socket));
     socket.on('addQuote', quoteData => onAddQuote(quoteData, socket));
     socket.on('addQuoteComment', commentData => onAddQuoteComment(commentData, socket));
+    socket.on('changeBoardMemberRole', request => changeBoardMemberRole(request, socket));
     socket.on('deleteQuoteComment', request => onDeleteQuoteComment(request, socket));
+    socket.on('removeUserFromBoard', request => removeBoardMember(request, socket));
+    socket.on('renameBoard', request => renameBoard(request, socket));
     socket.on('toggleQuoteLike', request => onToggleQuoteLike(request, socket));
     socket.on('toggleCommentLike', request => onToggleCommentLike(request, socket));
     socket.on('updateQuoteComment', request => onUpdateQuoteComment(request, socket));
@@ -56,6 +60,7 @@ function onConnect(socket) {
 }
 
 function sendInitDataToClient(socket) {
+  const user = socket.request.user;
   Promise.all([
     // Send the user info (name, profile pic, etc)
     User.find().lean().exec()
@@ -66,8 +71,8 @@ function sendInitDataToClient(socket) {
         socket.emit('peopleUpdate', people);
       }),
     sendAllQuotesToClient(socket),
-    // Send all the boards the user has access to TODO Filter!!
-    Board.find().lean().exec()
+    // Send all the boards the user has access to
+    Board.getBoardsForUser(user._id).exec()
       .then(boardList => {
         const boards = {};
         boardList.forEach(b => boards[b._id] = b);
@@ -104,9 +109,162 @@ function addBoard(data, socket) {
   });
 }
 
+const roleTypes = ['admin', 'contributor', 'viewer'];
+
+async function addBoardMember(data, socket) {
+  const user = socket.request.user;
+
+  const {
+    boardId,
+    personId,
+    role,
+  } = data;
+
+  // TODO: Ensure current user has requisite privileges on board
+  const boardDoc = await Board.findOne({_id: boardId});
+
+  if (!boardDoc) {
+    console.warn(`User ${user._id} attempting to add member to board ${boardId}, which cannot be found.`);
+    return null;
+  }
+
+  // Make sure the role is a valid role
+  if (roleTypes.indexOf(role) === -1) {
+    console.warn(`User ${user._id} attempting to add board member with unrecognized role '${role}'.`);
+    return null;
+  }
+
+  // Make sure the user isn't already added (just in case)
+  const memberIdx = indexOf(boardDoc.members, mem => mem.personId.equals(personId));
+  if (memberIdx >= 0) {
+    console.warn(`User ${user._id} attempting to add ${personId} to board ${boardId}, but user`
+     + ' is already a member of that board. Ignoring request.');
+    return null;
+  }
+
+  boardDoc.members.push({
+    addedBy: user._id,
+    addedOn: new Date(),
+    personId,
+    role,
+  });
+
+  await boardDoc.save();
+
+  const updatedBoardDoc = await Board.findOneForClient(boardId);
+
+  pushBoardUpdate(updatedBoardDoc.toObject());
+}
+
+async function changeBoardMemberRole(data, socket) {
+
+  const {
+    boardId,
+    personId,
+    role,
+  } = data;
+
+  // TODO: Ensure current user has requisite privileges on board
+  // const user = socket.request.user;
+
+  // Ensure the role is valid
+  if (roleTypes.indexOf(role) === -1) {
+    console.warn(`User ${user._id} attempting to set board member's role to unrecognized role '${role}'.`);
+    return null;
+  }
+
+  const boardDoc = await Board.findOne({_id: boardId});
+
+  if (!boardDoc) {
+    console.warn(`User ${user._id} attempting to change member role on board ${boardId}, which cannot be found.`);
+    return null;
+  }
+
+  // Get the position of the user in the members list
+  const memberIdx = indexOf(boardDoc.members, mem => mem.personId.equals(personId));
+  if (memberIdx === -1) {
+    console.warn(`Could not find user ${personId} in list of members on ${boardId}.`);
+    return null;
+  }
+
+  // Update the user's role
+  boardDoc.members[memberIdx].role = role;
+
+  await boardDoc.save();
+
+  const updatedBoardDoc = await Board.findOneForClient(boardId);
+
+  pushBoardUpdate(updatedBoardDoc.toObject());
+}
+
+async function removeBoardMember(data, socket) {
+
+  const {
+    boardId,
+    personId,
+  } = data;
+
+  // TODO: Ensure current user has requisite privileges on board
+  // const user = socket.request.user;
+
+  const boardDoc = await Board.findOne({_id: boardId});
+
+  if (!boardDoc) {
+    console.warn(`User ${user._id} attempting to remove member from board ${boardId}, which cannot be found.`);
+    return null;
+  }
+
+  // Get the position of the user in the members list
+  const memberIdx = indexOf(boardDoc.members, mem => mem.personId.equals(personId));
+  if (memberIdx === -1) {
+    console.warn(`Could not find user ${personId} in list of members on ${boardId}.`);
+    return null;
+  }
+
+  // Remove the user
+  boardDoc.members.splice(memberIdx, 1);
+
+  await boardDoc.save();
+
+  const updatedBoardDoc = await Board.findOneForClient(boardId);
+
+  pushBoardUpdate(updatedBoardDoc.toObject());
+}
+
+async function renameBoard(data, socket) {
+
+  const {
+    boardId,
+    name,
+  } = data;
+
+  const boardDoc = await Board.findOne({_id: boardId});
+  if (!boardDoc) {
+    console.warn(`User ${user._id} attempting to remove member from board ${boardId}, which cannot be found.`);
+    return null;
+  }
+
+  // Ensure the user has permission to rename
+  const user = socket.request.user;
+  const userRole = await boardDoc.getUserRole(user._id);
+  if (userRole !== 'admin') {
+    console.warn(`User ${user._id} attempting to rename board ${boardId}, where they are only a ${userRole}`);
+    return null;
+  }
+
+  boardDoc.name = name;
+
+  await boardDoc.save();
+
+  const updatedBoardDoc = await Board.findOneForClient(boardId);
+
+  pushBoardUpdate(updatedBoardDoc.toObject());
+}
+
 function pushBoardListUpdate(socket) {
+  const user = socket.request.user;
   return new Promise((resolve, reject) => {
-    Board.getBoards().lean().exec((err, boards) => {
+    Board.getBoardsForUser(user._id).lean().exec((err, boards) => {
       if (err) {
         reject(err);
       } else {
@@ -301,6 +459,10 @@ function toggleLike(doc, userId) {
       date: new Date(),
     });
   }
+}
+
+function pushBoardUpdate(boardData) {
+  _io.emit('boardUpdate', boardData);
 }
 
 function pushSingleQuoteUpdate(quoteData) {

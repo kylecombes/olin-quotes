@@ -10,6 +10,7 @@ import {
 } from '../utils';
 
 import LikeIcon from './LikeIcon';
+import Avatar from './Avatar';
 
 type Props = {
   author: IPerson
@@ -79,7 +80,7 @@ const Comment: React.FC<Props> = (props: Props) => {
     <div className="Comment">
       <div className="comment-header">
         <div className="author">
-          <img src={author.avatarUrl} className="avatar" alt={author.displayName} onClick={showAuthorPage} />
+          <Avatar user={author} onClick={showAuthorPage} />
           <span className="name" onClick={showAuthorPage}>{author.displayName}</span>
         </div>
         <span className="date">{dateText}</span>

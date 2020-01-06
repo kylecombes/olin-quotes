@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {
+  IBoardMember,
   INewBoard,
 } from '../data/types';
 
@@ -12,6 +13,8 @@ export default class CreateBoard extends React.Component<Props, INewBoard> {
   state = {
     name: '',
     description: '',
+    // TODO: Add the ability to add board members in this component
+    members: [] as IBoardMember[],
   };
 
   // @ts-ignore

@@ -1,0 +1,48 @@
+@import 'constants';
+
+.BoardMembersEditor {
+  border-collapse: collapse;
+
+  td {
+    border-bottom: 1px solid $color-gray-divider;
+  }
+
+  td.avatar {
+    text-align: center;
+  }
+
+  $cell-padding: 0.5em 1em;
+
+  tr td {
+    &:not(.no-padding) {
+      padding: $cell-padding;
+    }
+
+    &.role-select {
+      padding: 0;
+    }
+  }
+
+  .role-select {
+    padding: $cell-padding;
+    padding-right: 1.5em;
+  }
+
+  .bordered {
+    border-left: 1px solid $color-gray-divider;
+    border-right: 1px solid $color-gray-divider;
+  }
+
+  select.dark-flat {
+    appearance: none;
+    -webkit-appearance: none;
+    color: $color-content-text;
+    background-image: url('/assets/down-arrow.svg'); // linear-gradient(to bottom, $color-content-background 0%, $color-content-background 100%);
+    background-repeat: no-repeat;
+    background-position: right 0.5em top 50%, 0 0;
+    background-size: 0.7em auto;
+    border: none;
+    border-radius: 0;
+    background-color: transparent;
+  }
+}

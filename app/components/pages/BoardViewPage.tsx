@@ -23,6 +23,7 @@ type Props = {
   masonryLayoutTrigger: boolean;
   quotes: IQuote[] | undefined;
   showAddQuoteModal: () => AnyAction;
+  showBoardSettings: (boardId: string) => AnyAction;
   showPersonStats: (personId: string) => AnyAction;
   showQuoteInfo: (quote: IQuote) => AnyAction;
   toggleQuoteLike: (quote: IQuote) => AnyAction;
@@ -46,6 +47,9 @@ export default (props: Props) => {
         userLikedQuote={userLikedItem(quote, props.user)}
       />)
   });
+
+  const showBoardSettings = () => props.showBoardSettings(props.board._id);
+
   return (
     <div className="primary-content BoardView">
       <div className="header">
@@ -61,6 +65,7 @@ export default (props: Props) => {
           </div>
           <div
             className="board-settings"
+            onClick={showBoardSettings}
           >
             <GearIcon />
             <span className="title">Board Settings</span>

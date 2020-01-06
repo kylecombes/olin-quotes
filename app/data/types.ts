@@ -2,7 +2,14 @@ import { RouterState } from 'connected-react-router';
 
 export interface IBoard extends INewBoard {
   _id: string
+  members: IBoardMember[]
 }
+
+export interface IBoardMember {
+  personId: string
+  role: IBoardMemberRole
+}
+export type IBoardMemberRole = 'admin' | 'contributor' | 'viewer';
 
 export interface ILike {
   date: Date
@@ -11,6 +18,7 @@ export interface ILike {
 
 export interface INewBoard {
   description: string
+  members: IBoardMember[]
   name: string
 }
 

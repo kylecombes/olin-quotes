@@ -1,0 +1,26 @@
+@import 'constants';
+
+.Avatar {
+  width: 2em;
+  height: 2em;
+  border-radius: 1em;
+  overflow: hidden;
+
+  &.clickable {
+    cursor: pointer;
+  }
+
+  svg {
+    width: 2em;
+    height: 2em;
+    fill: none;
+
+    .fill {
+      fill: $color-content-background;
+    }
+    .stroke {
+      stroke: $color-content-background;
+      stroke-width: 7px;
+    }
+  }
+}
