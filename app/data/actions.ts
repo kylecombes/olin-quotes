@@ -174,12 +174,14 @@ export function updateQuoteComment(comment: IQuoteComment) {
 
 
 export function checkLoginStatus() {
-  return () => {
+  return (dispatch: ThunkDispatch<any, any, any>) => {
     return makeApiRequest('/loginStatus')
       // @ts-ignore
       .then(res => {
         if (res.loggedIn) {
           websocketConnect();
+        } else {
+          dispatch(openLogin());
         }
       });
   };
