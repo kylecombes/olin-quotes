@@ -4,22 +4,21 @@ const Login: React.FC = () => {
   return (
     <div className="login-signup">
       <h1>Olin Quotes</h1>
-      <a
+      <button
         className="button"
         // @ts-ignore
-        href={`${window.SERVER_URI}/google`}
+        onClick={() => window.location =`${window.SERVER_URI}/google`}
         title="Login with Google"
         >
         Login with Google
-      </a>
-      <a
-        className="button"
+      </button>
+      <button
         // @ts-ignore
-        href={`${window.SERVER_URI}/facebook`}
+        onClick={() => window.location =`${window.SERVER_URI}/facebook`}
         title="Login with Facebook"
         >
         Login with Facebook
-      </a>
+      </button>
     </div>
   );
 };
