@@ -8,9 +8,9 @@ export default gql`
     addDate: String
     addedById: ID
     boardId: ID
-    comments: String
-    components: String
-    likes: Int
+    comments: [QuoteComment]
+    components: [QuoteComponent]
+    likes: [Like]
   }
 
   type QuoteComment {
@@ -47,11 +47,30 @@ export default gql`
   }
   
   type Query {
-      quotes: [Quote]!
+      quotes(
+          """
+          The number of quotes to get. Must be >= 1. Default = 30.
+          """
+          pageSize: Int
+          """
+          If you add a cursor here, it will only return results after this cursor.
+          """
+          after: String
+      ): QuoteConnection!
       quote(id: ID!): Quote
       user: User
   }
   
+  """
+  Simple wrapper around the list of quotes that contains a cursor to the last quote in the list.
+  Pass this cursor to the quotes query to fetch quotes after these.
+  """
+  type QuoteConnection {
+      cursor: String!
+      hasMore: Boolean!
+      quotes: [Quote]!
+  }
+
   type Mutation {
       addQuote(quote: String): AddQuoteResponse
   }
