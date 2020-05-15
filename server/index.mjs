@@ -5,7 +5,9 @@ import redisUrl from "redis-url";
 import session from 'express-session';
 import ApolloServer from 'apollo-server';
 import typeDefs from './schema.mjs';
+import BoardAPI from './datasources/board.mjs';
 import QuotesAPI from './datasources/quotes.mjs';
+import UserAPI from './datasources/user.mjs';
 import resolvers from './resolvers.mjs';
 
 // Try loading environment variables from a .env file
@@ -14,6 +16,7 @@ if (fs.existsSync('./.env')) {
 }
 
 import { connectDb, getDb } from './database.mjs';
+import User from './models/user.mjs';
 import HttpServer from './http-server.mjs';
 import { startWebSocketServer } from './websocket-server.mjs';
 
@@ -39,8 +42,22 @@ connectDb()
     // Start Apollo GraphQL server
     const store = getDb();
     new ApolloServer.ApolloServer({
+      context: async ({ req }) => {
+        // Simple auth check on every request
+        const auth = (req.headers && req.headers.authorization) || '';
+        const id = new Buffer(auth, 'base64').toString('ascii');
+
+        let user;
+        // Check if the ID is a valid MongoDB ObjectId
+        if (id.match(/^[0-9a-fA-F]{24}$/)) {
+          user = await User.findOne({_id: id});
+        }
+        return { user };
+      },
       dataSources: () => ({
+        boardAPI: new BoardAPI({ store }),
         quotesAPI: new QuotesAPI({ store }),
+        userAPI: new UserAPI({ store }),
       }),
       resolvers,
       typeDefs,

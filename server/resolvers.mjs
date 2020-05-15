@@ -4,6 +4,8 @@ import {
 
 export default {
   Query: {
+    boards: (_, __, { dataSources }) =>
+      dataSources.boardAPI.getBoardsForUser(),
     quote: (_, { id }, { dataSources }) =>
       dataSources.quotesAPI.getQuote(id),
     quotes: async (_, { pageSize = 20, after }, { dataSources }) => {
@@ -19,5 +21,16 @@ export default {
           : false,
       };
     },
+  },
+  Mutation: {
+    login: async (_, { id }, { dataSources }) => {
+      const user = await dataSources.userAPI.findUser(id);
+      return {
+        success: !!user,
+        // FIXME: Insecure
+        token: user ? Buffer.from(id).toString('base64') : null,
+        user,
+      }
+    }
   }
 }

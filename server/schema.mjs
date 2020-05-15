@@ -3,6 +3,27 @@ import ApolloServer from 'apollo-server';
 const { gql } = ApolloServer;
 
 export default gql`
+  type Board {
+      _id: ID!
+      createdBy: ID!
+      createdOn: String!
+      description: String
+      name: String!
+      members: [BoardMember]!
+  }
+
+  type BoardMember {
+      addedBy: ID
+      addedOn: String
+      personId: ID
+      role: BoardMemberRole
+  }
+
+  type BoardMemberRole {
+      type: String
+      # enum?
+  }
+
   type Quote {
     _id: ID!
     addDate: String
@@ -47,6 +68,7 @@ export default gql`
   }
   
   type Query {
+      boards: [Board]!
       quotes(
           """
           The number of quotes to get. Must be >= 1. Default = 30.
@@ -73,11 +95,18 @@ export default gql`
 
   type Mutation {
       addQuote(quote: String): AddQuoteResponse
+      login(id: ID!): LoginResponse
   }
   
   type AddQuoteResponse {
       success: Boolean!
       message: String
       quote: Quote
+  }
+
+  type LoginResponse {
+      success: Boolean!
+      token: String
+      user: User
   }
 `;
