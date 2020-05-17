@@ -70,6 +70,7 @@ export default gql`
   
   type Query {
       boards: [Board]!
+      isLoggedIn: Boolean!
       quotes(
           """
           The number of quotes to get. Must be >= 1. Default = 30.

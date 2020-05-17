@@ -26,4 +26,7 @@ export default class UserAPI extends DataSource.DataSource {
     return await User.find({ _id: ids }).lean().exec();
   };
 
+  // TODO: Restrict access to protected fields/attributes
+  getCurrentUser = () => this.context.user;
+
 }

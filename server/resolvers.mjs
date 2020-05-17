@@ -6,6 +6,8 @@ export default {
   Query: {
     boards: (_, __, { dataSources }) =>
       dataSources.boardAPI.getBoardsForUser(),
+    isLoggedIn: (_, __, { dataSources }) =>
+      !!dataSources.userAPI.getCurrentUser(),
     quote: (_, { id }, { dataSources }) =>
       dataSources.quotesAPI.getQuote(id),
     quotes: async (_, { pageSize = 20, after }, { dataSources }) => {
@@ -38,6 +40,8 @@ export default {
           : false,
       };
     },
+    user: async (_, __, { dataSources }) =>
+      dataSources.userAPI.getCurrentUser(),
   },
   Mutation: {
     login: async (_, { id }, { dataSources }) => {

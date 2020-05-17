@@ -5,10 +5,6 @@ import {
   Switch,
 } from 'react-router';
 import { ConnectedRouter } from 'connected-react-router';
-import { ApolloClient } from 'apollo-client';
-import { InMemoryCache, NormalizedCacheObject } from 'apollo-cache-inmemory';
-import { HttpLink } from 'apollo-link-http';
-import { ApolloProvider } from '@apollo/react-hooks';
 
 import {
   store,
@@ -21,6 +17,8 @@ import NavSidebar from '../containers/NavSidebar';
 import PersonInfoPage from '../containers/PersonInfoPage';
 import Popup from '../containers/Popup'
 import QuoteInfoPage from '../containers/QuoteInfoPage';
+import { useQuery } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
 
 interface IProps {
   checkLoginStatus: () => null
@@ -28,31 +26,31 @@ interface IProps {
   popupVisible: boolean
 }
 
-const cache = new InMemoryCache();
-const link = new HttpLink({
-  uri: 'http://localhost:4000/'
-});
+const IS_LOGGED_IN = gql`
+  query IsUserLoggedIn {
+    isLoggedIn @client
+  }
+`;
 
-const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
-  cache,
-  link
-});
+export default (props: IProps) => {
+  const {
+    data,
+    loading,
+    error,
+  } = useQuery(IS_LOGGED_IN);
 
-export default class App extends React.Component<IProps> {
-
-  constructor(props: IProps) {
-    super(props);
-
-    props.checkLoginStatus();
+  if (loading) {
+    return <h1>Loading...</h1>;
   }
 
-  render() {
-    return (
-      <ApolloProvider client={client}>
-        {this.props.loggedIn ? <LoggedInView {...this.props} /> : <LoggedOutView {...this.props} />}
-      </ApolloProvider>
-    );
+  if (error) {
+    console.error(error);
+    return <p>An error occured</p>;
   }
+
+  return data.isLoggedIn
+    ? <LoggedInView {...props} />
+    : <LoggedOutView {...props} />;
 }
 
 const LoggedInView = (props: IProps) => (
