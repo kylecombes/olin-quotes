@@ -53,6 +53,7 @@ export default gql`
   }
 
   type User {
+    _id: ID!
     accountSetupComplete: Boolean
     firstName: String
     lastName: String
@@ -90,6 +91,7 @@ export default gql`
   type QuoteConnection {
       cursor: String!
       hasMore: Boolean!
+      people: [User]!
       quotes: [Quote]!
   }
 

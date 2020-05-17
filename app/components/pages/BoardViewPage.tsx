@@ -14,14 +14,13 @@ import {
 import GearIcon from '../../assets/gear-icon.svg';
 import PlusIcon from '../../assets/plus-icon.svg';
 import QuoteCard from '../QuoteCard';
+import { useQuery } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
+// import * as GetQuoteListTypes from './__generated__/GetQuoteList';
 
 type Props = {
   board: IBoard | undefined;
-  people: {
-    [personId: string]: IPerson
-  } | undefined;
   masonryLayoutTrigger: boolean;
-  quotes: IQuote[] | undefined;
   showAddQuoteModal: () => AnyAction;
   showBoardSettings: (boardId: string) => AnyAction;
   showPersonStats: (personId: string) => AnyAction;
@@ -30,15 +29,59 @@ type Props = {
   user: IPerson;
 };
 
-export default (props: Props) => {
-  if (!props.people || !props.quotes || !props.board) return null;
+const GET_QUOTES = gql`
+  query QuotesList($after: String) {
+      quotes(after: $after) {
+          cursor
+          hasMore
+          quotes {
+              _id
+              addDate
+              addedById
+              boardId
+              comments {
+                  content
+                  authorId
+                  added
+              }
+              likes {
+                  date
+                  personId
+              }
+              components {
+                  personId
+                  content
+              }
+          }
+          people {
+              _id
+              displayName
+              avatarUrl
+          }
+      }
+  }
+`;
 
-  const cards = props.quotes.map(quote => {
+export default (props: Props) => {
+  const {
+    data,
+    loading,
+    error,
+  } = useQuery(GET_QUOTES);
+  if (loading || !props.board) return null;
+  const {
+    people: peopleList,
+    quotes,
+  } = data.quotes;
+  const people: {[key: string]: IPerson} = {};
+  peopleList.forEach((p: IPerson) => people[p._id] = p);
+
+  const cards = quotes.map((quote: IQuote) => {
     const toggleQuoteLike = () => props.toggleQuoteLike(quote);
     return (
       <QuoteCard
         quote={quote}
-        people={props.people}
+        people={people}
         key={quote._id}
         showQuoteInfo={props.showQuoteInfo}
         showPersonStats={props.showPersonStats}

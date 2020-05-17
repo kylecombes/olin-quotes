@@ -22,4 +22,8 @@ export default class UserAPI extends DataSource.DataSource {
     return await User.findOne({ _id: id }).lean().exec();
   };
 
+  findManyUsers = async (ids) => {
+    return await User.find({ _id: ids }).lean().exec();
+  };
+
 }

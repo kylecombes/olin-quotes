@@ -1,10 +1,14 @@
-import * as React from "react";
+import * as React from 'react';
 import { Provider } from 'react-redux';
 import {
   Route,
   Switch,
 } from 'react-router';
 import { ConnectedRouter } from 'connected-react-router';
+import { ApolloClient } from 'apollo-client';
+import { InMemoryCache, NormalizedCacheObject } from 'apollo-cache-inmemory';
+import { HttpLink } from 'apollo-link-http';
+import { ApolloProvider } from '@apollo/react-hooks';
 
 import {
   store,
@@ -24,6 +28,16 @@ interface IProps {
   popupVisible: boolean
 }
 
+const cache = new InMemoryCache();
+const link = new HttpLink({
+  uri: 'http://localhost:4000/'
+});
+
+const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
+  cache,
+  link
+});
+
 export default class App extends React.Component<IProps> {
 
   constructor(props: IProps) {
@@ -33,7 +47,11 @@ export default class App extends React.Component<IProps> {
   }
 
   render() {
-    return this.props.loggedIn ? <LoggedInView {...this.props} /> : <LoggedOutView {...this.props} />;
+    return (
+      <ApolloProvider client={client}>
+        {this.props.loggedIn ? <LoggedInView {...this.props} /> : <LoggedOutView {...this.props} />}
+      </ApolloProvider>
+    );
   }
 }
 
@@ -46,10 +64,10 @@ const LoggedInView = (props: IProps) => (
         <Provider store={store}>
           <ConnectedRouter history={history}>
             <Switch>
-              <Route exact path="/boards/:id" component={BoardViewPage} />
-              <Route exact path="/boards/:id/settings" component={BoardSettingsPage} />
-              <Route exact path="/people/:id" component={PersonInfoPage} />
-              <Route exact path="/quotes/:id" component={QuoteInfoPage} />
+              <Route exact path="/boards/:id" component={BoardViewPage}/>
+              <Route exact path="/boards/:id/settings" component={BoardSettingsPage}/>
+              <Route exact path="/people/:id" component={PersonInfoPage}/>
+              <Route exact path="/quotes/:id" component={QuoteInfoPage}/>
             </Switch>
           </ConnectedRouter>
         </Provider>
