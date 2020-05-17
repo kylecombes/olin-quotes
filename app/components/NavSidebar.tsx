@@ -5,26 +5,46 @@ import {
 
 import PlusIcon from '../assets/plus-icon.svg';
 import OlinQuotesLogo from '../assets/olin-quotes-logo.svg';
+import gql from "graphql-tag";
+import { useQuery } from '@apollo/react-hooks';
 
 type Props = {
-  boards: IBoard[]
   currentBoardId: string
   promptCreateBoard: () => any
   switchToBoard: (board: IBoard) => any
 };
 
+const GET_INIT_DATA = gql`
+  query GetBoards {
+    isLoggedIn
+    boards {
+      _id
+      name
+      description
+    }
+  }
+`;
+
 export default (props: Props) => {
   const {
+    data,
+    error,
+    loading,
+  } = useQuery(GET_INIT_DATA);
+
+  if (error) {
+    console.error(error);
+    return <p>An error occurred.</p>;
+  }
+
+  if (loading) return null;
+
+  const {
     currentBoardId,
-    boards,
     switchToBoard,
   } = props;
 
-  if (!boards) {
-    return null;
-  }
-
-  const boardListElems = boards.map(board => {
+  const boardListElems = data.boards.map((board: IBoard) => {
     let className = currentBoardId === board._id ? 'current sidebar-button' : 'sidebar-button';
     return (
       <span
