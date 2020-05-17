@@ -1,30 +1,21 @@
 import * as React from 'react';
-import { Provider } from 'react-redux';
 import {
   Route,
+  BrowserRouter as Router,
   Switch,
-} from 'react-router';
-import { ConnectedRouter } from 'connected-react-router';
-
-import {
-  store,
-  history,
-} from '../data/setup-store';
-import BoardViewPage from '../containers/BoardViewPage';
-import BoardSettingsPage from '../containers/BoardSettingsPage';
-import Login from './Login';
-import NavSidebar from '../containers/NavSidebar';
-import PersonInfoPage from '../containers/PersonInfoPage';
-import Popup from '../containers/Popup'
-import QuoteInfoPage from '../containers/QuoteInfoPage';
+} from 'react-router-dom';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
-interface IProps {
-  checkLoginStatus: () => null
-  loggedIn: boolean
-  popupVisible: boolean
-}
+import { getCurrentBoardId } from '../utils';
+
+import BoardViewPage from '../components/pages/BoardViewPage';
+import BoardSettingsPage from '../components/pages/BoardSettingsPage';
+import Login from './Login';
+import NavSidebar from '../components/NavSidebar';
+import PersonInfoPage from '../components/pages/PersonInfoPage';
+import Popup from '../components/Popup'
+import QuoteInfoPage from '../components/pages/QuoteInfoPage';
 
 const IS_LOGGED_IN = gql`
   query IsUserLoggedIn {
@@ -32,7 +23,7 @@ const IS_LOGGED_IN = gql`
   }
 `;
 
-export default (props: IProps) => {
+const App = () => {
   const {
     data,
     loading,
@@ -45,39 +36,43 @@ export default (props: IProps) => {
 
   if (error) {
     console.error(error);
-    return <p>An error occured</p>;
+    return <p>An error occurred</p>;
   }
 
-  return data.isLoggedIn
-    ? <LoggedInView {...props} />
-    : <LoggedOutView {...props} />;
-}
+  if (!data.isLoggedIn) return <LoggedOutView/>;
 
-const LoggedInView = (props: IProps) => (
-  <div className="app">
-    {props.popupVisible && <Popup/>}
-    <div className="primary-container">
-      <div className="content">
-        <NavSidebar/>
-        <Provider store={store}>
-          <ConnectedRouter history={history}>
+  const currentBoardId = getCurrentBoardId();
+
+  return (
+    <div className="app">
+      {/*{props.popupVisible && <Popup/>}*/}
+      <div className="primary-container">
+        <div className="content">
+          <NavSidebar
+            currentBoardId={currentBoardId}
+            promptCreateBoard={() => {
+            }}
+          />
+          <Router>
             <Switch>
               <Route exact path="/boards/:id" component={BoardViewPage}/>
               <Route exact path="/boards/:id/settings" component={BoardSettingsPage}/>
               <Route exact path="/people/:id" component={PersonInfoPage}/>
               <Route exact path="/quotes/:id" component={QuoteInfoPage}/>
             </Switch>
-          </ConnectedRouter>
-        </Provider>
+          </Router>
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
-const LoggedOutView = (props: IProps) => (
+const LoggedOutView: React.FC = () => (
   <div className="app logged-out">
     <div className="centered-box-container">
       <Login />
     </div>
   </div>
 );
+
+export default App;

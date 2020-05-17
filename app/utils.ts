@@ -4,17 +4,17 @@ import {
   IRootState,
 } from './data/types';
 
-const extractIdFromUrl = (state: IRootState, urlBase: string): (string|undefined) => {
-  const regexMatch = state.router.location.pathname.match(new RegExp(`^\\/${urlBase}\\/(\\w+)`));
+const extractIdFromUrl = (urlBase: string): (string|undefined) => {
+  const regexMatch = window.location.pathname.match(new RegExp(`^\\/${urlBase}\\/(\\w+)`));
   if (regexMatch) {
     return regexMatch[1];
   }
   return undefined;
 };
 
-export const getCurrentBoardId = (state: IRootState) => extractIdFromUrl(state, 'boards');
-export const getCurrentPersonId = (state: IRootState) => extractIdFromUrl(state, 'people');
-export const getCurrentQuoteId = (state: IRootState) => extractIdFromUrl(state, 'quotes');
+export const getCurrentBoardId = () => extractIdFromUrl('boards');
+export const getCurrentPersonId = () => extractIdFromUrl('people');
+export const getCurrentQuoteId = () => extractIdFromUrl('quotes');
 
 export function indexOf<T> (iter: Array<T>, checkFn: (item: T) => boolean): number {
   for (let i = 0; i < iter.length; ++i)

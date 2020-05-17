@@ -115,7 +115,7 @@ export function addQuote(quoteData: IQuote) {
   // @ts-ignore
   return (dispatch, getStore, { emit }) => {
     const state: IRootState = getStore();
-    const currentBoardId = getCurrentBoardId(state);
+    const currentBoardId = getCurrentBoardId();
     if (!currentBoardId) {
       console.error('addQuote: Could not resolve current board ID from URL.');
       return;

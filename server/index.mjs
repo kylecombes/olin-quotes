@@ -34,10 +34,10 @@ const sessionStore = new RedisStore({
 connectDb()
   .then(() => {
     // Start the HTTP server
-    const httpServer = new HttpServer(port, process.env.SESSION_SECRET, sessionStore);
+    // const httpServer = new HttpServer(port, process.env.SESSION_SECRET, sessionStore);
 
     // Start the WebSockets server
-    startWebSocketServer(httpServer.getHTTPServer(), httpServer.getExpressApp(), sessionStore);
+    // startWebSocketServer(httpServer.getHTTPServer(), httpServer.getExpressApp(), sessionStore);
 
     // Start Apollo GraphQL server
     const store = getDb();

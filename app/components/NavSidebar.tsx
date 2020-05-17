@@ -1,5 +1,10 @@
 import * as React from 'react';
 import {
+  BrowserRouter as Router,
+  Link,
+} from 'react-router-dom';
+
+import {
   IBoard,
 } from '../data/types';
 
@@ -11,7 +16,6 @@ import { useQuery } from '@apollo/react-hooks';
 type Props = {
   currentBoardId: string
   promptCreateBoard: () => any
-  switchToBoard: (board: IBoard) => any
 };
 
 const GET_INIT_DATA = gql`
@@ -41,19 +45,18 @@ export default (props: Props) => {
 
   const {
     currentBoardId,
-    switchToBoard,
   } = props;
 
   const boardListElems = data.boards.map((board: IBoard) => {
     let className = currentBoardId === board._id ? 'current sidebar-button' : 'sidebar-button';
     return (
-      <span
+      <Link
         key={board._id}
         className={className}
-        onClick={() => switchToBoard(board)}
+        to={`/boards/${board._id}`}
         title={board.description}>
         {board.name}
-      </span>
+      </Link>
     );
   });
 
@@ -64,7 +67,9 @@ export default (props: Props) => {
       </div>
       <span className="section-header boards-header">Boards</span>
       <nav>
-        {boardListElems}
+        <Router>
+          {boardListElems}
+        </Router>
       </nav>
       <div className="sidebar-button add-board" onClick={props.promptCreateBoard}>
         <PlusIcon />

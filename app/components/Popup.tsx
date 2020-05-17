@@ -1,5 +1,5 @@
 import * as React from 'react';
-import AddQuote from '../containers/AddQuote';
+// import AddQuote from '../components/AddQuote/AddQuote';
 import Login from './Login';
 import FinishAccountCreation from './FinishAccountCreation';
 import CreateBoard from './CreateBoard';
@@ -35,9 +35,9 @@ const Popup: React.FC<Props> = (props: Props) => {
         addBoard={props.createBoard}
       />;
       break;
-    case 'addQuote':
-      content = <AddQuote />;
-      break;
+    // case 'addQuote':
+    //   content = <AddQuote />;
+    //   break;
   }
 
   const containerOnClick = props.isClosable ? props.close : null;
