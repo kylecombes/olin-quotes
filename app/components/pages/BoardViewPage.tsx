@@ -1,6 +1,9 @@
 import * as React from 'react';
 import Masonry from 'react-masonry-component';
 import { AnyAction } from 'redux';
+import {
+  useParams,
+} from 'react-router-dom';
 
 import {
   IBoard,
@@ -8,7 +11,6 @@ import {
   IPerson,
 } from '../../data/types';
 import {
-  getCurrentBoardId,
   userLikedItem,
 } from '../../utils';
 
@@ -73,8 +75,8 @@ const GET_BOARD_QUOTES = gql`
   }
 `;
 
-export default (props: Props) => {
-  const boardId = getCurrentBoardId();
+const BoardViewPage = (props: Props) => {
+  const { boardId } = useParams();
   if (!boardId) {
     return <div>Unknown board</div>;
   }
@@ -152,3 +154,5 @@ export default (props: Props) => {
     </div>
   );
 }
+
+export default BoardViewPage;

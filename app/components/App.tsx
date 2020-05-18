@@ -7,8 +7,6 @@ import {
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
-import { getCurrentBoardId } from '../utils';
-
 import BoardViewPage from '../components/pages/BoardViewPage';
 import BoardSettingsPage from '../components/pages/BoardSettingsPage';
 import Login from './Login';
@@ -41,24 +39,18 @@ const App = () => {
 
   if (!data.isLoggedIn) return <LoggedOutView/>;
 
-  const currentBoardId = getCurrentBoardId();
-
   return (
     <div className="app">
       {/*{props.popupVisible && <Popup/>}*/}
       <div className="primary-container">
         <div className="content">
-          <NavSidebar
-            currentBoardId={currentBoardId}
-            promptCreateBoard={() => {
-            }}
-          />
           <Router>
+            <NavSidebar promptCreateBoard={() => {}} />
             <Switch>
-              <Route exact path="/boards/:id" component={BoardViewPage}/>
-              <Route exact path="/boards/:id/settings" component={BoardSettingsPage}/>
-              <Route exact path="/people/:id" component={PersonInfoPage}/>
-              <Route exact path="/quotes/:id" component={QuoteInfoPage}/>
+              <Route exact path="/boards/:boardId" component={BoardViewPage}/>
+              <Route exact path="/boards/:boardId/settings" component={BoardSettingsPage}/>
+              <Route exact path="/people/:personId" component={PersonInfoPage}/>
+              <Route exact path="/quotes/:quoteId" component={QuoteInfoPage}/>
             </Switch>
           </Router>
         </div>

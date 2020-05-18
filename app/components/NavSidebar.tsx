@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {
-  BrowserRouter as Router,
   Link,
+  useParams,
 } from 'react-router-dom';
 
 import {
@@ -14,7 +14,6 @@ import gql from "graphql-tag";
 import { useQuery } from '@apollo/react-hooks';
 
 type Props = {
-  currentBoardId: string
   promptCreateBoard: () => any
 };
 
@@ -30,6 +29,8 @@ const GET_INIT_DATA = gql`
 `;
 
 export default (props: Props) => {
+  const { boardId: currentBoardId } = useParams();
+
   const {
     data,
     error,
@@ -42,10 +43,6 @@ export default (props: Props) => {
   }
 
   if (loading) return null;
-
-  const {
-    currentBoardId,
-  } = props;
 
   const boardListElems = data.boards.map((board: IBoard) => {
     let className = currentBoardId === board._id ? 'current sidebar-button' : 'sidebar-button';
@@ -67,9 +64,7 @@ export default (props: Props) => {
       </div>
       <span className="section-header boards-header">Boards</span>
       <nav>
-        <Router>
-          {boardListElems}
-        </Router>
+        {boardListElems}
       </nav>
       <div className="sidebar-button add-board" onClick={props.promptCreateBoard}>
         <PlusIcon />
