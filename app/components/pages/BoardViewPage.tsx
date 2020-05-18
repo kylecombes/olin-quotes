@@ -42,32 +42,39 @@ const INITIAL_STATE: State = {
   modalType: null,
 };
 
+const QUOTE_FRAGMENT = gql`
+  fragment BoardViewQuote on Quote {
+    _id
+    addDate
+    addedById
+    boardId
+    comments {
+      content
+      authorId
+      added
+    }
+    likes {
+      date
+      personId
+    }
+    components {
+      personId
+      content
+    }
+  }
+`;
+
 const ADD_QUOTE = gql`
   mutation AddQuote($quote: NewQuote!) {
     addQuote(quote: $quote) {
       success
       message
       quote {
-        _id
-        addDate
-        addedById
-        boardId
-        comments {
-          content
-          authorId
-          added
-        }
-        likes {
-          date
-          personId
-        }
-        components {
-          personId
-          content
-        }
+        ...BoardViewQuote
       }
     }
   }
+  ${QUOTE_FRAGMENT}
 `;
 
 const GET_BOARD_QUOTES = gql`
@@ -81,23 +88,7 @@ const GET_BOARD_QUOTES = gql`
           cursor
           hasMore
           quotes {
-              _id
-              addDate
-              addedById
-              boardId
-              comments {
-                  content
-                  authorId
-                  added
-              }
-              likes {
-                  date
-                  personId
-              }
-              components {
-                  personId
-                  content
-              }
+              ...BoardViewQuote
           }
           people {
               _id
@@ -113,6 +104,7 @@ const GET_BOARD_QUOTES = gql`
       avatarUrl
     }
   }
+  ${QUOTE_FRAGMENT}
 `;
 
 const BoardViewPage: React.FC<Props> = (props: Props) => {
