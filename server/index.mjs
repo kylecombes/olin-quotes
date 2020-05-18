@@ -6,7 +6,7 @@ import session from 'express-session';
 import ApolloServer from 'apollo-server';
 import typeDefs from './schema.mjs';
 import BoardAPI from './datasources/board.mjs';
-import QuotesAPI from './datasources/quotes.mjs';
+import QuotesAPI from './datasources/quote.mjs';
 import UserAPI from './datasources/user.mjs';
 import resolvers from './resolvers.mjs';
 

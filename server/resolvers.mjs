@@ -46,6 +46,16 @@ export default {
       dataSources.userAPI.getCurrentUser(),
   },
   Mutation: {
+    addQuote: async (_, { quote }, { dataSources }) => {
+      if (await dataSources.boardAPI.isUserMemberOfBoard(quote.boardId) === false) {
+        return null;
+      }
+      const savedQuote = await dataSources.quotesAPI.addQuote(quote);
+      return {
+        success: !!savedQuote,
+        quote: savedQuote,
+      };
+    },
     login: async (_, { id }, { dataSources }) => {
       const user = await dataSources.userAPI.findUser(id);
       return {

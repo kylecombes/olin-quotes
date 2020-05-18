@@ -18,6 +18,12 @@ export default class QuotesAPI extends DataSource.DataSource {
     this.context = config.context;
   }
 
+  addQuote = async (quoteData) => {
+    const quote = new Quote(quoteData);
+    await quote.save();
+    return quote;
+  };
+
   getQuote = async (id) => {
     return await Quote.findOne({ _id: id }).lean().exec();
   };

@@ -12,7 +12,7 @@ import BoardSettingsPage from '../components/pages/BoardSettingsPage';
 import Login from './Login';
 import NavSidebar from '../components/NavSidebar';
 import PersonInfoPage from '../components/pages/PersonInfoPage';
-import Popup from '../components/Popup'
+import Modal from './Modal'
 import QuoteInfoPage from '../components/pages/QuoteInfoPage';
 
 const IS_LOGGED_IN = gql`
@@ -41,7 +41,7 @@ const App = () => {
 
   return (
     <div className="app">
-      {/*{props.popupVisible && <Popup/>}*/}
+      {/*{props.popupVisible && <Modal/>}*/}
       <div className="primary-container">
         <div className="content">
           <Router>

@@ -24,6 +24,17 @@ export default gql`
       # enum?
   }
 
+  input NewQuote {
+    boardId: ID!
+    components: [NewQuoteComponent]!
+    context: String
+  }
+
+  input NewQuoteComponent {
+    personId: ID
+    content: String
+  }
+
   type Quote {
     _id: ID!
     addDate: String
@@ -104,7 +115,7 @@ export default gql`
   }
 
   type Mutation {
-      addQuote(quote: String): AddQuoteResponse
+      addQuote(quote: NewQuote): AddQuoteResponse!
       login(id: ID!): LoginResponse
   }
   

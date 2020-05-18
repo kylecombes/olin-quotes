@@ -21,9 +21,7 @@ export default class BoardAPI extends DataSource.DataSource {
   getBoard = async (id) => {
     if (!this.context.user) return null;
     const board = await Board.findOne({ _id: id }).lean().exec();
-    // Ensure that the current user is a member of the board
-    const userId = this.context.user._id.toString();
-    if (board.members.map(b => b.personId.toString()).indexOf(userId) >= 0) {
+    if (await this.isUserMemberOfBoard(id, board)) {
       return board;
     }
     return null;
@@ -32,6 +30,14 @@ export default class BoardAPI extends DataSource.DataSource {
   getBoardsForUser = async () => {
     if (!this.context.user) return [];
     return await Board.getBoardsForUser(this.context.user._id).lean().exec();
+  };
+
+  isUserMemberOfBoard = async (boardId, board = null) => {
+    if (!board) {
+      board = await Board.findOne({_id: boardId}).lean().exec();
+    }
+    const userId = this.context.user._id.toString();
+    return board.members.map(b => b.personId.toString()).indexOf(userId) >= 0;
   };
 
 }

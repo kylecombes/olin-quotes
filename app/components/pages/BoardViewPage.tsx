@@ -6,9 +6,9 @@ import {
 } from 'react-router-dom';
 
 import {
-  IBoard,
   IQuote,
   IPerson,
+  INewQuote,
 } from '../../data/types';
 import {
   userLikedItem,
@@ -17,18 +17,58 @@ import {
 import GearIcon from '../../assets/gear-icon.svg';
 import PlusIcon from '../../assets/plus-icon.svg';
 import QuoteCard from '../QuoteCard';
-import { useQuery } from '@apollo/react-hooks';
+import {
+  useMutation,
+  useQuery,
+} from '@apollo/react-hooks';
 import gql from 'graphql-tag';
+import AddQuote from '../AddQuote/AddQuote';
+import Modal from '../Modal';
 // import * as GetQuoteListTypes from './__generated__/GetQuoteList';
 
 type Props = {
   masonryLayoutTrigger: boolean;
-  showAddQuoteModal: () => AnyAction;
   showBoardSettings: (boardId: string) => AnyAction;
   showPersonStats: (personId: string) => AnyAction;
   showQuoteInfo: (quote: IQuote) => AnyAction;
   toggleQuoteLike: (quote: IQuote) => AnyAction;
 };
+
+type State = {
+  modalType: 'addQuote' | null
+};
+
+const INITIAL_STATE: State = {
+  modalType: null,
+};
+
+const ADD_QUOTE = gql`
+  mutation AddQuote($quote: NewQuote!) {
+    addQuote(quote: $quote) {
+      success
+      message
+      quote {
+        _id
+        addDate
+        addedById
+        boardId
+        comments {
+          content
+          authorId
+          added
+        }
+        likes {
+          date
+          personId
+        }
+        components {
+          personId
+          content
+        }
+      }
+    }
+  }
+`;
 
 const GET_BOARD_QUOTES = gql`
   query QuotesList($boardId: ID!, $after: String) {
@@ -75,7 +115,8 @@ const GET_BOARD_QUOTES = gql`
   }
 `;
 
-const BoardViewPage = (props: Props) => {
+const BoardViewPage: React.FC<Props> = (props: Props) => {
+  const [state, setState] = React.useState(INITIAL_STATE);
   const { boardId } = useParams();
   if (!boardId) {
     return <div>Unknown board</div>;
@@ -92,6 +133,7 @@ const BoardViewPage = (props: Props) => {
       },
     }
   );
+  const [addQuoteMutation, { loading: addingQuote, error: quoteAddError }] = useMutation(ADD_QUOTE);
   if (loading) return null;
   if (error) {
     console.error(error);
@@ -125,15 +167,38 @@ const BoardViewPage = (props: Props) => {
 
   const showBoardSettings = () => props.showBoardSettings(board._id);
 
+  const closeModal = () => setState({...state, modalType: null});
+  const addQuote = (quote: INewQuote) => {
+    addQuoteMutation({
+      variables: {
+        quote: {
+          ...quote,
+          boardId,
+        },
+      },
+    }).then(() => closeModal());
+  };
+  const showAddQuoteModal = () => setState({...state, modalType: 'addQuote'});
+
+  let modal;
+  switch (state.modalType) {
+    case 'addQuote':
+      modal = <Modal close={closeModal} isClosable={true}>
+        <AddQuote cancel={closeModal} people={peopleList} submit={addQuote} />
+      </Modal>;
+      break;
+  }
+
   return (
     <div className="primary-content BoardView">
+      {modal}
       <div className="header">
         <div />
         <span className="board-name">{board.name}</span>
         <div className="button-container">
           <div
             className="add-quote"
-            onClick={props.showAddQuoteModal}
+            onClick={showAddQuoteModal}
           >
             <PlusIcon />
             <span className="title">Add Quote</span>
