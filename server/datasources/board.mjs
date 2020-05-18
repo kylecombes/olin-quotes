@@ -18,6 +18,17 @@ export default class BoardAPI extends DataSource.DataSource {
     this.context = config.context;
   }
 
+  getBoard = async (id) => {
+    if (!this.context.user) return null;
+    const board = await Board.findOne({ _id: id }).lean().exec();
+    // Ensure that the current user is a member of the board
+    const userId = this.context.user._id.toString();
+    if (board.members.map(b => b.personId.toString()).indexOf(userId) >= 0) {
+      return board;
+    }
+    return null;
+  };
+
   getBoardsForUser = async () => {
     if (!this.context.user) return [];
     return await Board.getBoardsForUser(this.context.user._id).lean().exec();

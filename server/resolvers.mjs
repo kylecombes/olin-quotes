@@ -4,14 +4,16 @@ import {
 
 export default {
   Query: {
+    board: (_,  { id }, { dataSources }) =>
+      dataSources.boardAPI.getBoard(id),
     boards: (_, __, { dataSources }) =>
       dataSources.boardAPI.getBoardsForUser(),
     isLoggedIn: (_, __, { dataSources }) =>
       !!dataSources.userAPI.getCurrentUser(),
     quote: (_, { id }, { dataSources }) =>
       dataSources.quotesAPI.getQuote(id),
-    quotes: async (_, { pageSize = 20, after }, { dataSources }) => {
-      const allQuotes = await dataSources.quotesAPI.getAllQuotes();
+    quotes: async (_, { board: boardId, pageSize = 20, after }, { dataSources }) => {
+      const allQuotes = await dataSources.quotesAPI.getBoardQuotes(boardId);
       const quotes = paginateResults({ after, pageSize, results: allQuotes });
       // Get the IDs of all the people referenced in the quotes
       const peopleIds = new Set();

@@ -69,9 +69,16 @@ export default gql`
   }
   
   type Query {
+      board(
+        id: ID!
+      ): Board!
       boards: [Board]!
       isLoggedIn: Boolean!
       quotes(
+          """
+          The ID of the board to get quotes for.
+          """
+          board: ID!
           """
           The number of quotes to get. Must be >= 1. Default = 30.
           """
@@ -90,7 +97,7 @@ export default gql`
   Pass this cursor to the quotes query to fetch quotes after these.
   """
   type QuoteConnection {
-      cursor: String!
+      cursor: String
       hasMore: Boolean!
       people: [User]!
       quotes: [Quote]!

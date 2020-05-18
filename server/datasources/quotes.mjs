@@ -22,8 +22,8 @@ export default class QuotesAPI extends DataSource.DataSource {
     return await Quote.findOne({ _id: id }).lean().exec();
   };
 
-  getAllQuotes = async () => {
-    return await Quote.find({}).lean().exec();
+  getBoardQuotes = async (boardId) => {
+    return await Quote.find({ boardId }).lean().exec();
   };
 
 }
