@@ -61,6 +61,11 @@ module.exports = {
         include: APP_DIR,
         use: ['style-loader', 'css-loader'],
       },
+      {
+        test: /\.(graphql|gql)$/,
+        exclude: /node_modules/,
+        loader: 'graphql-tag/loader',
+      },
     ],
   },
   resolve: {

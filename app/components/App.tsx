@@ -7,7 +7,7 @@ import {
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
-import BoardViewPage from '../components/pages/BoardViewPage';
+import BoardViewPage from '../components/containers/BoardViewPage';
 import BoardSettingsPage from '../components/pages/BoardSettingsPage';
 import Login from './Login';
 import NavSidebar from '../components/NavSidebar';

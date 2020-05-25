@@ -1,0 +1,28 @@
+#import "./BoardViewQuote.graphql"
+
+query QuotesList($boardId: ID!, $after: String) {
+  board(id: $boardId) {
+    _id
+    name
+    description
+  }
+  quotes(board: $boardId, after: $after) {
+    cursor
+    hasMore
+    quotes {
+      ...BoardViewQuote
+    }
+    people {
+      _id
+      displayName
+      avatarUrl
+    }
+  }
+  user {
+    _id
+    firstName
+    lastName
+    displayName
+    avatarUrl
+  }
+}
