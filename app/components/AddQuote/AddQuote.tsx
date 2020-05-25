@@ -9,11 +9,13 @@ import {
 import {
   INewQuote,
   IPerson,
+  IQuote,
   IQuoteComponent,
 } from '../../data/types';
 
 import * as AddQuoteMutation from '../../data/mutations/AddQuote.graphql';
 import * as GetBoardMembers from '../../data/queries/GetBoardMembers.graphql';
+import * as GetBoardViewQuotes from '../../data/queries/GetBoardViewQuotes.graphql';
 
 type ComponentProps = {
   cancel: () => any
@@ -106,8 +108,8 @@ export class AddQuote extends React.Component<ComponentProps, State> {
 }
 
 type ContainerProps = {
-  cancel: () => any
   boardId: string
+  done: () => any
 };
 
 const data = graphql(
@@ -121,11 +123,51 @@ const data = graphql(
   }
 );
 
+type AddQuoteMutationResponse = {
+  data: {
+    addQuote: {
+      success: boolean
+      message?: string
+      quote: IQuote
+    }
+  }
+};
+
+type QuoteConnection = {
+  cursor: string
+  hasMore: boolean
+  people: IPerson[]
+  quotes: IQuote[]
+};
+
+const mutation = graphql(
+  AddQuoteMutation,
+  {
+    options: {
+      update: (proxy, { data: { addQuote }}: AddQuoteMutationResponse) => {
+        const quote = addQuote.quote;
+        const data: { quotes: QuoteConnection } = proxy.readQuery({
+          query: GetBoardViewQuotes,
+          variables: {
+            boardId: quote.boardId,
+          },
+        });
+        data.quotes.quotes.unshift(quote);
+        proxy.writeQuery({
+          query: GetBoardViewQuotes,
+          data,
+        });
+      },
+    },
+  },
+  );
+
 const AddQuoteContainer = compose<ComponentProps, ContainerProps>(
   data,
-  graphql(AddQuoteMutation),
+  mutation,
   withHandlers({
-    submit: ({ mutate, boardId }: { mutate: Function, boardId: String }) => {
+    cancel: ({ done }) => done(),
+    submit: ({ mutate, boardId, done }: { mutate: Function, boardId: String, done: Function }) => {
       return (quote: INewQuote): Promise<any> => {
         return mutate({
           variables: {
@@ -134,7 +176,7 @@ const AddQuoteContainer = compose<ComponentProps, ContainerProps>(
               ...quote,
             }
           },
-        });
+        }).then(() => done());
       }
     },
   }),

@@ -89,7 +89,7 @@ const BoardViewPageComponent: React.FC<BoardViewPageProps> = (props: BoardViewPa
       modalChild =
         <AddQuote
           boardId={props.data.board._id}
-          cancel={closeModal}
+          done={closeModal}
         />
   }
   let modal = modalChild ? <Modal close={closeModal}>{modalChild}</Modal> : null;
