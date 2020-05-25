@@ -13,10 +13,13 @@ export default gql`
   }
 
   type BoardMember {
-      addedBy: ID
-      addedOn: String
-      personId: ID
-      role: BoardMemberRole
+    firstName: String
+    lastName: String
+    displayName: String
+    classYear: Int
+    avatarUrl: String
+    personId: ID!
+    role: BoardMemberRole!
   }
 
   type BoardMemberRole {
@@ -84,6 +87,12 @@ export default gql`
         id: ID!
       ): Board!
       boards: [Board]!
+      boardMembers(
+        """
+        The ID of the board to get quotes for.
+        """
+        id: ID!
+      ): [User]!
       isLoggedIn: Boolean!
       quotes(
           """

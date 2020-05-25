@@ -1,0 +1,8 @@
+fragment BoardMember on User {
+  _id
+  firstName
+  lastName
+  displayName
+  classYear
+  avatarUrl
+}

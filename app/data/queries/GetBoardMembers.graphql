@@ -1,0 +1,7 @@
+#import "../fragments/BoardMember.graphql"
+
+query getBoardMembers($boardId: ID!) {
+  boardMembers(id: $boardId) {
+    ...BoardMember
+  }
+}

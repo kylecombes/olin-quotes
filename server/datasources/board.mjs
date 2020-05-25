@@ -1,5 +1,6 @@
 import DataSource from 'apollo-datasource';
 import Board from '../models/board.mjs';
+import User from '../models/user.mjs';
 
 export default class BoardAPI extends DataSource.DataSource {
 
@@ -26,6 +27,20 @@ export default class BoardAPI extends DataSource.DataSource {
     }
     return null;
   };
+
+  getBoardMembers = async (id) => {
+    if (!this.context.user) return [];
+    const board = await Board.findOne({ _id: id }, { members: true }).lean().exec();
+    if (await this.isUserMemberOfBoard(id, board) === false)
+      return [];
+    const idToMember = {};
+    board.members.forEach(m => idToMember[m.personId] = m);
+    const memberIds = board.members.map(m => m.personId.toString());
+    const members = await User.find({ _id: memberIds }).lean().exec();
+    // Attach the member roles
+    members.forEach(m => m.role = idToMember[m._id.toString()].role);
+    return members;
+  }
 
   getBoardsForUser = async () => {
     if (!this.context.user) return [];

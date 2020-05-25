@@ -1,4 +1,4 @@
-#import "./BoardViewQuote.graphql"
+#import "../fragments/BoardViewQuote.graphql"
 
 query QuotesList($boardId: ID!, $after: String) {
   board(id: $boardId) {

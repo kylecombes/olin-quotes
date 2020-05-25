@@ -1,21 +1,33 @@
 import * as React from 'react';
+import { graphql } from 'react-apollo';
 import Masonry from 'react-masonry-component';
+import {
+  branch,
+  compose,
+  pure,
+  renderComponent,
+} from 'recompose';
+
+import AddQuote from '../AddQuote/AddQuote';
+import Modal from '../Modal';
+import QuoteCard from '../QuoteCard';
 
 import {
   IQuote,
   IPerson,
   IBoard,
 } from '../../data/types';
+// import * as GetQuoteListTypes from './__generated__/GetQuoteList';
 import {
   userLikedItem,
 } from '../../utils';
 
+import * as GetBoardViewQuotes from '../../data/queries/GetBoardViewQuotes.graphql';
+
 import GearIcon from '../../assets/gear-icon.svg';
 import PlusIcon from '../../assets/plus-icon.svg';
-import QuoteCard from '../QuoteCard';
 
 export type BoardViewPageProps = {
-  addQuote: () => any
   data: {
     loading: boolean
     error?: string
@@ -32,7 +44,9 @@ export type BoardViewPageProps = {
   toggleQuoteLike: (quote: IQuote) => any
 };
 
-const BoardViewPagePure: React.FC<BoardViewPageProps> = (props: BoardViewPageProps) => {
+const BoardViewPageComponent: React.FC<BoardViewPageProps> = (props: BoardViewPageProps) => {
+  const [state, setState] = React.useState(initialState);
+
   const {
     data: {
       error,
@@ -66,6 +80,20 @@ const BoardViewPagePure: React.FC<BoardViewPageProps> = (props: BoardViewPagePro
       />)
   });
 
+  const displayAddQuoteModal = () => setState({...state, modal: ModalTypes.ADD_QUOTE});
+  const closeModal = () => setState({...state, modal: ModalTypes.NONE});
+
+  let modalChild;
+  switch (state.modal) {
+    case ModalTypes.ADD_QUOTE:
+      modalChild =
+        <AddQuote
+          boardId={props.data.board._id}
+          cancel={closeModal}
+        />
+  }
+  let modal = modalChild ? <Modal close={closeModal}>{modalChild}</Modal> : null;
+
   const showBoardSettings = () => props.showBoardSettings(board._id);
 
   return (
@@ -74,7 +102,7 @@ const BoardViewPagePure: React.FC<BoardViewPageProps> = (props: BoardViewPagePro
         <div />
         <span className="board-name">{board.name}</span>
         <div className="button-container">
-          <div className="add-quote" onClick={props.addQuote}>
+          <div className="add-quote" onClick={displayAddQuoteModal}>
             <PlusIcon />
             <span className="title">Add Quote</span>
           </div>
@@ -90,8 +118,62 @@ const BoardViewPagePure: React.FC<BoardViewPageProps> = (props: BoardViewPagePro
       <Masonry className="quote-cards">
         {cards}
       </Masonry>
+      {modal}
     </div>
   );
 }
 
-export default BoardViewPagePure;
+type ContainerProps = {
+  data: {
+    loading: boolean
+    board: IBoard
+  }
+  match: {
+    params: {
+      boardId: string
+    }
+  }
+};
+
+type State = {
+  modal: ModalTypes
+};
+
+enum ModalTypes {
+  NONE = 'NONE',
+  ADD_QUOTE = 'ADD_QUOTE',
+}
+
+const initialState: State = {
+  modal: ModalTypes.NONE,
+};
+
+const data = graphql(
+  GetBoardViewQuotes,
+  {
+    options: (props: ContainerProps) => ({
+      variables: {
+        boardId: props.match.params.boardId,
+      },
+    }),
+  }
+);
+
+const displayLoadingState = branch(
+  (props: ContainerProps) => props.data.loading,
+  renderComponent(() => <div>Loading...</div>),
+);
+
+const displayInvalidState = branch(
+  (props: ContainerProps) => !props.data.board,
+  renderComponent(() => <div>Unknown board</div>),
+);
+
+const BoardViewPage = compose<BoardViewPageProps, ContainerProps>(
+  data,
+  displayLoadingState,
+  displayInvalidState,
+  pure,
+)(BoardViewPageComponent);
+
+export default BoardViewPage;

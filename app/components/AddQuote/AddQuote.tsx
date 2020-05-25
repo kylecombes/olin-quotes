@@ -1,15 +1,28 @@
 import * as React from 'react';
 import AddQuoteComponent from './AddQuoteComponent';
+import { graphql } from 'react-apollo';
+import {
+  compose,
+  pure,
+  withHandlers,
+} from 'recompose';
 import {
   INewQuote,
   IPerson,
   IQuoteComponent,
 } from '../../data/types';
 
-type Props = {
+import * as AddQuoteMutation from '../../data/mutations/AddQuote.graphql';
+import * as GetBoardMembers from '../../data/queries/GetBoardMembers.graphql';
+
+type ComponentProps = {
   cancel: () => any
+  data: {
+    boardMembers: IPerson[]
+    loading: boolean
+    error: string
+  }
   onAddPersonClicked?: () => any
-  people: IPerson[]
   submit: (data: INewQuote) => any
 };
 
@@ -23,9 +36,9 @@ const createEmptyComponent = (): IQuoteComponent => ({
   personId: null,
 });
 
-export default class AddQuote extends React.Component<Props, State> {
+export class AddQuote extends React.Component<ComponentProps, State> {
 
-  constructor(props: Props) {
+  constructor(props: ComponentProps) {
     super(props);
     this.state = Object.assign({}, this.originalState);
   }
@@ -65,13 +78,13 @@ export default class AddQuote extends React.Component<Props, State> {
 
   render() {
 
-    const quoteComponentEntryElems = this.state.components.map((quoteComponent, idx) => (
+    const quoteComponentEntryElms = this.state.components.map((quoteComponent, idx) => (
       <AddQuoteComponent
         key={idx}
         onComponentChange={newPartialData => this.onQuoteComponentChange(idx, newPartialData)}
         contentPlaceholder="Quote"
         speakerPlaceholder="Person"
-        people={this.props.people}
+        people={this.props.data.boardMembers}
         onAddPersonClick={this.props.onAddPersonClicked}
         {...quoteComponent}
       />
@@ -82,7 +95,7 @@ export default class AddQuote extends React.Component<Props, State> {
         <div className="header">
           <span>Add Quote</span>
         </div>
-        {quoteComponentEntryElems}
+        {quoteComponentEntryElms}
         <textarea className="context" onChange={this.onContextChanged} placeholder="Context" value={this.state.context}/>
         <button className="clear" onClick={this.props.cancel}>Discard</button>
         <button className="submit" onClick={this.onAddClicked}>Add</button>
@@ -91,3 +104,41 @@ export default class AddQuote extends React.Component<Props, State> {
   }
 
 }
+
+type ContainerProps = {
+  cancel: () => any
+  boardId: string
+};
+
+const data = graphql(
+  GetBoardMembers,
+  {
+    options: (props: ContainerProps) => ({
+      variables: {
+        boardId: props.boardId,
+      },
+    }),
+  }
+);
+
+const AddQuoteContainer = compose<ComponentProps, ContainerProps>(
+  data,
+  graphql(AddQuoteMutation),
+  withHandlers({
+    submit: ({ mutate, boardId }: { mutate: Function, boardId: String }) => {
+      return (quote: INewQuote): Promise<any> => {
+        return mutate({
+          variables: {
+            quote: {
+              boardId,
+              ...quote,
+            }
+          },
+        });
+      }
+    },
+  }),
+  pure,
+)(AddQuote);
+
+export default AddQuoteContainer;

@@ -8,6 +8,8 @@ export default {
       dataSources.boardAPI.getBoard(id),
     boards: (_, __, { dataSources }) =>
       dataSources.boardAPI.getBoardsForUser(),
+    boardMembers: (_, { id }, { dataSources }) =>
+      dataSources.boardAPI.getBoardMembers(id),
     isLoggedIn: (_, __, { dataSources }) =>
       !!dataSources.userAPI.getCurrentUser(),
     quote: (_, { id }, { dataSources }) =>

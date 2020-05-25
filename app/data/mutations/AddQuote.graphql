@@ -1,0 +1,11 @@
+#import "../fragments/BoardViewQuote.graphql"
+
+mutation addQuote($quote: NewQuote!) {
+  addQuote(quote: $quote) {
+    success
+    message
+    quote {
+      ...BoardViewQuote
+    }
+  }
+}
