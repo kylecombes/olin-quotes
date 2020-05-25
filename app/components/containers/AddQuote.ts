@@ -12,6 +12,10 @@ import AddQuote from '../AddQuote/AddQuote';
 
 import * as BoardViewQuote from '../../fragments/BoardViewQuote.graphql';
 
+type Props = {
+  cancel: () => any
+};
+
 const MUTATIONS = gql`
   mutation addQuote($quote: NewQuote!) {
     addQuote(quote: $quote) {
@@ -51,7 +55,7 @@ switch (state.modalType) {
 }
 */
 
-const AddQuoteContainer = compose(
+const AddQuoteContainer = compose<{}, Props>(
   graphql(MUTATIONS),
   pure,
 )(AddQuote);

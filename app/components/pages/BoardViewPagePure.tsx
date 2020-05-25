@@ -15,6 +15,7 @@ import PlusIcon from '../../assets/plus-icon.svg';
 import QuoteCard from '../QuoteCard';
 
 export type BoardViewPageProps = {
+  addQuote: () => any
   data: {
     loading: boolean
     error?: string
@@ -73,7 +74,7 @@ const BoardViewPagePure: React.FC<BoardViewPageProps> = (props: BoardViewPagePro
         <div />
         <span className="board-name">{board.name}</span>
         <div className="button-container">
-          <div className="add-quote">
+          <div className="add-quote" onClick={props.addQuote}>
             <PlusIcon />
             <span className="title">Add Quote</span>
           </div>

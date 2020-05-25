@@ -12,6 +12,10 @@ import BoardViewPagePure from '../pages/BoardViewPagePure';
 import { IBoard } from '../../data/types';
 import * as GetBoardViewQuotes from '../../fragments/GetBoardViewQuotes.graphql';
 
+type SpecifiedProps = {
+  addQuote: () => any
+}
+
 type Props = {
   data: {
     loading: boolean
@@ -45,7 +49,7 @@ const displayInvalidState = branch(
   renderComponent(() => <div>Unknown board</div>),
 );
 
-const BoardViewPage = compose(
+const BoardViewPage = compose<{}, SpecifiedProps>(
   data,
   displayLoadingState,
   displayInvalidState,

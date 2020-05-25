@@ -3,11 +3,11 @@ import * as React from 'react';
 type Props = {
   close: () => any
   children: React.ReactNode
-  isClosable: boolean
+  disableClose?: boolean
 };
 
 const Modal: React.FC<Props> = (props: Props) => {
-  const containerOnClick = props.isClosable ? props.close : null;
+  const containerOnClick = props.disableClose ? null : props.close;
 
   return (
     <div className="Modal" onClick={containerOnClick}>
